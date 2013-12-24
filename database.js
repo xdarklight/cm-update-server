@@ -3,12 +3,6 @@ var config = require('./data/config.js');
 var db = new sqlite3.Database(config.getDatabasePath());
 
 db.run("\
-	CREATE TABLE IF NOT EXISTS devices (\
-		id VARCHAR(20) PRIMARY KEY NOT NULL\
-	);\
-");
-
-db.run("\
 	CREATE TABLE IF NOT EXISTS updates (\
 		id INTEGER PRIMARY KEY AUTOINCREMENT,\
 		timestamp DATETIME NOT NULL,\
@@ -20,7 +14,6 @@ db.run("\
 		subdirectory VARCHAR(255) NULL,\
 		device VARCHAR(20) NOT NULL,\
 		active BOOLEAN DEFAULT FALSE NOT NULL,\
-		FOREIGN KEY(device) REFERENCES devices(id),\
 		CONSTRAINT unique_file_per_device UNIQUE(device, filename, subdirectory)\
 	);\
 ");
