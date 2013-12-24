@@ -1,2 +1,3 @@
 module.exports.getDatabasePath = function() { return './database.sqlite'; }
-module.exports.getDownloadBaseUrl = function() { return 'http://localhost/'; }
+module.exports.getRealDownloadBaseUrl = function() { return 'http://localhost:3000'; }
+module.exports.getDownloadProxyBaseUrl = function() { return module.exports.getRealDownloadBaseUrl() + '/download-rom'; }

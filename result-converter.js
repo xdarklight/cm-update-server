@@ -22,7 +22,7 @@ module.exports.convert = function(id, errorMessage, updateList) {
 
 	if (updateList && updateList.length > 0) {
 		updateList.forEach(function(row) {
-			var url = config.getDownloadBaseUrl() + '/download-rom?' + querystring.stringify({ id : row.id, filename : row.filename });
+			var url = config.getDownloadProxyBaseUrl() + '?' + querystring.stringify({ id : row.id, filename : row.filename });
 			var timestampAsDate = new Date(row.timestamp);
 			var timestampInSeconds = Math.round(timestampAsDate.getTime() / 1000);
 
@@ -35,7 +35,7 @@ module.exports.convert = function(id, errorMessage, updateList) {
 }
 
 module.exports.getRealDownloadUrl = function(row) {
-	var url = config.getDownloadBaseUrl();
+	var url = config.getRealDownloadBaseUrl();
 
 	if (row.subdirectory && row.subdirectory.length > 0) {
 		url += '/' + row.subdirectory;
