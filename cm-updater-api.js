@@ -61,8 +61,7 @@ http.createServer(function (request, response) {
 			break;
 
 		default:
-			console.log('Unknown url called: ' + request.url);
-			response.writeHead(400);
+			response.writeHead(404);
 			response.end();
 			break;
 	}
