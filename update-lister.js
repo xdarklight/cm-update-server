@@ -66,7 +66,7 @@ module.exports.addUpdate = function(buildInfo, database) {
 			updates\
 				(timestamp, md5sum, filename, channel, api_level, device, active, subdirectory)\
 			VALUES \
-				(DATETIME(?), ?, ?, ?, ?, ?, ?, ?);',
+				(DATETIME(?, "unixepoch"), ?, ?, ?, ?, ?, ?, ?);',
 		buildInfo.timestamp,
 		buildInfo.md5sum,
 		buildInfo.filename,

@@ -6,7 +6,7 @@ var UpdateLister = require('./update-lister.js');
 var buildInfo = (new Troll()).options(function(troll) {
 	troll.banner('Adds a new build to the database.');
 	troll.opt('device', 'The device ID.', { type: 'string', required: true });
-	troll.opt('timestamp', 'The build\'s timestamp.', { type: 'string', required: true });
+	troll.opt('timestamp', 'The build\'s timestamp as "unixepoch" timestamp.', { type: 'integer', required: true });
 	troll.opt('md5sum', 'The build\'s md5sum.', { type: 'string', required: true });
 	troll.opt('filename', 'The resulting filename.', { type: 'string', required: true });
 	troll.opt('channel', 'The build channel.', { type: 'string', required: true });
