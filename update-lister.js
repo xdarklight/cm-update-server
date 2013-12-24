@@ -60,3 +60,19 @@ module.exports.findUpdateAndCountDownload = function(id, database, callback) {
 		callback(err, row);
 	});
 }
+
+module.exports.addUpdate = function(buildInfo, database) {
+	database.run('INSERT INTO \
+			updates\
+				(timestamp, md5sum, filename, channel, api_level, device, active, subdirectory)\
+			VALUES \
+				(DATETIME(?), ?, ?, ?, ?, ?, ?, ?);',
+		buildInfo.timestamp,
+		buildInfo.md5sum,
+		buildInfo.filename,
+		buildInfo.channel,
+		buildInfo.api_level,
+		buildInfo.device,
+		buildInfo.active,
+		buildInfo.subdirectory);
+}
