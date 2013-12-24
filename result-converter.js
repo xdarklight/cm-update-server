@@ -22,7 +22,14 @@ module.exports.convert = function(id, errorMessage, updateList) {
 
 	if (updateList && updateList.length > 0) {
 		updateList.forEach(function(row) {
-			var url = config.getDownloadProxyBaseUrl() + '?' + querystring.stringify({ id : row.id, filename : row.filename });
+			var url;
+
+			if (config.isDownloadProxyEnabled()) {
+				url = config.getDownloadProxyBaseUrl() + '?' + querystring.stringify({ id : row.id, filename : row.filename });
+			} else {
+				url = module.exports.getRealDownloadUrl(row);
+			}
+
 			var timestampAsDate = new Date(row.timestamp);
 			var timestampInSeconds = Math.round(timestampAsDate.getTime() / 1000);
 
