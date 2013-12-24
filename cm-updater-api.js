@@ -1,7 +1,7 @@
 var http = require('http');
-var httpServerPort = 3000;
 
 var database = require('./database.js').getInstance();
+var config = require('./data/config.js');
 
 var RequestParser = require('./request-parser.js');
 var UpdateLister = require('./update-lister.js');
@@ -66,6 +66,6 @@ http.createServer(function (request, response) {
 			break;
 	}
 
-}).listen(httpServerPort);
+}).listen(config.getServerPort());
 
-console.log('Server running at port ' + httpServerPort);
+console.log('Server running at port ' + config.getServerPort());

@@ -1,7 +1,7 @@
 /**
  * The path to the sqlite database.
  */
-module.exports.getDatabasePath = function() { return './database.sqlite'; }
+module.exports.getDatabasePath = function() { return './data/database.sqlite'; }
 
 /**
  * The base URL where the real files can be found. The following parameters are appended to this 'base-URL':
@@ -22,3 +22,8 @@ module.exports.getDownloadProxyBaseUrl = function() { return module.exports.getR
  * Decides if the download proxy (used for gathering download statistics) is enabled or not.
  */
 module.exports.isDownloadProxyEnabled = function() { return true; }
+
+/**
+ * The port which will be used by NodeJS' HTTP server.
+ */
+module.exports.getServerPort = function() { return 3000; }
