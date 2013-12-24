@@ -20,7 +20,7 @@ db.run("\
 		device VARCHAR(20) NOT NULL,\
 		active BOOLEAN DEFAULT FALSE NOT NULL,\
 		FOREIGN KEY(device) REFERENCES devices(id),\
-		CONSTRAINT unique_file UNIQUE(filename, subdirectory)\
+		CONSTRAINT unique_file_per_device UNIQUE(device, filename, subdirectory)\
 	);\
 ");
 

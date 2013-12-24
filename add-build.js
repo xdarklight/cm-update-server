@@ -11,7 +11,7 @@ var buildInfo = (new Troll()).options(function(troll) {
 	troll.opt('filename', 'The resulting filename.', { type: 'string', required: true });
 	troll.opt('channel', 'The build channel.', { type: 'string', required: true });
 	troll.opt('api_level', 'The SDK API-level of the ROM.', { type: 'integer', required: true });
-	troll.opt('subdirectory', 'The subdirectory from which the file can be downloaded.', { type: 'string', required: false });
+	troll.opt('subdirectory', 'The subdirectory from which the file can be downloaded.', { type: 'string' });
 	troll.opt('active', 'Marks the build as active (available for download) or not.', { type: 'boolean', required: true });
 });
 
