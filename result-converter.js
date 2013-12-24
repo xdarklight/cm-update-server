@@ -22,7 +22,7 @@ module.exports.convert = function(id, errorMessage, updateList) {
 
 	if (updateList && updateList.length > 0) {
 		updateList.forEach(function(row) {
-			var url = config.getDownloadBaseUrl() + '/download-rom?id=' + row.id + '&filename=' + querystring.stringify(row.filename);
+			var url = config.getDownloadBaseUrl() + '/download-rom?' + querystring.stringify({ id : row.id, filename : row.filename });
 			var timestampAsDate = new Date(row.timestamp);
 			var timestampInSeconds = Math.round(timestampAsDate.getTime() / 1000);
 
