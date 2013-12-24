@@ -1,0 +1,2 @@
+module.exports.getDatabasePath = function() { return './database.sqlite'; }
+module.exports.getDownloadBaseUrl = function() { return 'http://localhost/'; }
