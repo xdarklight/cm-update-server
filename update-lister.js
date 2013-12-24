@@ -62,6 +62,8 @@ module.exports.findUpdateAndCountDownload = function(id, database, callback) {
 }
 
 module.exports.addUpdate = function(buildInfo, database) {
+	console.log('Adding new updated: ' + JSON.stringify(buildInfo));
+
 	database.run('INSERT INTO\
 			updates\
 				(timestamp, md5sum, filename, channel, api_level, device, active, subdirectory)\
@@ -79,6 +81,8 @@ module.exports.addUpdate = function(buildInfo, database) {
 
 module.exports.disableUpdate = function(buildInfo, database) {
 	var statement = 'UPDATE updates SET active = ? WHERE device = ? AND filename = ? and subdirectory = ?';
+
+	console.log('Disabling update which matches ' + JSON.stringify(buildInfo));
 
 	database.run(statement, false, buildInfo.device, buildInfo.filename, buildInfo.subdirectory, function(error, row) {
 			if (error) {
