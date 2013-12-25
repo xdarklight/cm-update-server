@@ -14,7 +14,7 @@ db.run("\
 		subdirectory VARCHAR(255) NULL,\
 		device VARCHAR(20) NOT NULL,\
 		active BOOLEAN DEFAULT FALSE NOT NULL,\
-		CONSTRAINT unique_file_per_device UNIQUE(device, filename, subdirectory)\
+		CONSTRAINT unique_file_per_device UNIQUE(device, filename, subdirectory) ON CONFLICT REPLACE\
 	);\
 ");
 
