@@ -19,6 +19,17 @@ module.exports = {
 			 */
 			maxBodySize: 1000,
 		},
+
+		/**
+		 * Configuration of restify's throttle module. See http://mcavage.me/node-restify/
+		 * for a list of configuration options ("Throttle" section below "Bundled Plugins").
+		 */
+		throttleConfiguration: {
+			/**
+			 * Decides if the module will be enabled.
+			 */
+			isEnabled: false,
+		}
 	},
 
 	Application: {

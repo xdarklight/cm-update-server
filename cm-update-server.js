@@ -12,6 +12,11 @@ models.sequelize.sync().success(function() {
 
 	server.use(restify.bodyParser(config.bodyParserConfiguration));
 
+	// Conditionally enable the throttle module with the settings from the config.
+	if (config.throttleConfiguration && config.throttleConfiguration.isEnabled) {
+		server.use(restify.throttle(config.throttleConfiguration));
+	}
+
 	server.get('/changelog/:romId', function (req, res, next) {
 		models.Rom.find(req.params.romId).complete(function(err, rom) {
 			if (err) {
