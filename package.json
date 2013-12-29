@@ -14,7 +14,8 @@
 		"troll-opt" : ">= 0.7.x",
 		"config": ">= 0.4.x",
 		"restify": ">= 2.6.x",
-		"sequelize": ">= 1.6.x"
+		"sequelize": ">= 1.6.x",
+		"querystring": ">= 0.2.x"
 	},
 
 	"optionalDependencies": {
