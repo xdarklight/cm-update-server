@@ -54,6 +54,8 @@ models.sequelize.sync().complete(function(err) {
 		});
 
 		server.post('/api', function(req, res, next) {
+			// Currently the CMUpdater app does not send the correct content-type.
+			// Thus auto-parsing the body does not work. But we are ready once that problem is fixed.
 			var requestParameters = req.is('json') ? req.body : JSON.parse(req.body);
 
 			if (!requestParameters || !requestParameters.params || requestParameters.method != 'get_all_builds') {
