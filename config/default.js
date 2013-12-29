@@ -38,6 +38,7 @@ module.exports = {
 		username: "",
 		password: "",
 		options: {
+			logging: false,
 			dialect: "sqlite",
 			storage: "./data/database.sqlite",
 		}
