@@ -9,6 +9,16 @@ module.exports = {
 		 * The port on which the HTTP server will listen.
 		 */
 		listeningPort: 3000,
+
+		/**
+		 * Configuration of restify's BodyParser / BodyReader.
+		 */
+		bodyParserConfiguration: {
+			/**
+			 * Request size in bytes.
+			 */
+			maxBodySize: 1000,
+		},
 	},
 
 	Application: {

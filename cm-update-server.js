@@ -10,7 +10,7 @@ models.sequelize.sync().success(function() {
 		console.log('%s listening at %s', server.name, server.url);
 	});
 
-	server.use(restify.bodyParser());
+	server.use(restify.bodyParser(config.bodyParserConfiguration));
 
 	server.get('/changelog/:romId', function (req, res, next) {
 		models.Rom.find(req.params.romId).complete(function(err, rom) {
