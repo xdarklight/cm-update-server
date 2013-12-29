@@ -1,7 +1,5 @@
 var Troll = require('troll-opt').Troll;
-var database = require('./database.js').getInstance();
-
-var UpdateLister = require('./update-lister.js');
+var models = require('./models/');
 
 var buildInfo = (new Troll()).options(function(troll) {
 	troll.banner('Marks a build as disabled so it cannot be downloaded anymore.');
@@ -10,4 +8,38 @@ var buildInfo = (new Troll()).options(function(troll) {
 	troll.opt('subdirectory', 'The subdirectory from which the file can be downloaded.', { type: 'string' });
 });
 
-UpdateLister.disableUpdate(buildInfo, database);
+models.sequelize.sync().complete(function(err) {
+	if (err) {
+		throw err;
+	} else {
+		models.Device.find({ where: { name: buildInfo.device } }).complete(function(err, device) {
+			if (err) {
+				throw err;
+			}
+
+			if (device) {
+				models.Rom.findAll({
+					where: {
+						DeviceId: device.id,
+						filename: buildInfo.filename,
+						subdirectory: buildInfo.subdirectory,
+						isActive: true,
+					}
+				}).complete(function(err, roms) {
+					if (err) {
+						throw err;
+					}
+
+					roms.forEach(function (rom) {
+						rom.isActive = false;
+						rom.save();
+
+						console.log('Disabled ROM: ' + JSON.stringify(rom));
+					});
+				});
+			} else {
+				console.log('Nothing to remove since device does not exist.');
+			}
+		});
+	}
+});

@@ -1,0 +1,26 @@
+{
+	"name": "cm-update-server",
+	"version": "0.1.0",
+	"author": "Martin Blumenstingl <martin.blumenstingl [AT] googlemail.com>",
+	"description": "Server component which is compatible with CyanogenMod's CMUpdater application.",
+	"main": "cm-update-server.js",
+
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/xdarklight/cm-update-server.git"
+	},
+
+	"dependencies": {
+		"troll-opt" : ">= 0.7.x",
+		"config": ">= 0.4.x",
+		"restify": ">= 2.6.x",
+		"sequelize": ">= 1.6.x"
+	},
+
+	"optionalDependencies": {
+		"sqlite3": ">= 2.1.x",
+		"mysql": ">= 2.x",
+		"mariasql": ">= 0.1.x",
+		"pg": ">= 2.10.x"
+	}
+}

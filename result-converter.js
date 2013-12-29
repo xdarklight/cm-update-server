@@ -21,19 +21,18 @@ module.exports.convert = function(id, errorMessage, updateList) {
 	var list = Array();
 
 	if (updateList && updateList.length > 0) {
-		updateList.forEach(function(row) {
+		updateList.forEach(function(rom) {
 			var url;
 
 			if (config.isDownloadProxyEnabled()) {
-				url = config.getDownloadProxyBaseUrl() + '?' + querystring.stringify({ id : row.id, filename : row.filename });
+				url = config.getDownloadProxyBaseUrl() + '?' + querystring.stringify({ id : rom.id, filename : rom.filename });
 			} else {
-				url = module.exports.getRealDownloadUrl(row);
+				url = module.exports.getRealDownloadUrl(rom);
 			}
 
-			var timestampAsDate = new Date(row.timestamp);
-			var timestampInSeconds = Math.round(timestampAsDate.getTime() / 1000);
+			var timestampInSeconds = Math.round(rom.timestamp.getTime() / 1000);
 
-			var item = new UpdateItem(url, timestampInSeconds, row.md5sum, row.filename, row.channel, null, row.api_level);
+			var item = new UpdateItem(url, timestampInSeconds, rom.md5sum, rom.filename, rom.updateChannel, null, rom.apiLevel);
 			list.push(item);
 		});
 	}
@@ -41,14 +40,14 @@ module.exports.convert = function(id, errorMessage, updateList) {
 	return new UpdateListResponse(id, list, errorMessage);
 }
 
-module.exports.getRealDownloadUrl = function(row) {
+module.exports.getRealDownloadUrl = function(rom) {
 	var url = config.getRealDownloadBaseUrl();
 
-	if (row.subdirectory && row.subdirectory.length > 0) {
-		url += '/' + row.subdirectory;
+	if (rom.subdirectory && rom.subdirectory.length > 0) {
+		url += '/' + rom.subdirectory;
 	}
 
-	url += '/' + row.filename;
+	url += '/' + rom.filename;
 
 	return url;
 }
