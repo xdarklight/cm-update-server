@@ -28,6 +28,12 @@ module.exports = {
 		proxyDownloadBaseUrl: "http://localhost:3000/download",
 
 		/**
+		 * Similar to proxyDownloadBaseUrl this is the base-URL used to build each Rom's changelog URL.
+		 * The rom-ID will be added to this as path-parameter.
+		 */
+		changelogBaseUrl: "http://localhost:3000/changelog",
+
+		/**
 		 * Decides if the download proxy (used for gathering download statistics) is enabled or not.
 		 */
 		isDownloadProxyEnabled: true,

@@ -26,7 +26,7 @@ models.sequelize.sync().success(function() {
 					'Content-Type': 'text/plain'
 				});
 
-				res.write(body);
+				res.end(body);
 			}
 
 			return next();

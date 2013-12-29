@@ -22,17 +22,19 @@ module.exports.convert = function(id, errorMessage, updateList) {
 
 	if (updateList && updateList.length > 0) {
 		updateList.forEach(function(rom) {
-			var url;
+			var changelogUrl = module.exports.getChangelogUrl(rom);
+
+			var downloadUrl;
 
 			if (config.isDownloadProxyEnabled) {
-				url = config.proxyDownloadBaseUrl + '/' + rom.id + '?' + querystring.stringify({ filename : rom.filename });
+				downloadUrl = config.proxyDownloadBaseUrl + '/' + rom.id + '?' + querystring.stringify({ filename : rom.filename });
 			} else {
-				url = module.exports.getRealDownloadUrl(rom);
+				downloadUrl = module.exports.getRealDownloadUrl(rom);
 			}
 
 			var timestampInSeconds = Math.round(rom.timestamp.getTime() / 1000);
 
-			var item = new UpdateItem(url, timestampInSeconds, rom.md5sum, rom.filename, rom.updateChannel, null, rom.apiLevel);
+			var item = new UpdateItem(downloadUrl, timestampInSeconds, rom.md5sum, rom.filename, rom.updateChannel, changelogUrl, rom.apiLevel);
 			list.push(item);
 		});
 	}
@@ -50,4 +52,8 @@ module.exports.getRealDownloadUrl = function(rom) {
 	url += '/' + rom.filename;
 
 	return url;
+}
+
+module.exports.getChangelogUrl = function(rom) {
+	return config.changelogBaseUrl + '/' + rom.id;
 }
