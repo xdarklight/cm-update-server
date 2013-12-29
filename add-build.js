@@ -15,13 +15,20 @@ var buildInfo = (new Troll()).options(function(troll) {
 
 function createNewRomFor(device) {
 	var deviceId = device.id;
+	var parsedUpdateChannel = new String(buildInfo.channel);
+
+	if (parsedUpdateChannel.toUpperCase() == "RC") {
+		parsedUpdateChannel = "RC";
+	} else {
+		parsedUpdateChannel = parsedUpdateChannel.toLowerCase();
+	}
 
 	var newRom = models.Rom.build({
 		DeviceId: deviceId,
 		timestamp: new Date(parseInt(buildInfo.timestamp)),
 		md5sum: buildInfo.md5sum,
 		filename: buildInfo.filename,
-		updateChannel: buildInfo.channel,
+		updateChannel: parsedUpdateChannel,
 		changelog: null,
 		apiLevel: buildInfo.api_level,
 		subdirectory: buildInfo.subdirectory,
