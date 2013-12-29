@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes) {
 	var Rom = sequelize.define('Rom', {
 			timestamp: {
 				type: Sequelize.DATE,
-				isNull: false,
+				notNull: true,
 			},
 			md5sum: {
 				type: Sequelize.STRING(32),
@@ -17,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
 			updateChannel: {
 				type: Sequelize.ENUM,
 				values: [ 'stable', 'snapshot', 'RC', 'nightly' ],
-				isNull: false,
+				notNull: true,
 			},
 			changelog: {
 				type: Sequelize.TEXT,
@@ -25,7 +25,7 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			apiLevel: {
 				type: Sequelize.INTEGER.UNSIGNED,
-				isNull: false,
+				notNull: true,
 				min: 1,
 			},
 			subdirectory: {
@@ -34,10 +34,15 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			isActive: {
 				type: Sequelize.BOOLEAN,
-				isNull: false,
+				notNull: true,
 			},
 	}, {
 		validate: {
+			deviceIdValid : function() {
+				if (!this.DeviceId || this.DeviceId < 0) {
+					throw new Error('DeviceId is a mandatory field!');
+				}
+			},
 			uniqueEnabledFilenamePerSubdirectory : function() {
 				var filterParameters = {
 					id: {

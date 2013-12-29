@@ -14,7 +14,6 @@ var buildInfo = (new Troll()).options(function(troll) {
 });
 
 function createNewRomFor(device) {
-	var deviceId = device.id;
 	var parsedUpdateChannel = new String(buildInfo.channel);
 
 	if (parsedUpdateChannel.toUpperCase() == "RC") {
@@ -23,8 +22,8 @@ function createNewRomFor(device) {
 		parsedUpdateChannel = parsedUpdateChannel.toLowerCase();
 	}
 
-	var newRom = models.Rom.build({
-		DeviceId: deviceId,
+	models.Rom.build({
+		DeviceId: device.id,
 		timestamp: new Date(parseInt(buildInfo.timestamp)),
 		md5sum: buildInfo.md5sum,
 		filename: buildInfo.filename,
@@ -33,9 +32,7 @@ function createNewRomFor(device) {
 		apiLevel: buildInfo.api_level,
 		subdirectory: buildInfo.subdirectory,
 		isActive: buildInfo.active
-	});
-
-	newRom.save().success(function() {
+	}).save().success(function(newRom) {
 		console.log('Successfully created new rom: ' + JSON.stringify(newRom));
 	});
 }
