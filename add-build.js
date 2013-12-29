@@ -35,39 +35,23 @@ function createNewRomFor(device) {
 		isActive: buildInfo.active
 	});
 
-	newRom.save().complete(function(err) {
-		if (err) {
-			throw new Error('Could not add rom with parameters: ' + JSON.stringify(buildInfo) + '.\nError: ' + JSON.stringify(err));
-		} else {
-			console.log('Successfully created new rom: ' + JSON.stringify(newRom));
-		}
+	newRom.save().success(function() {
+		console.log('Successfully created new rom: ' + JSON.stringify(newRom));
 	});
 }
 
-models.sequelize.sync().complete(function(err) {
-	if (err) {
-		throw err;
-	} else {
-		models.Device.find({ where: { name: buildInfo.device } }).complete(function(err, device) {
-			if (err) {
-				throw err;
-			}
+models.sequelize.sync().success(function() {
+	models.Device.find({ where: { name: buildInfo.device } }).success(function(device) {
+		if (device) {
+			createNewRomFor(device);
+		} else {
+			device = models.Device.build({ name: buildInfo.device });
 
-			if (device) {
+			device.save().success(function() {
+				console.log('Successfully created new device ' + JSON.stringify(device));
+
 				createNewRomFor(device);
-			} else {
-				device = models.Device.build({ name: buildInfo.device });
-
-				device.save().complete(function(err) {
-					if (err) {
-						throw err;
-					}
-
-					console.log('Successfully created new device ' + JSON.stringify(device));
-
-					createNewRomFor(device);
-				});
-			}
-		});
-	}
+			});
+		}
+	});
 });

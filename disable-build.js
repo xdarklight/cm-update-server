@@ -8,38 +8,26 @@ var buildInfo = (new Troll()).options(function(troll) {
 	troll.opt('subdirectory', 'The subdirectory from which the file can be downloaded.', { type: 'string' });
 });
 
-models.sequelize.sync().complete(function(err) {
-	if (err) {
-		throw err;
-	} else {
-		models.Device.find({ where: { name: buildInfo.device } }).complete(function(err, device) {
-			if (err) {
-				throw err;
-			}
+models.sequelize.sync().success(function() {
+	models.Device.find({ where: { name: buildInfo.device } }).success(function(device) {
+		if (device) {
+			models.Rom.findAll({
+				where: {
+					DeviceId: device.id,
+					filename: buildInfo.filename,
+					subdirectory: buildInfo.subdirectory,
+					isActive: true,
+				}
+			}).success(function(roms) {
+				roms.forEach(function (rom) {
+					rom.isActive = false;
+					rom.save();
 
-			if (device) {
-				models.Rom.findAll({
-					where: {
-						DeviceId: device.id,
-						filename: buildInfo.filename,
-						subdirectory: buildInfo.subdirectory,
-						isActive: true,
-					}
-				}).complete(function(err, roms) {
-					if (err) {
-						throw err;
-					}
-
-					roms.forEach(function (rom) {
-						rom.isActive = false;
-						rom.save();
-
-						console.log('Disabled ROM: ' + JSON.stringify(rom));
-					});
+					console.log('Disabled ROM: ' + JSON.stringify(rom));
 				});
-			} else {
-				console.log('Nothing to remove since device does not exist.');
-			}
-		});
-	}
+			});
+		} else {
+			console.log('Nothing to remove since device does not exist.');
+		}
+	});
 });
