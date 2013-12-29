@@ -60,6 +60,10 @@ module.exports = {
 		isDownloadProxyEnabled: true,
 	},
 
+	/**
+	 * The database connection settings for sequelize. See http://sequelizejs.com/docs/latest/usage
+	 * for a list of configuration options.
+	 */
 	Database: {
 		name: "",
 		username: "",
