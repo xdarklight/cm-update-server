@@ -16,7 +16,7 @@ models.sequelize.sync().success(function() {
 		models.Rom.find(req.params.romId).complete(function(err, rom) {
 			if (err) {
 				res.send(500);
-			} else if (!rom) {
+			} else if (!rom || !rom.isActive) {
 				res.send(404);
 			} else {
 				var body = rom.changelog ? rom.changelog : "";
@@ -37,7 +37,7 @@ models.sequelize.sync().success(function() {
 		models.Rom.find(req.params.romId).complete(function(err, rom) {
 			if (err) {
 				res.send(500);
-			} else if (!rom) {
+			} else if (!rom || !rom.isActive) {
 				res.send(404);
 			} else {
 				var realDownloadUrl = ResultConverter.getRealDownloadUrl(rom);
