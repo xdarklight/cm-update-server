@@ -43,6 +43,7 @@ models.sequelize.sync().success(function() {
 				var realDownloadUrl = ResultConverter.getRealDownloadUrl(rom);
 
 				res.writeHead(301, { Location: realDownloadUrl });
+				res.end();
 
 				models.Download.build({
 					timestamp: new Date(),
