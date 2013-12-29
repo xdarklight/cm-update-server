@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
 				notEmpty: false,
 			},
 			apiLevel: {
-				type: Sequelize.INTEGER,
+				type: Sequelize.INTEGER.UNSIGNED,
 				isNull: false,
 				min: 1,
 			},
@@ -54,10 +54,10 @@ module.exports = function(sequelize, DataTypes) {
 					where: filterParameters,
 				}).success(function(totalExisting) {
 					if (totalExisting > 0) {
-						throw new Error('There are already ' + totalExisting + ' existing ROM for : ' + JSON.stringify(filterParameters));
+						throw new Error('There are already ' + totalExisting + ' existing ROM matching ' + JSON.stringify(filterParameters));
 					}
 				});
-			}
+			},
 		}
 	});
 
