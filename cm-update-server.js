@@ -84,6 +84,7 @@ models.sequelize.sync().success(function() {
 				where: {
 					DeviceId: device.id,
 					updateChannel: requestParameters.params.channels,
+					isActive: true,
 				},
 			}).complete(function(err, roms) {
 				if (err) {
