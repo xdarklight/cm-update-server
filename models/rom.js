@@ -40,6 +40,9 @@ module.exports = function(sequelize, DataTypes) {
 		validate: {
 			uniqueEnabledFilenamePerSubdirectory : function() {
 				var filterParameters = {
+					id: {
+						ne: this.id,
+					},
 					DeviceId: this.DeviceId,
 					filename: this.filename,
 					subdirectory: this.subdirectory,
@@ -50,7 +53,7 @@ module.exports = function(sequelize, DataTypes) {
 				Rom.count({
 					where: filterParameters,
 				}).success(function(totalExisting) {
-					if (totalExisting > 1) {
+					if (totalExisting > 0) {
 						throw new Error('There are already ' + totalExisting + ' existing ROM for : ' + JSON.stringify(filterParameters));
 					}
 				});
