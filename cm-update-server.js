@@ -9,7 +9,7 @@ models.sequelize.sync().complete(function(err) {
 	if (err) {
 		throw err;
 	} else {
-		server.listen(config.listeningPort, function () {
+		server.listen(config.listeningPort, config.listeningAddress, function () {
 			console.log('%s listening at %s', server.name, server.url);
 		});
 

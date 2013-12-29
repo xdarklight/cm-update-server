@@ -1,7 +1,12 @@
 module.exports = {
 	Server: {
 		/**
-		 * The port which will be used by NodeJS' HTTP server.
+		 * The address where the HTTP server will listen.
+		 */
+		listeningAddress: '127.0.0.1',
+
+		/**
+		 * The port on which the HTTP server will listen.
 		 */
 		listeningPort: 3000,
 	},
