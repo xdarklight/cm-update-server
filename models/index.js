@@ -1,5 +1,5 @@
 var Sequelize = require('sequelize');
-var config = { name: '', username: '', password: '', options: { dialect : 'sqlite', storage: '/tmp/database.sqlite' } };
+var config = require('config').Database;
 
 var sequelize = new Sequelize(config.name, config.username, config.password, config.options);
 

@@ -1,5 +1,5 @@
 var restify = require('restify');
-var config = require('./data/config.js');
+var config = require('config').Server;
 var models = require('./models/');
 var ResultConverter = require('./result-converter.js');
 
@@ -9,7 +9,7 @@ models.sequelize.sync().complete(function(err) {
 	if (err) {
 		throw err;
 	} else {
-		server.listen(config.getServerPort(), function () {
+		server.listen(config.listeningPort, function () {
 			console.log('%s listening at %s', server.name, server.url);
 		});
 

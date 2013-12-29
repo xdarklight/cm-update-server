@@ -1,4 +1,4 @@
-var config = require('./data/config.js');
+var config = require('config').Application;
 var querystring = require("querystring");
 
 var UpdateListResponse = function(id, resultItems, errorMessage) {
@@ -24,8 +24,8 @@ module.exports.convert = function(id, errorMessage, updateList) {
 		updateList.forEach(function(rom) {
 			var url;
 
-			if (config.isDownloadProxyEnabled()) {
-				url = config.getDownloadProxyBaseUrl() + '?' + querystring.stringify({ id : rom.id, filename : rom.filename });
+			if (config.isDownloadProxyEnabled) {
+				url = config.proxyDownloadBaseUrl + '/' + rom.id + '?' + querystring.stringify({ filename : rom.filename });
 			} else {
 				url = module.exports.getRealDownloadUrl(rom);
 			}
@@ -41,7 +41,7 @@ module.exports.convert = function(id, errorMessage, updateList) {
 }
 
 module.exports.getRealDownloadUrl = function(rom) {
-	var url = config.getRealDownloadBaseUrl();
+	var url = config.realDownloadBaseUrl;
 
 	if (rom.subdirectory && rom.subdirectory.length > 0) {
 		url += '/' + rom.subdirectory;
