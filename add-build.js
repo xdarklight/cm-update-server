@@ -11,27 +11,39 @@ var buildInfo = (new Troll()).options(function(troll) {
 	troll.opt('api_level', 'The SDK API-level of the ROM.', { type: 'integer', required: true });
 	troll.opt('subdirectory', 'The subdirectory from which the file can be downloaded.', { type: 'string' });
 	troll.opt('active', 'Marks the build as active (available for download) or not.', { type: 'boolean', required: true });
+	troll.opt('sourcecode_timestamp', 'The ("unixepoch") timestamp when the source code was updated.', { type: 'integer', required: false });
 });
 
-function createNewRomFor(device) {
-	var parsedUpdateChannel = new String(buildInfo.channel);
+function toDate(unixTimestampObject) {
+	return new Date(parseInt(unixTimestampObject));
+}
 
+function createNewRomFor(device) {
+	var buildTimestamp = toDate(buildInfo.timestamp);
+
+	var parsedUpdateChannel = new String(buildInfo.channel);
 	if (parsedUpdateChannel.toUpperCase() == "RC") {
 		parsedUpdateChannel = "RC";
 	} else {
 		parsedUpdateChannel = parsedUpdateChannel.toLowerCase();
 	}
 
+	var sourceCodeTimestamp = null;
+	if (buildInfo.sourcecode_timestamp && buildInfo.sourcecode_timestamp > 0) {
+		sourceCodeTimestamp = toDate(buildInfo.sourcecode_timestamp);
+	}
+
 	models.Rom.build({
 		DeviceId: device.id,
-		timestamp: new Date(parseInt(buildInfo.timestamp)),
+		timestamp: buildTimestamp,
 		md5sum: buildInfo.md5sum,
 		filename: buildInfo.filename,
 		updateChannel: parsedUpdateChannel,
 		changelog: null,
 		apiLevel: buildInfo.api_level,
 		subdirectory: buildInfo.subdirectory,
-		isActive: buildInfo.active
+		isActive: buildInfo.active,
+		sourceCodeTimestamp: sourceCodeTimestamp,
 	}).save().success(function(newRom) {
 		console.log('Successfully created new rom: ' + JSON.stringify(newRom));
 	});

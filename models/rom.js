@@ -36,6 +36,10 @@ module.exports = function(sequelize, DataTypes) {
 				type: Sequelize.BOOLEAN,
 				notNull: true,
 			},
+			sourceCodeTimestamp: {
+				type: Sequelize.DATE,
+				isNull: true,
+			},
 	}, {
 		validate: {
 			deviceIdValid : function() {
