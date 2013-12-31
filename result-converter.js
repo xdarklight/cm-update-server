@@ -58,10 +58,10 @@ module.exports.getChangelogUrl = function(rom) {
 	return config.changelogBaseUrl + '/' + rom.id;
 }
 
-module.exports.getChangelogContent = function(rom) {
+var _getChangelogContent = function(rom) {
 	var content = "";
 
-	if (rom.changelog && rom.changelog.length > 0) {
+	if (rom && rom.changelog && rom.changelog.length > 0) {
 		if (rom.sourceCodeTimestamp && rom.sourceCodeTimestamp > 0) {
 			content += "===================================\n";
 			content += "Since ";
@@ -69,8 +69,48 @@ module.exports.getChangelogContent = function(rom) {
 			content += "\n===================================\n\n";
 		}
 
-		content += rom.changelog;
+		content += rom.changelog + "\n";
 	}
 
 	return content;
+}
+
+module.exports.getChangelogContent = function(rom, findParentRomHandler, resultCallback) {
+	var content = _getChangelogContent(rom);
+	var i = 0;
+
+	if (config.additionalPreviousChangelogs > 0) {
+		var parentRomHandler = function(parent) {
+			if (parent) {
+				++i;
+				currentRom = parent;
+
+				if (content.length > 0) {
+					// Spearator between two roms.
+					content += "\n\n";
+				}
+
+				content += _getChangelogContent(currentRom);
+
+				if (i < config.additionalPreviousChangelogs) {
+					findParentRomHandler(parent, function(anotherParent) {
+						parentRomHandler(anotherParent);
+					});
+				} else {
+					// Parent limit reached -> emit the result.
+					resultCallback(content);
+				}
+			} else {
+				// There are no more parents -> emit the result.
+				resultCallback(content);
+			}
+		};
+
+		findParentRomHandler(rom, function(parent) {
+			parentRomHandler(parent);
+		});
+	} else {
+		// There are no "parents" to fetch -> emit the result.
+		resultCallback(content);
+	}
 }

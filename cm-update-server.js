@@ -26,14 +26,18 @@ models.sequelize.sync().success(function() {
 			} else if (!rom.isActive) {
 				res.send(410);
 			} else {
-				var body = ResultConverter.getChangelogContent(rom);
+				var findParentRomHandler = function(childRom, resultHandler) {
+					childRom.getParentRom().success(resultHandler);
+				}
 
-				res.writeHead(200, {
-					'Content-Length': Buffer.byteLength(body),
-					'Content-Type': 'text/plain'
+				ResultConverter.getChangelogContent(rom, findParentRomHandler, function(body) {
+					res.writeHead(200, {
+						'Content-Length': Buffer.byteLength(body),
+						'Content-Type': 'text/plain'
+					});
+
+					res.end(body);
 				});
-
-				res.end(body);
 			}
 
 			return next();

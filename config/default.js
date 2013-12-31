@@ -58,6 +58,12 @@ module.exports = {
 		 * Decides if the download proxy (used for gathering download statistics) is enabled or not.
 		 */
 		isDownloadProxyEnabled: true,
+
+		/**
+		 * The number of additional changelogs (from previous builds) which are shown during a GET changelog call.
+		 * Use 0 to disable this feature.
+		 */
+		additionalPreviousChangelogs: 3,
 	},
 
 	/**
