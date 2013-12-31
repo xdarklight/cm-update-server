@@ -80,7 +80,7 @@ module.exports.getChangelogContent = function(rom, findParentRomHandler, resultC
 	var i = 0;
 
 	if (config.additionalPreviousChangelogs > 0) {
-		var parentRomHandler = function(parent) {
+		var updateChangelogWithParent = function(parent) {
 			if (parent) {
 				++i;
 				currentRom = parent;
@@ -94,7 +94,7 @@ module.exports.getChangelogContent = function(rom, findParentRomHandler, resultC
 
 				if (i < config.additionalPreviousChangelogs) {
 					findParentRomHandler(parent, function(anotherParent) {
-						parentRomHandler(anotherParent);
+						updateChangelogWithParent(anotherParent);
 					});
 				} else {
 					// Parent limit reached -> emit the result.
@@ -107,7 +107,7 @@ module.exports.getChangelogContent = function(rom, findParentRomHandler, resultC
 		};
 
 		findParentRomHandler(rom, function(parent) {
-			parentRomHandler(parent);
+			updateChangelogWithParent(parent);
 		});
 	} else {
 		// There are no "parents" to fetch -> emit the result.
