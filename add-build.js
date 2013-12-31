@@ -1,5 +1,6 @@
 var Troll = require('troll-opt').Troll;
 var models = require('./models/');
+var fs = require('fs');
 
 var buildInfo = (new Troll()).options(function(troll) {
 	troll.banner('Adds a new build to the database.');
@@ -11,7 +12,8 @@ var buildInfo = (new Troll()).options(function(troll) {
 	troll.opt('api_level', 'The SDK API-level of the ROM.', { type: 'integer', required: true });
 	troll.opt('subdirectory', 'The subdirectory from which the file can be downloaded.', { type: 'string' });
 	troll.opt('active', 'Marks the build as active (available for download) or not.', { type: 'boolean', required: true });
-	troll.opt('sourcecode_timestamp', 'The ("unixepoch") timestamp when the source code was updated.', { type: 'integer', required: false });
+	troll.opt('sourcecode_timestamp', 'The ("unixepoch") timestamp when the source code was updated.', { type: 'integer' });
+	troll.opt('changelogfile', 'A path to a file which contains the changelog (utf-8 encoded) for the build.', { type: 'string' });
 });
 
 function toDate(unixTimestampObject) {
@@ -39,7 +41,7 @@ function createNewRomFor(device) {
 		md5sum: buildInfo.md5sum,
 		filename: buildInfo.filename,
 		updateChannel: parsedUpdateChannel,
-		changelog: null,
+		changelog: changelog,
 		apiLevel: buildInfo.api_level,
 		subdirectory: buildInfo.subdirectory,
 		isActive: buildInfo.active,
@@ -47,6 +49,12 @@ function createNewRomFor(device) {
 	}).save().success(function(newRom) {
 		console.log('Successfully created new rom: ' + JSON.stringify(newRom));
 	});
+}
+
+var changelog = null;
+
+if (buildInfo.changelogfile) {
+	changelog = fs.readFileSync(buildInfo.changelogfile, 'utf-8');
 }
 
 models.sequelize.sync().success(function() {
