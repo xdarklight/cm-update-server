@@ -26,7 +26,7 @@ models.sequelize.sync().success(function() {
 			} else if (!rom.isActive) {
 				res.send(410);
 			} else {
-				var body = rom.changelog ? rom.changelog : "";
+				var body = ResultConverter.getChangelogContent(rom);
 
 				res.writeHead(200, {
 					'Content-Length': Buffer.byteLength(body),

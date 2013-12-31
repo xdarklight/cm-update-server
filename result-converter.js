@@ -57,3 +57,20 @@ module.exports.getRealDownloadUrl = function(rom) {
 module.exports.getChangelogUrl = function(rom) {
 	return config.changelogBaseUrl + '/' + rom.id;
 }
+
+module.exports.getChangelogContent = function(rom) {
+	var content = "";
+
+	if (rom.changelog && rom.changelog.length > 0) {
+		if (rom.sourceCodeTimestamp && rom.sourceCodeTimestamp > 0) {
+			content += "===================================\n";
+			content += "Since ";
+			content += rom.sourceCodeTimestamp.toUTCString();
+			content += "\n===================================\n\n";
+		}
+
+		content += rom.changelog;
+	}
+
+	return content;
+}
