@@ -10,14 +10,20 @@ var buildInfo = (new Troll()).options(function(troll) {
 models.sequelize.sync().success(function() {
 	models.Device.find({ where: { name: buildInfo.device } }).success(function(device) {
 		if (device) {
-			models.Rom.max('sourceCodeTimestamp', {
+			models.Rom.max('id', {
 				where: {
 					DeviceId: device.id,
 					subdirectory: buildInfo.subdirectory,
 				},
-			}).success(function(sourceCodeTimestamp) {
-				if (!isNaN(sourceCodeTimestamp)) {
-					console.log(sourceCodeTimestamp);
+				parseFloat: false,
+				parseInt: false,
+			}).success(function(romId) {
+				if (romId) {
+					models.Rom.find(romId).success(function(rom) {
+						if (rom.sourceCodeTimestamp) {
+							console.log(rom.sourceCodeTimestamp.toISOString());
+						}
+					});
 				}
 			});
 		}
