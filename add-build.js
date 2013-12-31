@@ -20,7 +20,7 @@ function toDate(unixTimestampObject) {
 	return new Date(parseInt(unixTimestampObject));
 }
 
-function createNewRomFor(device) {
+function createNewRomFor(device, parentRomId) {
 	var buildTimestamp = toDate(buildInfo.timestamp);
 
 	var parsedUpdateChannel = new String(buildInfo.channel);
@@ -46,6 +46,7 @@ function createNewRomFor(device) {
 		subdirectory: buildInfo.subdirectory,
 		isActive: buildInfo.active,
 		sourceCodeTimestamp: sourceCodeTimestamp,
+		parentRomId: parentRomId,
 	}).save().success(function(newRom) {
 		console.log('Successfully created new rom: ' + JSON.stringify(newRom));
 	});
@@ -60,14 +61,21 @@ if (buildInfo.changelogfile) {
 models.sequelize.sync().success(function() {
 	models.Device.find({ where: { name: buildInfo.device } }).success(function(device) {
 		if (device) {
-			createNewRomFor(device);
+			models.Rom.max('id', {
+				where: {
+					DeviceId: device.id,
+					subdirectory: buildInfo.subdirectory,
+				}
+			}).success(function(parentRomId) {
+				createNewRomFor(device, parentRomId);
+			});
 		} else {
 			device = models.Device.build({ name: buildInfo.device });
 
 			device.save().success(function() {
 				console.log('Successfully created new device ' + JSON.stringify(device));
 
-				createNewRomFor(device);
+				createNewRomFor(device, null);
 			});
 		}
 	});

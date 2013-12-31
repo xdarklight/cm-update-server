@@ -14,4 +14,5 @@ module.exports.Download = sequelize.import(__dirname + '/download.js');
 	models.Rom.belongsTo(models.Device),
 	models.Rom.hasMany(models.Download)
 	models.Download.belongsTo(models.Rom);
+	models.Rom.hasOne(models.Rom, { as: 'parentRom' });
 })(module.exports);
