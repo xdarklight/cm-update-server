@@ -10,7 +10,7 @@ models.sequelize.sync().success(function() {
 		console.log('%s listening at %s', server.name, server.url);
 	});
 
-	server.use(restify.bodyParser(config.bodyParserConfiguration));
+	server.use(restify.bodyParser(config.bodyParserConfiguration || {}));
 
 	// Conditionally enable the throttle module with the settings from the config.
 	if (config.throttleConfiguration && config.throttleConfiguration.isEnabled) {
