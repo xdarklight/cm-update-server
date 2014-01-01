@@ -36,6 +36,14 @@ In this case a sqlite database is used by default. You need to create the direct
     cm-update-server$ export NODE_ENV=production
     cm-update-server$ node cm-update-server.js
 
+**(Optional) Run migrations (to create indices):**
+
+    cm-update-server$ node_modules/sequelize/bin/sequelize --init
+
+(edit `config/config.json` to match your settings)
+
+    cm-update-server$ node_modules/sequelize/bin/sequelize --migrate
+
 **Adding builds to the database:**
 
 To get a list of parameters:
