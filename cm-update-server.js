@@ -67,7 +67,6 @@ models.sequelize.sync().success(function() {
 
 				models.Download.build({
 					RomId: rom.id,
-					timestamp: new Date(),
 				}).save().error(function (err) {
 					// Ignoring errors here since those have no impact for the user.
 				});

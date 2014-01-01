@@ -2,9 +2,7 @@ var Sequelize = require('sequelize');
 
 module.exports = function(sequelize, DataTypes) {
 	var Download = sequelize.define('Download', {
-			timestamp: {
-				type: Sequelize.DATE,
-			},
+		// No special fields needed, sequelize automatically adds a "createdAt" field.
 	}, {
 		validate: {
 			romIdValid : function() {
