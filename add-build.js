@@ -17,7 +17,7 @@ var buildInfo = (new Troll()).options(function(troll) {
 });
 
 function toDate(unixTimestampObject) {
-	return new Date(parseInt(unixTimestampObject));
+	return new Date(parseInt(unixTimestampObject) * 1000);
 }
 
 function createNewRomFor(device, parentRomId) {
