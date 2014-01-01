@@ -22,7 +22,7 @@ Quick Start
 
 NOTE: The configuration file has to be named according to [config].
 
-See config/default.js for a list of configuration options.
+See `config/default.js` for a list of configuration options.
 You probably want to have a closer look at the "Application" block, since this is where you have to configure your server URLs.
 
 **(Optional) If the database settings were not adjusted:**
@@ -60,7 +60,7 @@ The basic idea how the data is stored:
 * This combination makes a build unique:<br />&nbsp;&nbsp;1. It's device<br />&nbsp;&nbsp;2. It's filename<br />&nbsp;&nbsp;3. It's subdirectory
 * The "unique" constraint only applies to "active" builds
 * Deactivating builds can/should be done due to multiple reasons:<br />&nbsp;&nbsp;1. A build is very old and you don't want to bloat your results with very old builds&nbsp;&nbsp;2. You do a rebuild (on the same day) so the target filename already exists in the database -> in this case you disable the old build.
-* You can use this build-database to store sourcecode timestamps (useful for generating changelogs).<br />-> that's why add-build.js has a "--sourcecode_timestamp" parameter and why get-sourcecode-timestamp.js exists.
+* You can use this build-database to store sourcecode timestamps (useful for generating changelogs).<br />-> that's why `add-build.js` has a "--sourcecode_timestamp" parameter and why `get-sourcecode-timestamp.js` exists.
 
 
 See Also
