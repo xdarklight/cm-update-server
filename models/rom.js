@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			updateChannel: {
 				type: Sequelize.ENUM,
-				values: [ 'stable', 'snapshot', 'RC', 'nightly' ],
+				values: [ 'stable', 'snapshot', 'RC', 'nightly', 'experimental' ],
 				notNull: true,
 			},
 			changelog: {
