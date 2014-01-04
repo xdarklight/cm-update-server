@@ -35,6 +35,10 @@ function createNewRomFor(device, parentRomId) {
 		sourceCodeTimestamp = toDate(buildInfo.sourcecode_timestamp);
 	}
 
+	if (isNaN(parentRomId)) {
+		parentRomId = null;
+	}
+
 	models.Rom.build({
 		DeviceId: device.id,
 		timestamp: buildTimestamp,
