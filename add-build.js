@@ -5,14 +5,15 @@ var fs = require('fs');
 var buildInfo = (new Troll()).options(function(troll) {
 	troll.banner('Adds a new build to the database.');
 	troll.opt('device', 'The device ID.', { type: 'string', required: true });
-	troll.opt('timestamp', 'The build\'s timestamp as "unixepoch" timestamp.', { type: 'integer', required: true });
+	troll.opt('timestamp', 'The build\'s timestamp as "unixepoch" timestamp ("ro.build.date.utc").', { type: 'integer', required: true });
 	troll.opt('md5sum', 'The build\'s md5sum.', { type: 'string', required: true });
 	troll.opt('filename', 'The resulting filename.', { type: 'string', required: true });
 	troll.opt('channel', 'The update-channel.', { type: 'string', required: true });
-	troll.opt('api_level', 'The SDK API-level of the ROM.', { type: 'integer', required: true });
+	troll.opt('api_level', 'The SDK API-level of the ROM ("ro.build.version.sdk").', { type: 'integer', required: true });
 	troll.opt('subdirectory', 'The subdirectory from which the file can be downloaded.', { type: 'string' });
 	troll.opt('active', 'Marks the build as active (available for download) or not.', { type: 'boolean', required: true });
 	troll.opt('sourcecode_timestamp', 'The ("unixepoch") timestamp when the source code was updated.', { type: 'integer' });
+	troll.opt('incrementalid', 'The build\s incremental ID ("ro.build.version.incremental").', { type: 'string' });
 	troll.opt('changelogfile', 'A path to a file which contains the changelog (utf-8 encoded) for the build.', { type: 'string' });
 });
 
@@ -50,6 +51,7 @@ function createNewRomFor(device, parentRomId) {
 		subdirectory: buildInfo.subdirectory,
 		isActive: buildInfo.active,
 		sourceCodeTimestamp: sourceCodeTimestamp,
+		incrementalId: buildInfo.incrementalid,
 		parentRomId: parentRomId,
 	}).save().success(function(newRom) {
 		console.log('Successfully created new rom: ' + JSON.stringify(newRom));

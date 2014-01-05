@@ -36,6 +36,10 @@ module.exports = function(sequelize, DataTypes) {
 				type: Sequelize.BOOLEAN,
 				notNull: true,
 			},
+			incrementalId: {
+				type: Sequelize.STRING(32),
+				isNull: true,
+			},
 			sourceCodeTimestamp: {
 				type: Sequelize.DATE,
 				isNull: true,
