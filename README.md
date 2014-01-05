@@ -42,7 +42,7 @@ In this case a sqlite database is used by default. You need to create the direct
 
 (edit `config/config.json` to match your settings)
 
-    cm-update-server$ node_modules/sequelize/bin/sequelize --migrate
+    cm-update-server$ node_modules/sequelize/bin/sequelize --migrate --env production
 
 **Adding builds to the database:**
 
@@ -57,6 +57,20 @@ Then add a ROM:
 **Disabling a build (to "hide" it from the user):**
 
     cm-update-server$ node disable-build.js --device cmtestdevice --filename cm-11-20140101-NIGHTLY-cmtestdevice.zip --subdirectory cmtestdevice-11.0
+
+
+Updating
+--------
+
+**Update the project files to the latest version:**
+
+    cm-update-server$ git pull && git update <target revision>
+
+**Run the database migrations:**
+
+(edit `config/config.json` to match your settings)
+
+    cm-update-server$ node_modules/sequelize/bin/sequelize --migrate --env production
 
 
 Basic Idea
