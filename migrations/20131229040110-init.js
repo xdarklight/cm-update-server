@@ -16,6 +16,8 @@ module.exports = {
 				indexName: 'Roms_FetchUpdateListIndex',
 			}
 		);
+
+		done();
 	},
 	down: function(migration, DataTypes, done) {
 		migration.removeIndex('Devices', 'Devices_UniqueName');
