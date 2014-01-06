@@ -101,8 +101,8 @@ models.sequelize.sync().success(function() {
 			res.send(400);
 			return next();
 		} else if (!requestParameters.source_incremental || !requestParameters.target_incremental) {
-			// TODO: Send error message.
-			res.send(400);
+			res.send(400, ResultConverter.convertIncrementalErrors(
+				"source_incremental and target_incremental are required parameters!"));
 			return next();
 		}
 
@@ -110,10 +110,12 @@ models.sequelize.sync().success(function() {
 			{ model: models.Rom, as: 'sourceRom', where: { incrementalId: requestParameters.source_incremental } },
 			{ model: models.Rom, as: 'targetRom', where: { incrementalId: requestParameters.target_incremental } }
 		]}).success(function(incremental) {
-			if (Incremental) {
-				// TODO
+			if (incremental) {
+				// TODO!
+				console.log(incremental);
+				res.send(200, ResultConverter.convertIncremental(incremental));
 			} else {
-				res.send(404);
+				res.send(404, ResultConverter.convertIncrementalErrors("No matching incremental update found!"));
 				return next();
 			}
 		});

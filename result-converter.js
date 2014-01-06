@@ -17,6 +17,36 @@ var RomListItem = function(url, timestamp, md5sum, filename, channel, changes, a
 	this.api_level = api_level;
 };
 
+var SuccessfulIncrementalReponse = function(timestamp, filename, download_url, md5sum, incremental) {
+	this.date_created_unix = timestamp;
+	this.filename = filename;
+	this.download_url = download_url;
+	this.md5sum = md5sum;
+	this.incremental = incremental;
+}
+
+var FailedIncrementalReponse = function(errors) {
+	this.errors = errors;
+}
+
+var IncrementalErrorItem = function(message) {
+	this.message = message;
+}
+
+module.exports.convertIncrementalErrors = function(errorMessages) {
+	var errors = [];
+
+	if (Array.isArray(errorMessages)) {
+		for (message in errorMessages) {
+			errors.push(new IncrementalErrorItem(message));
+		}
+	} else {
+		errors.push(new IncrementalErrorItem(errorMessages));
+	}
+
+	return new FailedIncrementalReponse(errors);
+}
+
 module.exports.convertRomList = function(id, errorMessage, updateList) {
 	var list = Array();
 
