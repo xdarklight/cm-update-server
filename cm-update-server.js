@@ -69,7 +69,7 @@ models.sequelize.sync().success(function() {
 		});
 	});
 
-	server.get('/download/:romId', function (req, res, next) {
+	server.get('/download/rom/:romId', function (req, res, next) {
 		models.Rom.find(req.params.romId).complete(function(err, rom) {
 			if (err) {
 				res.send(500);
@@ -85,6 +85,31 @@ models.sequelize.sync().success(function() {
 
 				models.Download.build({
 					RomId: rom.id,
+				}).save().error(function (err) {
+					// Ignoring errors here since those have no impact for the user.
+				});
+			}
+
+			return next();
+		});
+	});
+
+	server.get('/download/incremental/:incrementalId', function (req, res, next) {
+		models.Incremental.find(req.params.incrementalId).complete(function(err, incremental) {
+			if (err) {
+				res.send(500);
+			} else if (!incremental) {
+				res.send(404);
+			} else if (!incremental.targetRom.isActive) {
+				res.send(410);
+			} else {
+				var realDownloadUrl = ResultConverter.getRealIncrementalDownloadUrl(incremental);
+
+				res.writeHead(301, { Location: realDownloadUrl });
+				res.end();
+
+				models.Download.build({
+					IncrementalId: incremental.id,
 				}).save().error(function (err) {
 					// Ignoring errors here since those have no impact for the user.
 				});
@@ -111,8 +136,6 @@ models.sequelize.sync().success(function() {
 			{ model: models.Rom, as: 'targetRom', where: { incrementalId: requestParameters.target_incremental } }
 		]}).success(function(incremental) {
 			if (incremental) {
-				// TODO!
-				console.log(incremental);
 				res.send(200, ResultConverter.convertIncremental(incremental));
 			} else {
 				res.send(404, ResultConverter.convertIncrementalErrors("No matching incremental update found!"));

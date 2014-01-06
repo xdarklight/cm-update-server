@@ -47,6 +47,31 @@ module.exports.convertIncrementalErrors = function(errorMessages) {
 	return new FailedIncrementalReponse(errors);
 }
 
+module.exports.convertIncremental = function(incremental) {
+	var targetRom = incremental.targetRom;
+	var downloadUrl;
+
+	if (config.isDownloadProxyEnabled) {
+		downloadUrl = config.proxyIncrementalDownloadBaseUrl + '/' + incremental.id + '?' + querystring.stringify({ filename : incremental.filename });
+	} else {
+		downloadUrl = module.exports.getRealIncrementalDownloadUrl(incremental);
+	}
+
+	return new SuccessfulIncrementalReponse(targetRom.timestamp, incremental.filename, downloadUrl, incremental.md5sum, targetRom.incrementalId);
+}
+
+module.exports.getRealIncrementalDownloadUrl = function(incremental) {
+	var url = config.realIncrementalDownloadBaseUrl;
+
+	if (incremental.subdirectory && incremental.subdirectory.length > 0) {
+		url += '/' + incremental.subdirectory;
+	}
+
+	url += '/' + incremental.filename;
+
+	return url;
+}
+
 module.exports.convertRomList = function(id, errorMessage, updateList) {
 	var list = Array();
 
@@ -57,7 +82,7 @@ module.exports.convertRomList = function(id, errorMessage, updateList) {
 			var downloadUrl;
 
 			if (config.isDownloadProxyEnabled) {
-				downloadUrl = config.proxyDownloadBaseUrl + '/' + rom.id + '?' + querystring.stringify({ filename : rom.filename });
+				downloadUrl = config.proxyRomDownloadBaseUrl + '/' + rom.id + '?' + querystring.stringify({ filename : rom.filename });
 			} else {
 				downloadUrl = module.exports.getRealRomDownloadUrl(rom);
 			}
@@ -73,7 +98,7 @@ module.exports.convertRomList = function(id, errorMessage, updateList) {
 }
 
 module.exports.getRealRomDownloadUrl = function(rom) {
-	var url = config.realDownloadBaseUrl;
+	var url = config.realRomDownloadBaseUrl;
 
 	if (rom.subdirectory && rom.subdirectory.length > 0) {
 		url += '/' + rom.subdirectory;

@@ -34,19 +34,35 @@ module.exports = {
 
 	Application: {
 		/**
-		 * The base URL where the real files can be found. The following parameters are appended to this 'base-URL':
-		 * 1) The subdirectory of the update (if set)
-		 * 2) The filename of the update
+		 * The base URL where the real full roms can be found. The following parameters are appended to this 'base-URL':
+		 * 1) The subdirectory of the rom (if set)
+		 * 2) The filename of the rom
 		 */
-		realDownloadBaseUrl: "http://localhost/download",
+		realRomDownloadBaseUrl: "http://localhost/download/rom",
 
 		/**
-		 * The base URL for the download-proxy (which is handled by cm-updater-api's webserver at /download-rom).
-		 * This little proxy acts as statistics module.
+		 * The base URL for the download-proxy for the full rom downloads (which is handled by
+		 * cm-updater-api's webserver at /download/rom). This little proxy acts as statistics module.
 		 *
 		 * NOTE: If isDownloadProxyEnabled is set to false then this value can be ignored!
 		 */
-		proxyDownloadBaseUrl: "http://localhost:3000/download",
+		proxyRomDownloadBaseUrl: "http://localhost:3000/download/rom",
+
+		/**
+		 * The base URL where the incremental files can be found. The following parameters are appended to this 'base-URL':
+		 * 1) The subdirectory of the incremental (if set)
+		 * 2) The filename of the incremental
+		 */
+		realIncrementalDownloadBaseUrl: "http://localhost/download/incremental",
+
+		/**
+		 * The base URL for the download-proxy for incremental updates (which is handled by
+		 * cm-updater-api's webserver at /download/incremental). This little proxy acts as statistics module.
+		 *
+		 * NOTE: If isDownloadProxyEnabled is set to false then this value can be ignored!
+		 */
+		proxyIncrementalDownloadBaseUrl: "http://localhost:3000/download/incremental",
+
 
 		/**
 		 * Similar to proxyDownloadBaseUrl this is the base-URL used to build each Rom's changelog URL.
