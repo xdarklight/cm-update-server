@@ -17,7 +17,7 @@ var UpdateItem = function(url, timestamp, md5sum, filename, channel, changes, ap
 	this.api_level = api_level;
 };
 
-module.exports.convert = function(id, errorMessage, updateList) {
+module.exports.convertRomList = function(id, errorMessage, updateList) {
 	var list = Array();
 
 	if (updateList && updateList.length > 0) {
@@ -29,7 +29,7 @@ module.exports.convert = function(id, errorMessage, updateList) {
 			if (config.isDownloadProxyEnabled) {
 				downloadUrl = config.proxyDownloadBaseUrl + '/' + rom.id + '?' + querystring.stringify({ filename : rom.filename });
 			} else {
-				downloadUrl = module.exports.getRealDownloadUrl(rom);
+				downloadUrl = module.exports.getRealRomDownloadUrl(rom);
 			}
 
 			var timestampInSeconds = Math.round(rom.timestamp.getTime() / 1000);
@@ -42,7 +42,7 @@ module.exports.convert = function(id, errorMessage, updateList) {
 	return new UpdateListResponse(id, list, errorMessage);
 }
 
-module.exports.getRealDownloadUrl = function(rom) {
+module.exports.getRealRomDownloadUrl = function(rom) {
 	var url = config.realDownloadBaseUrl;
 
 	if (rom.subdirectory && rom.subdirectory.length > 0) {

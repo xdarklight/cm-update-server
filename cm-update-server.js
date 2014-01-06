@@ -78,7 +78,7 @@ models.sequelize.sync().success(function() {
 			} else if (!rom.isActive) {
 				res.send(410);
 			} else {
-				var realDownloadUrl = ResultConverter.getRealDownloadUrl(rom);
+				var realDownloadUrl = ResultConverter.getRealRomDownloadUrl(rom);
 
 				res.writeHead(301, { Location: realDownloadUrl });
 				res.end();
@@ -131,13 +131,13 @@ models.sequelize.sync().success(function() {
 
 		models.Device.find({ where: { name: requestParameters.params.device } }).complete(function(err, device) {
 			if (err) {
-				res.send(500, ResultConverter.convert(responseId, 'Database error.', null));
+				res.send(500, ResultConverter.convertRomList(responseId, 'Database error.', null));
 				return next();
 			}
 
 			if (!device) {
 				// No error but nothing found.
-				res.send(200, ResultConverter.convert(responseId, null, null));
+				res.send(200, ResultConverter.convertRomList(responseId, null, null));
 				return next();
 			}
 
@@ -149,9 +149,9 @@ models.sequelize.sync().success(function() {
 				},
 			}).complete(function(err, roms) {
 				if (err) {
-					res.send(500, ResultConverter.convert(responseId, 'Database error.', null));
+					res.send(500, ResultConverter.convertRomList(responseId, 'Database error.', null));
 				} else {
-					res.send(200, ResultConverter.convert(responseId, null, roms));
+					res.send(200, ResultConverter.convertRomList(responseId, null, roms));
 				}
 
 				return next();
