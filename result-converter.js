@@ -1,13 +1,13 @@
 var config = require('config').Application;
 var querystring = require("querystring");
 
-var UpdateListResponse = function(id, resultItems, errorMessage) {
+var RomListResponse = function(id, resultItems, errorMessage) {
 	this.id = id;
 	this.result = resultItems;
 	this.error = errorMessage;
 };
 
-var UpdateItem = function(url, timestamp, md5sum, filename, channel, changes, api_level) {
+var RomListItem = function(url, timestamp, md5sum, filename, channel, changes, api_level) {
 	this.url = url;
 	this.timestamp = timestamp;
 	this.md5sum = md5sum;
@@ -34,12 +34,12 @@ module.exports.convertRomList = function(id, errorMessage, updateList) {
 
 			var timestampInSeconds = Math.round(rom.timestamp.getTime() / 1000);
 
-			var item = new UpdateItem(downloadUrl, timestampInSeconds, rom.md5sum, rom.filename, rom.updateChannel, changelogUrl, rom.apiLevel);
+			var item = new RomListItem(downloadUrl, timestampInSeconds, rom.md5sum, rom.filename, rom.updateChannel, changelogUrl, rom.apiLevel);
 			list.push(item);
 		});
 	}
 
-	return new UpdateListResponse(id, list, errorMessage);
+	return new RomListResponse(id, list, errorMessage);
 }
 
 module.exports.getRealRomDownloadUrl = function(rom) {
