@@ -5,6 +5,24 @@ var ResultConverter = require('./result-converter.js');
 
 var server = restify.createServer({ name: 'cm-updater-server' });
 
+var extractRequestParameters = function(req) {
+	var requestParameters = null;
+
+	// Prior to CM11 the CMUpdater app did not send the correct content-type.
+	// Thus auto-parsing the body did not work.
+	if (req.is('json')) {
+		requestParameters = req.body;
+	} else if (!!req.body) {
+		try {
+			requestParameters = JSON.parse(req.body);
+		} catch (err) {
+			// Ignore, this is handled with a 400 below.
+		}
+	}
+
+	return requestParameters;
+}
+
 models.sequelize.sync().success(function() {
 	server.listen(config.listeningPort, config.listeningAddress, function () {
 		console.log('%s listening at %s', server.name, server.url);
@@ -76,20 +94,33 @@ models.sequelize.sync().success(function() {
 		});
 	});
 
-	server.post('/api', function(req, res, next) {
-		var requestParameters = null;
+	server.post('/api/v1/build/get_delta', function(req, res, next) {
+		var requestParameters = extractRequestParameters(req);
 
-		// Currently the CMUpdater app does not send the correct content-type.
-		// Thus auto-parsing the body does not work. But we are ready once that problem is fixed.
-		if (req.is('json')) {
-			requestParameters = req.body;
-		} else if (!!req.body) {
-			try {
-				requestParameters = JSON.parse(req.body);
-			} catch (err) {
-				// Ignore, this is handled with a 400 below.
-			}
+		if (!requestParameters) {
+			res.send(400);
+			return next();
+		} else if (!requestParameters.source_incremental || !requestParameters.target_incremental) {
+			// TODO: Send error message.
+			res.send(400);
+			return next();
 		}
+
+		models.Incremental.find({ include: [
+			{ model: models.Rom, as: 'sourceRom', where: { incrementalId: requestParameters.source_incremental } },
+			{ model: models.Rom, as: 'targetRom', where: { incrementalId: requestParameters.target_incremental } }
+		]}).success(function(incremental) {
+			if (Incremental) {
+				// TODO
+			} else {
+				res.send(404);
+				return next();
+			}
+		});
+	});
+
+	server.post('/api', function(req, res, next) {
+		var requestParameters = extractRequestParameters(req);
 
 		if (!requestParameters || !requestParameters.params || requestParameters.method != 'get_all_builds') {
 			res.send(400);
