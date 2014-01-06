@@ -16,7 +16,8 @@ var extractRequestParameters = function(req) {
 		try {
 			requestParameters = JSON.parse(req.body);
 		} catch (err) {
-			// Ignore, this is handled with a 400 below.
+			// Ignore, should be handled with a 404 by the caller
+			// (the result is null in this case).
 		}
 	}
 
