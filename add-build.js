@@ -15,6 +15,7 @@ var buildInfo = (new Troll()).options(function(troll) {
 	troll.opt('sourcecode_timestamp', 'The ("unixepoch") timestamp when the source code was updated.', { type: 'integer' });
 	troll.opt('incrementalid', 'The build\s incremental ID ("ro.build.version.incremental").', { type: 'string' });
 	troll.opt('changelogfile', 'A path to a file which contains the changelog (utf-8 encoded) for the build.', { type: 'string' });
+	troll.opt('targetfileszip', 'The name of the "target files" ZIP archive (useful for generating incremental updates).', { type: 'string' });
 });
 
 function toDate(unixTimestampObject) {
@@ -53,6 +54,7 @@ function createNewRomFor(device, parentRomId) {
 		sourceCodeTimestamp: sourceCodeTimestamp,
 		incrementalId: buildInfo.incrementalid,
 		parentRomId: parentRomId,
+		targetFilesZipName: buildInfo.targetfileszip,
 	}).save().success(function(newRom) {
 		console.log('Successfully created new rom: ' + JSON.stringify(newRom));
 	});
