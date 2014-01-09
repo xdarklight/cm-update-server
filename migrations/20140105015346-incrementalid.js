@@ -24,6 +24,8 @@ module.exports = {
 
 	down: function(migration, DataTypes, done) {
 		migration.removeIndex('Roms', 'Roms_UniqueIncrementalId');
-		done()
+		migration.removeColumn('Roms', 'incrementalId');
+
+		done();
 	}
 }
