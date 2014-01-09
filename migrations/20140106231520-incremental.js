@@ -1,6 +1,11 @@
 module.exports = {
 	up: function(migration, DataTypes, done) {
 		migration.createTable('Incrementals', {
+			id: {
+				type: DataTypes.INTEGER,
+				primaryKey: true,
+				autoIncrement: true,
+			},
 			timestamp: {
 				type: DataTypes.DATE,
 				notNull: true,
@@ -27,22 +32,19 @@ module.exports = {
 				references: "Roms",
 				referencesKey: "id",
 			},
+			createdAt: {
+				type: DataTypes.DATE,
+			},
+			updatedAt: {
+				type: DataTypes.DATE,
+			},
 		});
-
-		migration.addIndex(
-			'Roms',
-			[ 'incrementalId' ],
-			{
-				indexName: 'Roms_FetchIncremental',
-			}
-		);
 
 		done();
 	},
 
 	down: function(migration, DataTypes, done) {
 		migration.dropTable('Incrementals');
-		migration.removeIndex('Roms', 'Roms_FetchIncremental');
 
 		done()
 	}
