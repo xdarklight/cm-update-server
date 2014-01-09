@@ -28,10 +28,6 @@ module.exports = function(sequelize, DataTypes) {
 				if (!this.targetRomId || this.targetRomId < 0) {
 					throw new Error('targetRomId is a mandatory field!');
 				}
-
-				if (this.getSourceRom().getDevice().id != this.getTargetRom().getDevice().id) {
-					throw new Error('source and target rom have to be for the same device!');
-				}
 			},
 		}
 	});
