@@ -1,6 +1,7 @@
 var Troll = require('troll-opt').Troll;
 var models = require('./models/');
 var fs = require('fs');
+var utils = require('./utils.js');
 
 var buildInfo = (new Troll()).options(function(troll) {
 	troll.banner('Adds a new build to the database.');
@@ -18,12 +19,8 @@ var buildInfo = (new Troll()).options(function(troll) {
 	troll.opt('targetfileszip', 'The name of the "target files" ZIP archive (useful for generating incremental updates).', { type: 'string' });
 });
 
-function toDate(unixTimestampObject) {
-	return new Date(parseInt(unixTimestampObject) * 1000);
-}
-
 function createNewRomFor(device, parentRomId) {
-	var buildTimestamp = toDate(buildInfo.timestamp);
+	var buildTimestamp = utils.toDate(buildInfo.timestamp);
 
 	var parsedUpdateChannel = new String(buildInfo.channel);
 	if (parsedUpdateChannel.toUpperCase() == "RC") {
@@ -34,7 +31,7 @@ function createNewRomFor(device, parentRomId) {
 
 	var sourceCodeTimestamp = null;
 	if (buildInfo.sourcecode_timestamp && buildInfo.sourcecode_timestamp > 0) {
-		sourceCodeTimestamp = toDate(buildInfo.sourcecode_timestamp);
+		sourceCodeTimestamp = utils.toDate(buildInfo.sourcecode_timestamp);
 	}
 
 	if (isNaN(parentRomId)) {
