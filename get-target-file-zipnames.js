@@ -28,11 +28,14 @@ models.sequelize.sync().success(function() {
 			subdirectory: buildInfo.subdirectory,
 			timestamp: {
 				gt: startTimestamp,
-			}
+			},
+			targetFilesZipName: {
+				ne: null,
+			},
 		},
 	}).success(function(roms) {
 		roms.forEach(function(rom) {
-			if (rom.targetFilesZipName) {
+			if (rom.targetFilesZipName.length > 0) {
 				console.log(rom.targetFilesZipName);
 			}
 		});
