@@ -78,7 +78,7 @@ module.exports = function(sequelize, DataTypes) {
 
 			incrementalIdAndTargetFilesZipValid : function() {
 				// Make sure that if incrementalId and targetfileszip are given that the latter one contains the first one.
-				if (this.incrementalId && this.targetFilesZipName && this.targetFilesZipName.indexOf(buildInfo.incrementalId) == -1) {
+				if (this.incrementalId && this.targetFilesZipName && this.targetFilesZipName.indexOf(this.incrementalId) == -1) {
 					throw new Error(this.targetFilesZipName + " should contain the incrementalId: " + this.incrementalId);
 				}
 			}
