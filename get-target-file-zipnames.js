@@ -2,7 +2,7 @@ var Troll = require('troll-opt').Troll;
 var models = require('./models/');
 
 var buildInfo = (new Troll()).options(function(troll) {
-	troll.banner('Outputs all target-files zip names (one per line) for all active builds that match the given device / subdirectory.');
+	troll.banner('Outputs all target-files zip names (one per line) for all builds that match the given device / subdirectory.');
 	troll.opt('device', 'The device ID.', { type: 'string', required: true });
 	troll.opt('subdirectory', 'The subdirectory from which the file can be downloaded.', { type: 'string' });
 });
@@ -14,7 +14,6 @@ models.sequelize.sync().success(function() {
 		],
 		where: {
 			subdirectory: buildInfo.subdirectory,
-			isActive: true,
 		},
 	}).success(function(roms) {
 		roms.forEach(function(rom) {
