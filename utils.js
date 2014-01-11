@@ -3,5 +3,5 @@ module.exports.toDate = function(unixTimestampObject) {
 }
 
 module.exports.toUnixTimestamp = function(date) {
-	return date.getTime() / 1000;
+	return new Date(date).getTime() / 1000;
 }
