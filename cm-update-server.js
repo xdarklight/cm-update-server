@@ -135,13 +135,16 @@ models.sequelize.sync().success(function() {
 		models.Incremental.find({ include: [
 			{ model: models.Rom, as: 'sourceRom', where: { incrementalId: requestParameters.source_incremental } },
 			{ model: models.Rom, as: 'targetRom', where: { incrementalId: requestParameters.target_incremental } }
-		]}).success(function(incremental) {
-			if (incremental) {
+		]}).complete(function(err, incremental) {
+			if (err) {
+				res.send(500, ResultConverter.convertIncrementalErrors('Database error.'));
+			} else if (incremental) {
 				res.send(200, ResultConverter.convertIncremental(incremental));
 			} else {
 				res.send(404, ResultConverter.convertIncrementalErrors("No matching incremental update found!"));
-				return next();
 			}
+
+			return next();
 		});
 	});
 
