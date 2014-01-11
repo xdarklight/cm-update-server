@@ -42,11 +42,11 @@ models.sequelize.sync().success(function() {
 				if (targetRom) {
 					createNewIncremental(sourceRom, targetRom);
 				} else {
-					console.log('Target rom with targetFilesZipName "' + buildInfo.to_target_files + '" not found.');
+					console.log('Target rom with targetFilesZipName "%s" not found.', buildInfo.to_target_files);
 				}
 			});
 		} else {
-			console.log('Source rom with targetFilesZipName "' + buildInfo.from_target_files + '" not found.');
+			console.log('Source rom with targetFilesZipName "%s" not found.', buildInfo.from_target_files);
 		}
 	});
 });
