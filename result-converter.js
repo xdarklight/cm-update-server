@@ -1,5 +1,6 @@
 var config = require('config').Application;
-var querystring = require("querystring");
+var querystring = require('querystring');
+var utils = require('./utils.js');
 
 var RomListResponse = function(id, resultItems, errorMessage) {
 	this.id = id;
@@ -49,6 +50,7 @@ module.exports.convertIncrementalErrors = function(errorMessages) {
 
 module.exports.convertIncremental = function(incremental) {
 	var targetRom = incremental.targetRom;
+	var unixTimestamp = utils.toUnixTimestamp(targetRom.timestamp);
 	var downloadUrl;
 
 	if (config.isDownloadProxyEnabled) {
@@ -57,7 +59,7 @@ module.exports.convertIncremental = function(incremental) {
 		downloadUrl = module.exports.getRealIncrementalDownloadUrl(incremental);
 	}
 
-	return new SuccessfulIncrementalReponse(targetRom.timestamp, incremental.filename, downloadUrl, incremental.md5sum, targetRom.incrementalId);
+	return new SuccessfulIncrementalReponse(unixTimestamp, incremental.filename, downloadUrl, incremental.md5sum, targetRom.incrementalId);
 }
 
 module.exports.getRealIncrementalDownloadUrl = function(incremental) {
