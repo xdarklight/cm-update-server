@@ -101,7 +101,7 @@ models.sequelize.sync().success(function() {
 				res.send(500);
 			} else if (!incremental) {
 				res.send(404);
-			} else if (!incremental.targetRom.isActive) {
+			} else if (false) { // TODO: add "isActive" check for incrementals!
 				res.send(410);
 			} else {
 				var realDownloadUrl = ResultConverter.getRealIncrementalDownloadUrl(incremental);
