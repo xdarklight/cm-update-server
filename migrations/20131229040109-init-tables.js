@@ -8,9 +8,11 @@ module.exports = {
 			},
 			createdAt: {
 				type: DataTypes.DATE,
+				isNull: false,
 			},
 			updatedAt: {
 				type: DataTypes.DATE,
+				isNull: false,
 			},
 			name: {
 				type: DataTypes.STRING(32),
@@ -26,9 +28,11 @@ module.exports = {
 			},
 			createdAt: {
 				type: DataTypes.DATE,
+				isNull: false,
 			},
 			updatedAt: {
 				type: DataTypes.DATE,
+				isNull: false,
 			},
 			timestamp: {
 				type: DataTypes.DATE,
@@ -79,9 +83,11 @@ module.exports = {
 			},
 			createdAt: {
 				type: DataTypes.DATE,
+				isNull: false,
 			},
 			updatedAt: {
 				type: DataTypes.DATE,
+				isNull: false,
 			},
 			RomId: {
 				type: DataTypes.INTEGER,
