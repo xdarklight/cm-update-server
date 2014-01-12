@@ -6,8 +6,14 @@ module.exports = function(sequelize, DataTypes) {
 	}, {
 		validate: {
 			romIdValid : function() {
-				if (!this.RomId || this.RomId < 0) {
-					throw new Error('RomId is a mandatory field!');
+				var hasRomId = this.RomId && this.RomId > 0;
+				var hasIncrementalId = this.IncrementalId && this.IncrementalId > 0;
+
+				// XOR -> only one can be true.
+				if (hasRomId && hasIncrementalId) {
+					throw new Error('Only "RomId" OR "IncrementalId" have to be set (NOT both)!');
+				} else if (!hasRomId && !hasIncrementalId) {
+					throw new Error('Either "RomId" OR "IncrementalId" has to be set!');
 				}
 			},
 		}
