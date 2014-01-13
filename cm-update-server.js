@@ -99,7 +99,7 @@ models.sequelize.sync().success(function() {
 		models.Incremental.find(req.params.incrementalId).complete(function(err, incremental) {
 			if (err) {
 				res.send(500);
-			} else if (!incremental) {
+			} else if (!incremental || !incremental.isActive) {
 				res.send(404);
 			} else if (false) { // TODO: add "isActive" check for incrementals!
 				res.send(410);
