@@ -6,6 +6,7 @@ var buildInfo = (new Troll()).options(function(troll) {
 	troll.opt('device', 'The device ID.', { type: 'string', required: true });
 	troll.opt('filename', 'The resulting filename.', { type: 'string', required: true });
 	troll.opt('subdirectory', 'The subdirectory from which the file can be downloaded.', { type: 'string' });
+	troll.opt('disable_incrementals', 'Disables the incrementals for this rom also.', { type: 'boolean' });
 });
 
 models.sequelize.sync().success(function() {
@@ -24,6 +25,10 @@ models.sequelize.sync().success(function() {
 					rom.save();
 
 					console.log('Disabled ROM: ' + JSON.stringify(rom));
+
+					if (buildInfo.disable_incrementals) {
+						models.Incremental.update({ isActive: false, }, { targetRomId: rom.id, });
+					}
 				});
 			});
 		} else {

@@ -18,6 +18,10 @@ module.exports = function(sequelize, DataTypes) {
 				type: Sequelize.STRING(255),
 				notEmpty: false,
 			},
+			isActive: {
+				type: Sequelize.BOOLEAN,
+				notNull: true,
+			},
 	}, {
 		validate: {
 			romIdsValid : function() {

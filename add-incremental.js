@@ -11,6 +11,7 @@ var buildInfo = (new Troll()).options(function(troll) {
 	troll.opt('subdirectory', 'The subdirectory from which the file can be downloaded.', { type: 'string' });
 	troll.opt('from_target_files', 'The name of the "target files ZIP" of the incremental\'s "source".', { type: 'string', required: true });
 	troll.opt('to_target_files', 'The name of the "target files ZIP" of the incremental\'s "target".', { type: 'string', required: true });
+	troll.opt('active', 'Marks the incremental as active (available for download) or not.', { type: 'boolean', required: true });
 });
 
 function createNewIncremental(sourceRom, targetRom) {
@@ -23,6 +24,7 @@ function createNewIncremental(sourceRom, targetRom) {
 		md5sum: buildInfo.md5sum,
 		filename: buildInfo.filename,
 		subdirectory: buildInfo.subdirectory,
+		isActive: buildInfo.active == true,
 	}).save().success(function(newRom) {
 		console.log('Successfully created new incremental: ' + JSON.stringify(newRom));
 	});
