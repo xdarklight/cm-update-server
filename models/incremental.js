@@ -26,11 +26,11 @@ module.exports = function(sequelize, DataTypes) {
 		validate: {
 			romIdsValid : function() {
 				if (!this.sourceRomId || this.sourceRomId < 0) {
-					throw new Error('sourceRomId is a mandatory field!');
+					throw new Error('sourceRomId is a mandatory field! ' + JSON.stringify(this));
 				}
 
 				if (!this.targetRomId || this.targetRomId < 0) {
-					throw new Error('targetRomId is a mandatory field!');
+					throw new Error('targetRomId is a mandatory field! ' + JSON.stringify(this));
 				}
 			},
 		}

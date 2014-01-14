@@ -52,7 +52,7 @@ module.exports = function(sequelize, DataTypes) {
 		validate: {
 			deviceIdValid : function() {
 				if (!this.DeviceId || this.DeviceId < 0) {
-					throw new Error('DeviceId is a mandatory field!');
+					throw new Error('DeviceId is a mandatory field! ' + JSON.stringify(this));
 				}
 			},
 			uniqueEnabledFilenamePerSubdirectory : function() {
