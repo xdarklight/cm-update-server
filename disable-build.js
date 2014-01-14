@@ -27,7 +27,20 @@ models.sequelize.sync().success(function() {
 					console.log('Disabled ROM: ' + JSON.stringify(rom));
 
 					if (buildInfo.disable_incrementals) {
-						models.Incremental.update({ isActive: false, }, { targetRomId: rom.id, });
+						models.Incremental.update({
+							// attributes
+							isActive: false,
+						}, {
+							// WHERE
+							targetRomId: rom.id,
+						}, {
+							// options
+							// We cannot validate here because our
+							// validator enforces that a sourceRomId
+							// etc. is set. This is the case, but the
+							// update-information does not have it.
+							validate: false,
+						);
 					}
 				});
 			});
