@@ -55,15 +55,19 @@ module.exports = function(sequelize, DataTypes) {
 					throw new Error('DeviceId is a mandatory field! ' + JSON.stringify(this));
 				}
 			},
-			uniqueEnabledFilenamePerSubdirectory : function() {
+/*
+ * TODO: Enable this once sequelize 2 is ready.
+			uniqueEnabledFilenamePerSubdirectory : function(done) {
+				var self = this;
+
 				var filterParameters = {
 					id: {
-						ne: this.id,
+						ne: self.id,
 					},
-					DeviceId: this.DeviceId,
-					filename: this.filename,
-					subdirectory: this.subdirectory,
-					isActive: true
+					DeviceId: self.DeviceId,
+					filename: self.filename,
+					subdirectory: self.subdirectory,
+					isActive: true,
 				};
 
 				// Find all existing active roms for this filename in the given subdirectory.
@@ -71,11 +75,13 @@ module.exports = function(sequelize, DataTypes) {
 					where: filterParameters,
 				}).success(function(totalExisting) {
 					if (totalExisting > 0) {
-						throw new Error('There are already ' + totalExisting + ' existing ROM matching ' + JSON.stringify(filterParameters));
+						done('There are already ' + totalExisting + ' existing ROM matching ' + JSON.stringify(filterParameters));
+					} else {
+						done();
 					}
 				});
 			},
-
+*/
 			incrementalIdAndTargetFilesZipValid : function() {
 				// Make sure that if incrementalId and targetfileszip are given that the latter one contains the first one.
 				if (this.incrementalId && this.targetFilesZipName && this.targetFilesZipName.indexOf(this.incrementalId) == -1) {
