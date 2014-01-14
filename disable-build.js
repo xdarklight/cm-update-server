@@ -40,7 +40,7 @@ models.sequelize.sync().success(function() {
 							// etc. is set. This is the case, but the
 							// update-information does not have it.
 							validate: false,
-						);
+						});
 					}
 				});
 			});
