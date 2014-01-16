@@ -8,7 +8,7 @@ var RomListResponse = function(id, resultItems, errorMessage) {
 	this.error = errorMessage;
 };
 
-var RomListItem = function(url, timestamp, md5sum, filename, channel, changes, api_level) {
+var RomListItem = function(url, timestamp, md5sum, filename, channel, changes, api_level, incrementalId) {
 	this.url = url;
 	this.timestamp = timestamp;
 	this.md5sum = md5sum;
@@ -16,6 +16,7 @@ var RomListItem = function(url, timestamp, md5sum, filename, channel, changes, a
 	this.channel = channel;
 	this.changes = changes;
 	this.api_level = api_level;
+	this.incremental = incrementalId;
 };
 
 var SuccessfulIncrementalReponse = function(timestamp, filename, download_url, md5sum, incremental) {
@@ -91,7 +92,7 @@ module.exports.convertRomList = function(id, errorMessage, updateList) {
 
 			var timestampInSeconds = Math.round(rom.timestamp.getTime() / 1000);
 
-			var item = new RomListItem(downloadUrl, timestampInSeconds, rom.md5sum, rom.filename, rom.updateChannel, changelogUrl, rom.apiLevel);
+			var item = new RomListItem(downloadUrl, timestampInSeconds, rom.md5sum, rom.filename, rom.updateChannel, changelogUrl, rom.apiLevel, rom.incrementalId);
 			list.push(item);
 		});
 	}
