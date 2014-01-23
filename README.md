@@ -63,6 +63,10 @@ Then add a ROM:
 
     cm-update-server$ node disable-build.js --device cmtestdevice --filename cm-11-20140101-NIGHTLY-cmtestdevice.zip --subdirectory cmtestdevice-11.0
 
+**(Optional) Use PM2 or forever to keep cm-update-server running**
+
+You can use PM2 or forever to keep the server running. PM2 even supports generating init-scripts for Debian/Ubuntu/CentOS.
+
 
 Updating
 --------
@@ -95,6 +99,9 @@ See Also
 
 [config] - The library that is used to parse the configuration file(s)<br>
 [sequelize] - The library that is used as ORM - see also [how to configure it](http://sequelizejs.com/docs/latest/usage)<br>
+<br>
+[forever] - A simple tool to keep cm-update-server or any other NodeJS application running continuously (forever).<br>
+[pm2] - Also lets cm-update-server or any other application run forever but has far more features than forever.<br>
 
 License
 -------
@@ -107,3 +114,5 @@ Copyright (c) 2013-2014 Martin Blumenstingl
 
   [config]: http://lorenwest.github.com/node-config/latest
   [sequelize]: http://www.sequelizejs.com
+  [forever]: https://github.com/nodejitsu/forever
+  [pm2]: https://github.com/Unitech/pm2
