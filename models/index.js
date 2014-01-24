@@ -15,7 +15,7 @@ module.exports.Incremental = sequelize.import(__dirname + '/incremental.js');
 	models.Rom.belongsTo(models.Device);
 	models.Rom.hasMany(models.Download);
 	models.Download.belongsTo(models.Rom);
-	models.Rom.hasOne(models.Rom, { as: 'parentRom' });
+	models.Rom.belongsTo(models.Rom, { as: 'parentRom', foreignKey: 'parentRomId' });
 	models.Rom.hasMany(models.Incremental, { as: 'sourceRom', foreignKey: 'sourceRomId' });
 	models.Rom.hasMany(models.Incremental, { as: 'sourceRom', foreignKey: 'targetRomId' });
 	models.Incremental.belongsTo(models.Rom, { as: 'sourceRom', foreignKey: 'sourceRomId' });
