@@ -54,7 +54,13 @@ models.sequelize.sync().success(function() {
 			}
 
 			var findParentRomHandler = function(childRom, resultHandler) {
-				childRom.getParentRom().success(resultHandler);
+				childRom.getParentRom().complete(function(err, parentRom) {
+					if (err) {
+						resultHandler(null);
+					} else {
+						resultHandler(parentRom);
+					}
+				});
 			}
 
 			ResultConverter.getChangelogContent(rom, findParentRomHandler, function(body) {
