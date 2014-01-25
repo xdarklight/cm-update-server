@@ -153,26 +153,25 @@ models.sequelize.sync().success(function() {
 
 	server.post('/api', function(req, res, next) {
 		var requestParameters = extractRequestParameters(req);
+		var responseId = null;
 
 		if (!requestParameters || !requestParameters.params) {
-			res.send(400, ResultConverter.convertRomList(responseId, 'params is a required parameter!', null));
+			res.send(400, ResultConverter.convertRomListError(responseId, 'params is a required parameter!'));
 			return next();
 		} else if (requestParameters.method != 'get_all_builds') {
-			res.send(400, ResultConverter.convertRomList(responseId, requestParameters.method + ' is not a valid "method"!', null));
+			res.send(400, ResultConverter.convertRomListError(responseId, requestParameters.method + ' is not a valid "method"!'));
 			return next();
 		}
 
-		var responseId = null;
-
 		models.Device.find({ where: { name: requestParameters.params.device } }).complete(function(err, device) {
 			if (err) {
-				res.send(500, ResultConverter.convertRomList(responseId, 'Database error.', null));
+				res.send(500, ResultConverter.convertRomListError(responseId, 'Database error.'));
 				return next();
 			}
 
 			if (!device) {
 				// No error but nothing found.
-				res.send(200, ResultConverter.convertRomList(responseId, "Unknown device.", null));
+				res.send(200, ResultConverter.convertRomListError(responseId, "Unknown device."));
 				return next();
 			}
 
@@ -184,9 +183,9 @@ models.sequelize.sync().success(function() {
 				},
 			}).complete(function(err, roms) {
 				if (err) {
-					res.send(500, ResultConverter.convertRomList(responseId, 'Database error.', null));
+					res.send(500, ResultConverter.convertRomListError(responseId, 'Database error.'));
 				} else {
-					res.send(200, ResultConverter.convertRomList(responseId, null, roms));
+					res.send(200, ResultConverter.convertRomList(responseId, roms));
 				}
 
 				return next();

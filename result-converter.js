@@ -75,7 +75,7 @@ module.exports.getRealIncrementalDownloadUrl = function(incremental) {
 	return url;
 }
 
-module.exports.convertRomList = function(id, errorMessage, updateList) {
+module.exports.convertRomList = function(id, updateList) {
 	var list = Array();
 
 	if (updateList && updateList.length > 0) {
@@ -97,7 +97,11 @@ module.exports.convertRomList = function(id, errorMessage, updateList) {
 		});
 	}
 
-	return new RomListResponse(id, list, errorMessage);
+	return new RomListResponse(id, list, null);
+}
+
+module.exports.convertRomListError = function(id, errorMessage) {
+	return new RomListResponse(id, null, errorMessage);
 }
 
 module.exports.getRealRomDownloadUrl = function(rom) {
