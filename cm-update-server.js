@@ -129,10 +129,7 @@ models.sequelize.sync().success(function() {
 	server.post('/api/v1/build/get_delta', function(req, res, next) {
 		var requestParameters = extractRequestParameters(req);
 
-		if (!requestParameters) {
-			res.send(400);
-			return next();
-		} else if (!requestParameters.source_incremental || !requestParameters.target_incremental) {
+		if (!requestParameters || !requestParameters.source_incremental || !requestParameters.target_incremental) {
 			res.send(400, ResultConverter.convertIncrementalErrors(
 				"source_incremental and target_incremental are required parameters!"));
 			return next();
