@@ -154,8 +154,11 @@ models.sequelize.sync().success(function() {
 	server.post('/api', function(req, res, next) {
 		var requestParameters = extractRequestParameters(req);
 
-		if (!requestParameters || !requestParameters.params || requestParameters.method != 'get_all_builds') {
-			res.send(400);
+		if (!requestParameters || !requestParameters.params) {
+			res.send(400, ResultConverter.convertRomList(responseId, 'params is a required parameter!', null));
+			return next();
+		} else if (requestParameters.method != 'get_all_builds') {
+			res.send(400, ResultConverter.convertRomList(responseId, requestParameters.method + ' is not a valid "method"!', null));
 			return next();
 		}
 
