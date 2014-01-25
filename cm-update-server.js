@@ -105,9 +105,9 @@ models.sequelize.sync().success(function() {
 		models.Incremental.find(req.params.incrementalId).complete(function(err, incremental) {
 			if (err) {
 				res.send(500);
-			} else if (!incremental || !incremental.isActive) {
+			} else if (!incremental) {
 				res.send(404);
-			} else if (false) { // TODO: add "isActive" check for incrementals!
+			} else if (!incremental.isActive) {
 				res.send(410);
 			} else {
 				var realDownloadUrl = ResultConverter.getRealIncrementalDownloadUrl(incremental);
