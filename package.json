@@ -14,15 +14,15 @@
 	"dependencies": {
 		"troll-opt" : ">= 0.7.x",
 		"config": ">= 0.4.x",
-		"restify": ">= 2.6.x",
-		"sequelize": ">= 1.7.0-beta7",
+		"restify": ">= 2.8.x",
+		"sequelize": ">= 1.7.1",
 		"querystring": ">= 0.2.x"
 	},
 
 	"optionalDependencies": {
-		"sqlite3": ">= 2.1.x",
+		"sqlite3": ">= 2.2.x",
 		"mysql": ">= 2.x",
 		"mariasql": ">= 0.1.x",
-		"pg": ">= 2.10.x"
+		"pg": ">= 3.4.x"
 	}
 }
