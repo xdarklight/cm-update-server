@@ -68,6 +68,10 @@ module.exports = {
 				type: DataTypes.BOOLEAN,
 				isNull: false,
 			},
+			sourceCodeTimestamp: {
+				type: DataTypes.DATE,
+				isNull: true,
+			},
 			DeviceId: {
 				type: DataTypes.INTEGER,
 				references: "Devices",
