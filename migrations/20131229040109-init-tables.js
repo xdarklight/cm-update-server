@@ -77,6 +77,11 @@ module.exports = {
 				references: "Devices",
 				referencesKey: "id",
 			},
+			parentRomId: {
+				type: DataTypes.INTEGER,
+				references: "Roms",
+				referencesKey: "id",
+			},
 		});
 
 		migration.createTable('Downloads', {
