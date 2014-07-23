@@ -12,6 +12,24 @@ html(lang='en')
           = locals.name
 
     link(rel='stylesheet', href='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
+    link(rel='stylesheet', href='http://cdn.datatables.net/1.10.1/css/jquery.dataTables.css')
+
+    script(type='text/javascript', src='http://code.jquery.com/jquery-1.11.1.min.js')
+    script(type='text/javascript', src='http://cdn.datatables.net/1.10.1/js/jquery.dataTables.min.js')
+
+    script(type='text/javascript')
+      | $(document).ready(function() {
+      |   $('#rom-table').dataTable({
+      |     'bLengthChange': false,
+      |     'bPaginate': false,
+      |     'bFilter': false,
+      |     'bAutoWidth': false,
+      |     'aaSorting': [ /* The values are pre-sorted on server side. */ ],
+      |     'aoColumnDefs': [
+      |       { 'bSortable': false, 'aTargets': [ 'col-filename' ] }
+      |     ],
+      |   });
+      | });
 
     style(type='text/css')
       | /*  Top navigation - hide default border to remove 1px line. */
@@ -24,10 +42,10 @@ html(lang='en')
       | }
 
   body
-    div.navbar.navbar-inverse(role="navigation")
+    div.navbar.navbar-inverse(role='navigation')
       div.container-fluid
         div.navbar-header
-          a.navbar-brand(href="#{contents.index.url}") #{locals.name}
+          a.navbar-brand(href='#{contents.index.url}') #{locals.name}
 
     div.container-fluid
       div.row-fluid.content
@@ -39,7 +57,7 @@ html(lang='en')
               each device in contents.devices
                 - var linkCssClass = (selectedDevice == device.metadata.name) ? 'active' : null;
                 li(class=linkCssClass)
-                  a(href="#{device.url}")
+                  a(href='#{device.url}')
                     | #{device.metadata.name}
                     if device.metadata.displayName
                       br

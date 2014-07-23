@@ -1,14 +1,14 @@
 
 mixin romtable(allRoms)
   div.table-responsive
-    table.table.table-striped
+    table.table.table-striped#rom-table
       thead
         tr
-          th Device
-          th Type
-          th Filename
-          th Size
-          th Date Added
+          th.col-device Device
+          th.col-updatechannel Type
+          th.col-filename Filename
+          th.col-size Size
+          th.col-date Date Added
       tbody
         each rom in allRoms
           tr
