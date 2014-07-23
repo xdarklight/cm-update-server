@@ -1,0 +1,48 @@
+doctype html
+block vars
+  - var selectedDevice = null;
+html(lang='en')
+  head
+    block head
+      meta(charset='utf-8')
+      meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+      meta(name='viewport', content='width=device-width')
+      title
+        block title
+          = locals.name
+
+    link(rel='stylesheet', href='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
+
+    style(type='text/css')
+      | /*  Top navigation - hide default border to remove 1px line. */
+      | .navbar {
+      |   border-radius: 0px;
+      | }
+
+  body
+    div.navbar.navbar-inverse(role="navigation")
+      div.container-fluid
+        div.navbar-header
+          a.navbar-brand(href="#{contents.index.url}") #{locals.name}
+
+    div.container-fluid
+      div.row-fluid.content
+        div.col-xs-12.col-md-3
+          div.sidebar-nav.well
+            ul.nav.nav-list
+              li.nav-header
+                b Devices
+              each device in contents.devices
+                - var linkCssClass = (selectedDevice == device.metadata.name) ? 'active' : null;
+                li(class=linkCssClass)
+                  a(href="#{device.url}")
+                    | #{device.metadata.name}
+
+        div.col-xs-12.col-md-9
+          block content
+
+    div.footer
+      block footer
+        p.text-center &copy; #{ new Date().getFullYear() } #{locals.owner}
+
+    script(src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js")

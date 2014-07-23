@@ -1,0 +1,12 @@
+extends layout
+
+block append vars
+  - selectedDevice = page.metadata.name
+
+block content
+  include romtable
+
+  h1 All files for #{page.metadata.name}
+  mixin romtable(page.metadata.roms)
+
+block prepend footer

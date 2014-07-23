@@ -2,3 +2,5 @@ node_modules
 data/
 npm-debug.log
 config/*.json
+website/contents/devices
+website/build

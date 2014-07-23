@@ -75,21 +75,21 @@ module.exports.getRealIncrementalDownloadUrl = function(incremental) {
 	return url;
 }
 
+module.exports.getRomDownloadUrl = function(rom) {
+	if (config.isDownloadProxyEnabled) {
+		return config.proxyRomDownloadBaseUrl + '/' + rom.id + '?' + querystring.stringify({ filename : rom.filename });
+	}
+
+	return module.exports.getRealRomDownloadUrl(rom);
+}
+
 module.exports.convertRomList = function(id, updateList) {
 	var list = Array();
 
 	if (updateList && updateList.length > 0) {
 		updateList.forEach(function(rom) {
 			var changelogUrl = module.exports.getChangelogUrl(rom);
-
-			var downloadUrl;
-
-			if (config.isDownloadProxyEnabled) {
-				downloadUrl = config.proxyRomDownloadBaseUrl + '/' + rom.id + '?' + querystring.stringify({ filename : rom.filename });
-			} else {
-				downloadUrl = module.exports.getRealRomDownloadUrl(rom);
-			}
-
+			var downloadUrl = module.exports.getRomDownloadUrl(rom);
 			var timestampInSeconds = Math.round(rom.timestamp.getTime() / 1000);
 
 			var item = new RomListItem(downloadUrl, timestampInSeconds, rom.md5sum, rom.filename, rom.updateChannel, changelogUrl, rom.apiLevel, rom.incrementalId);

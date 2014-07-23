@@ -32,6 +32,43 @@ module.exports = {
 		}
 	},
 
+	/**
+	 * Wintersmith settings - see: https://github.com/jnordberg/wintersmith#configuration
+	 */
+	Website: {
+		locals: {
+			url: "#",
+			name: "ROM overview",
+			owner: "cm-update-server provider name"
+		},
+
+		plugins: [
+		],
+
+		require: {
+			moment: "moment"
+		},
+
+		jade: {
+			pretty: true
+		},
+
+		markdown: {
+			smartLists: true,
+			smartypants: true
+		},
+
+		paginator: {
+			perPage: 10
+		},
+
+		baseUrl: "/",
+
+		contents: "./website/contents/",
+		templates: "./website/templates/",
+		output: "./website/build/"
+	},
+
 	Application: {
 		/**
 		 * The base URL where the real full roms can be found. The following parameters are appended to this 'base-URL':

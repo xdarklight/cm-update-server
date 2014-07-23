@@ -23,6 +23,8 @@
 		"sqlite3": ">= 2.2.x",
 		"mysql": ">= 2.x",
 		"mariasql": ">= 0.1.x",
-		"pg": ">= 3.4.x"
+		"pg": ">= 3.4.x",
+		"wintersmith": ">= 2.1.x",
+		"fs-extra": ">= 0.10.0"
 	}
 }

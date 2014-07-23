@@ -1,0 +1,18 @@
+extends layout
+
+block append vars
+  - var allRoms = [];
+  - for (device in contents.devices) {
+  -   allRoms = allRoms.concat(contents.devices[device].metadata.roms);
+  - }
+  - allRoms.sort(function(a, b) {
+  -   return new Date(b.createdAt) - new Date(a.createdAt);
+  - });
+
+block content
+  include romtable
+
+  h1 Browse all files
+  mixin romtable(allRoms)
+
+block prepend footer

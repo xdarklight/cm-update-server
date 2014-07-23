@@ -1,0 +1,26 @@
+
+mixin romtable(allRoms)
+  div.table-responsive
+    table.table.table-striped
+      thead
+        tr
+          th Device
+          th Type
+          th Filename
+          th Size
+          th Date Added
+      tbody
+        each rom in allRoms
+          tr
+            - var deviceArticle = contents.devices[rom.DeviceId + '.json']
+            - var timestamp = new Date(rom.createdAt).toUTCString()
+            td
+              a(href="#{deviceArticle.url}") #{deviceArticle.metadata.name}
+            td #{rom.updateChannel}
+            td
+              b Download: 
+              a(href="xxx") #{rom.filename}
+              br
+              small md5sum: #{rom.md5sum}
+            td UNK
+            td #{timestamp}
