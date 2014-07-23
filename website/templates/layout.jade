@@ -18,6 +18,10 @@ html(lang='en')
       | .navbar {
       |   border-radius: 0px;
       | }
+      | 
+      | small {
+      |   font-size: 75%;
+      | }
 
   body
     div.navbar.navbar-inverse(role="navigation")
@@ -37,6 +41,9 @@ html(lang='en')
                 li(class=linkCssClass)
                   a(href="#{device.url}")
                     | #{device.metadata.name}
+                    if device.metadata.displayName
+                      br
+                      small #{device.metadata.displayName}
 
         div.col-xs-12.col-md-9
           block content
@@ -44,5 +51,3 @@ html(lang='en')
     div.footer
       block footer
         p.text-center &copy; #{ new Date().getFullYear() } #{locals.owner}
-
-    script(src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js")

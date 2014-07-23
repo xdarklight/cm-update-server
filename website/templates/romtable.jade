@@ -16,6 +16,9 @@ mixin romtable(allRoms)
             - var timestamp = new Date(rom.createdAt).toUTCString()
             td
               a(href="#{deviceArticle.url}") #{deviceArticle.metadata.name}
+              if deviceArticle.metadata.displayName
+                br
+                small #{deviceArticle.metadata.displayName}
             td #{rom.updateChannel}
             td
               b Download: 
