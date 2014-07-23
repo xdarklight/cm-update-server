@@ -6,6 +6,9 @@ module.exports = function(sequelize, DataTypes) {
 				type: Sequelize.STRING(32),
 				unique: true,
 			},
+			displayName: {
+				type: Sequelize.STRING(255),
+			}
 	});
 
 	return Device;
