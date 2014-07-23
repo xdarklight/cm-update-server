@@ -35,7 +35,7 @@ html(lang='en')
           div.sidebar-nav.well
             ul.nav.nav-pills.nav-stacked
               li.nav-header
-                b Devices
+                h3 Devices
               each device in contents.devices
                 - var linkCssClass = (selectedDevice == device.metadata.name) ? 'active' : null;
                 li(class=linkCssClass)
