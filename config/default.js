@@ -37,9 +37,11 @@ module.exports = {
 	 */
 	Website: {
 		locals: {
-			url: "#",
-			name: "ROM overview",
-			owner: "cm-update-server provider name"
+			url: '#',
+			name: 'ROM overview',
+			owner: 'cm-update-server provider name',
+			topImageUrl: '',
+			topImageAlt: ''
 		},
 
 		plugins: [

@@ -49,8 +49,8 @@ html(lang='en')
       | });
 
     style(type='text/css')
-      | body {
-      |   margin-top: 10px;
+      | .sidebar-nav {
+      |   margin-top: 20px;
       | }
       | 
       | small {
@@ -59,6 +59,9 @@ html(lang='en')
 
   body
     div.container-fluid
+      if locals.topImageUrl
+        div.row
+          img(src=locals.topImageUrl, alt=topImageAlt, title=topImageAlt)
       div.row-fluid.content
         div.col-xs-12.col-md-3
           div.sidebar-nav.well
