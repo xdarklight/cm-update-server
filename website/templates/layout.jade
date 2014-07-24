@@ -79,8 +79,7 @@ html(lang='en')
                   a(href='#{device.url}')
                     | #{device.metadata.name}
                     if device.metadata.displayName
-                      br
-                      small #{device.metadata.displayName}
+                      small  | #{device.metadata.displayName}
           div.sidebar-nav.well.hidden#updateTypeFilters
             ul.nav.nav-pills.nav-stacked
               li.nav-header
