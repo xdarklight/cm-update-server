@@ -19,15 +19,32 @@ html(lang='en')
 
     script(type='text/javascript')
       | $(document).ready(function() {
-      |   $('#rom-table').dataTable({
+      |   var romTable = $('#rom-table');
+      |   var romDataTable = romTable.DataTable({
       |     'bLengthChange': false,
       |     'bPaginate': false,
-      |     'bFilter': false,
       |     'bAutoWidth': false,
       |     'aaSorting': [ /* The values are pre-sorted on server side. */ ],
       |     'aoColumnDefs': [
       |       { 'bSortable': false, 'aTargets': [ 'col-filename' ] }
       |     ],
+      |   });
+      |   
+      |   var updateTypeColumn = romDataTable.column('.col-updatechannel');
+      |   var updateTypeList = $('#updateTypeFilters').find('ul');
+      |   
+      |   updateTypeColumn.data().unique().sort().each(function(value, idx) {
+      |     updateTypeList.append('<li class="updatetype-filter"><a href="#" data-filter-value="' + value + '">' + value + '</a></li>');
+      |   });
+      |   
+      |   $('#updateTypeFilters').removeClass('hidden').addClass('show');
+      |   
+      |   $(updateTypeList).find('a[data-filter-value]').click(function() {
+      |     var clickedLink = $(this);
+      |     updateTypeColumn.search(clickedLink.attr('data-filter-value')).draw();
+      |     updateTypeList.find('.active').removeClass('active');
+      |     clickedLink.parent().addClass('active');
+      |     return false;
       |   });
       | });
 
@@ -62,6 +79,12 @@ html(lang='en')
                     if device.metadata.displayName
                       br
                       small #{device.metadata.displayName}
+          div.sidebar-nav.well.hidden#updateTypeFilters
+            ul.nav.nav-pills.nav-stacked
+              li.nav-header
+                h3 Type
+              li.updatetype-filter.active
+                a(href='#', data-filter-value='') all
 
         div.col-xs-12.col-md-9
           block content
