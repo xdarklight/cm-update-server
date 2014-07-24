@@ -71,6 +71,9 @@ html(lang='en')
             ul.nav.nav-pills.nav-stacked
               li.nav-header
                 h3 Devices
+              - var linkCssClass = (selectedDevice == null) ? 'active' : null;
+              li(class=linkCssClass)
+                a(href='#{contents.index.url}') all
               each device in contents.devices
                 - var linkCssClass = (selectedDevice == device.metadata.name) ? 'active' : null;
                 li(class=linkCssClass)
