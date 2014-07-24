@@ -24,10 +24,12 @@ html(lang='en')
       |     'bLengthChange': false,
       |     'bPaginate': false,
       |     'bAutoWidth': false,
+      |     'bFilter': true,
       |     'aaSorting': [ /* The values are pre-sorted on server side. */ ],
       |     'aoColumnDefs': [
       |       { 'bSortable': false, 'aTargets': [ 'col-filename' ] }
       |     ],
+      |     'sDom': 'lrtip', /* Disable the search box */
       |   });
       |   
       |   var updateTypeColumn = romDataTable.column('.col-updatechannel');
