@@ -87,6 +87,14 @@ html(lang='en')
                 h3 Type
               li.updatetype-filter.active
                 a(href='#', data-filter-value='') all
+          if locals.customLinks && locals.customLinks.length > 0
+            div.sidebar-nav.well
+              ul.nav.nav-pills.nav-stacked
+                li.nav-header
+                  h3 Additional information
+                each link in locals.customLinks
+                  li
+                    a(href='#{link.src}', target='_blank') #{link.text}
 
         div.col-xs-12.col-md-9
           block content

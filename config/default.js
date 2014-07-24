@@ -41,7 +41,11 @@ module.exports = {
 			name: 'ROM overview',
 			owner: 'cm-update-server provider name',
 			topImageUrl: '',
-			topImageAlt: ''
+			topImageAlt: '',
+			customLinks: [
+				{ src: "http://google.com", text: "google" },
+				{ src: "http://github.com", text: "github" }
+			]
 		},
 
 		plugins: [
