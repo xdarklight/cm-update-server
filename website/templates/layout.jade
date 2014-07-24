@@ -49,9 +49,8 @@ html(lang='en')
       | });
 
     style(type='text/css')
-      | /*  Top navigation - hide default border to remove 1px line. */
-      | .navbar {
-      |   border-radius: 0px;
+      | body {
+      |   margin-top: 10px;
       | }
       | 
       | small {
@@ -59,11 +58,6 @@ html(lang='en')
       | }
 
   body
-    div.navbar.navbar-inverse(role='navigation')
-      div.container-fluid
-        div.navbar-header
-          a.navbar-brand(href='#{contents.index.url}') #{locals.name}
-
     div.container-fluid
       div.row-fluid.content
         div.col-xs-12.col-md-3
