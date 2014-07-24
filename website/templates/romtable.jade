@@ -22,7 +22,7 @@ mixin romtable(allRoms)
             td #{rom.updateChannel}
             td
               b Download: 
-              a(href="xxx") #{rom.filename}
+              a(href="#{rom.downloadUrl}") #{rom.filename}
               br
               small md5sum: #{rom.md5sum}
             td UNK

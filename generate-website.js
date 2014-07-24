@@ -32,7 +32,10 @@ models.sequelize.sync().success(function() {
 				deviceValues.roms = [];
 
 				roms.forEach(function(rom) {
-					deviceValues.roms.push(rom.toJSON());
+					var romValues = rom.toJSON();
+					romValues.downloadUrl = ResultConverter.getRomDownloadUrl(rom);
+
+					deviceValues.roms.push(romValues);
 				});
 
 				fsextra.writeFileSync(path.join(deviceJsonPath, device.id + '.json'), JSON.stringify(deviceValues));
