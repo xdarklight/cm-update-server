@@ -13,7 +13,6 @@ mixin romtable(allRoms)
         each rom in allRoms
           tr
             - var deviceArticle = contents.devices[rom.DeviceId + '.json']
-            - var timestamp = new Date(rom.createdAt).toUTCString()
             td
               a(href="#{deviceArticle.url}") #{deviceArticle.metadata.name}
               if deviceArticle.metadata.displayName
@@ -30,4 +29,6 @@ mixin romtable(allRoms)
                 | #{filesize(rom.fileSize)}
               else
                 i (unknown)
-            td #{timestamp}
+            - var romTimestamp = new Date(rom.createdAt)
+            td(data-order=romTimestamp.toISOString())
+              | #{romTimestamp.toUTCString()}
