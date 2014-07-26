@@ -19,7 +19,7 @@ function createNewIncremental(sourceRom, targetRom) {
 	var buildTimestamp = utils.toDate(buildInfo.timestamp);
 
 	var filesize = null;
-	if (buildInfo.filesize && !isNan(buildInfo.filesize)) {
+	if (buildInfo.filesize && !isNaN(buildInfo.filesize)) {
 		filesize = buildInfo.filesize;
 	}
 
