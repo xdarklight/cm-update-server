@@ -92,6 +92,7 @@ models.sequelize.sync().success(function() {
 
 				models.Download.build({
 					RomId: rom.id,
+					userAgent: req.headers['user-agent'],
 				}).save().error(function (err) {
 					// Ignoring errors here since those have no impact for the user.
 				});
@@ -117,6 +118,7 @@ models.sequelize.sync().success(function() {
 
 				models.Download.build({
 					IncrementalId: incremental.id,
+					userAgent: req.headers['user-agent'],
 				}).save().error(function (err) {
 					// Ignoring errors here since those have no impact for the user.
 				});
