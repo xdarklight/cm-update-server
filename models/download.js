@@ -2,7 +2,10 @@ var Sequelize = require('sequelize');
 
 module.exports = function(sequelize, DataTypes) {
 	var Download = sequelize.define('Download', {
-		// No special fields needed, sequelize automatically adds a "createdAt" field.
+		userAgent: {
+			type: Sequelize.TEXT,
+			isNull: true,
+		},
 	}, {
 		validate: {
 			romIdValid : function() {
