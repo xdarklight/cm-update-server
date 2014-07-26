@@ -59,15 +59,6 @@ module.exports = {
 			pretty: true
 		},
 
-		markdown: {
-			smartLists: true,
-			smartypants: true
-		},
-
-		paginator: {
-			perPage: 10
-		},
-
 		baseUrl: "/",
 
 		contents: "./website/contents/",
