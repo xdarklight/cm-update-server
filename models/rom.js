@@ -48,6 +48,10 @@ module.exports = function(sequelize, DataTypes) {
 				type: Sequelize.DATE,
 				isNull: true,
 			},
+			fileSize: {
+				type: Sequelize.BIGINT.UNSIGNED,
+				isNull: true,
+			},
 	}, {
 		validate: {
 			deviceIdValid : function() {
