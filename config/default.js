@@ -52,7 +52,8 @@ module.exports = {
 		],
 
 		require: {
-			moment: "moment"
+			moment: "moment",
+			filesize: "filesize"
 		},
 
 		jade: {

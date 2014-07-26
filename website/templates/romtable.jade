@@ -25,5 +25,9 @@ mixin romtable(allRoms)
               a(href="#{rom.downloadUrl}") #{rom.filename}
               br
               small md5sum: #{rom.md5sum}
-            td UNK
+            td(data-order=rom.fileSize)
+              if rom.fileSize
+                | #{filesize(rom.fileSize)}
+              else
+                i (unknown)
             td #{timestamp}

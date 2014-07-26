@@ -25,6 +25,7 @@
 		"mariasql": ">= 0.1.x",
 		"pg": ">= 3.4.x",
 		"wintersmith": ">= 2.1.x",
-		"fs-extra": ">= 0.10.0"
+		"fs-extra": ">= 0.10.0",
+		"filesize": ">= 2.0.0"
 	}
 }
