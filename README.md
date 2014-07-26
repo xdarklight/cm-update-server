@@ -84,18 +84,6 @@ Updating
     cm-update-server$ node_modules/sequelize/bin/sequelize --migrate --env production
 
 
-Basic Idea
-----------
-
-The basic idea how the data is stored:
-* You can store builds for multiple devices<br /> -> that's why all commands have a "device" parameter
-* You can have different types of builds per device (you could for example have AOSP and CyanogenMod parallel)<br />-> that's why there's an optional "subdirectory" parameter
-* This combination makes a build unique:<br />&nbsp;&nbsp;1. It's device<br />&nbsp;&nbsp;2. It's filename<br />&nbsp;&nbsp;3. It's subdirectory
-* The "unique" constraint only applies to "active" builds
-* Deactivating builds can/should be done due to multiple reasons:<br />&nbsp;&nbsp;1. A build is very old and you don't want to bloat your results with very old builds&nbsp;&nbsp;2. You do a rebuild (on the same day) so the target filename already exists in the database -> in this case you disable the old build.
-* You can use this build-database to store sourcecode timestamps (useful for generating changelogs).<br />-> that's why `add-build.js` has a "--sourcecode_timestamp" parameter and why `get-sourcecode-timestamp.js` exists.
-
-
 Website
 -------
 
@@ -110,6 +98,18 @@ This should be called (manually) after running `add-build.js` or `add-incrementa
     cm-update-server$ node generate-website.js
 
 -> The static HTML can be found (by default) in `website/build`.
+
+
+Basic Idea
+----------
+
+The basic idea how the data is stored:
+* You can store builds for multiple devices<br /> -> that's why all commands have a "device" parameter
+* You can have different types of builds per device (you could for example have AOSP and CyanogenMod parallel)<br />-> that's why there's an optional "subdirectory" parameter
+* This combination makes a build unique:<br />&nbsp;&nbsp;1. It's device<br />&nbsp;&nbsp;2. It's filename<br />&nbsp;&nbsp;3. It's subdirectory
+* The "unique" constraint only applies to "active" builds
+* Deactivating builds can/should be done due to multiple reasons:<br />&nbsp;&nbsp;1. A build is very old and you don't want to bloat your results with very old builds&nbsp;&nbsp;2. You do a rebuild (on the same day) so the target filename already exists in the database -> in this case you disable the old build.
+* You can use this build-database to store sourcecode timestamps (useful for generating changelogs).<br />-> that's why `add-build.js` has a "--sourcecode_timestamp" parameter and why `get-sourcecode-timestamp.js` exists.
 
 See Also
 --------
