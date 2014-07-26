@@ -30,6 +30,27 @@ module.exports = {
 			 */
 			isEnabled: false,
 		},
+
+		/**
+		 * Enables serving of static content. The following example serves the website
+		 * (all files reside in website/build).
+		 *
+		 * NOTE: The whole block is optional and can be left empty in your own configuration.
+		 */
+		serveStaticConfiguration: [
+			{
+				urlPattern: '^(\/?.*\.html|/)$',
+
+				/**
+				* Configuration for restify's serveStatic module. See http://mcavage.me/node-restify/
+				* for a list of configuration options ("Serve Static" section below "Bundled Plugins").
+				*/
+				options: {
+					directory: './website/build/',
+					default: 'index.html',
+				}
+			}
+		],
 	},
 
 	/**

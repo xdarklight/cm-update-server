@@ -1,5 +1,7 @@
 var restify = require('restify');
-var config = require('config').Server;
+var config = require('config');
+var serverConfig = config.Server;
+var websiteConfig = config.Website;
 var models = require('./models/');
 var ResultConverter = require('./result-converter.js');
 
@@ -25,15 +27,21 @@ var extractRequestParameters = function(req) {
 }
 
 models.sequelize.sync().success(function() {
-	server.listen(config.listeningPort, config.listeningAddress, function () {
+	server.listen(serverConfig.listeningPort, serverConfig.listeningAddress, function () {
 		console.log('%s listening at %s', server.name, server.url);
 	});
 
-	server.use(restify.bodyParser(config.bodyParserConfiguration || {}));
+	server.use(restify.bodyParser(serverConfig.bodyParserserverConfiguration || {}));
 
-	// Conditionally enable the throttle module with the settings from the config.
-	if (config.throttleConfiguration && config.throttleConfiguration.isEnabled) {
-		server.use(restify.throttle(config.throttleConfiguration));
+	// Conditionally enable the throttle module with the settings from the serverConfig.
+	if (serverConfig.throttleserverConfiguration && serverConfig.throttleserverConfiguration.isEnabled) {
+		server.use(restify.throttle(serverConfig.throttleserverConfiguration));
+	}
+
+	if (serverConfig.serveStaticConfiguration) {
+		serverConfig.serveStaticConfiguration.forEach(function(staticSettings) {
+			server.get(new RegExp(staticSettings.urlPattern), restify.serveStatic(staticSettings.options));
+		});
 	}
 
 	server.get('/changelog/:romId', function (req, res, next) {
