@@ -52,7 +52,6 @@ module.exports = {
 		],
 
 		require: {
-			moment: "moment",
 			filesize: "filesize"
 		},
 
