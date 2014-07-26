@@ -12,10 +12,16 @@ var buildInfo = (new Troll()).options(function(troll) {
 	troll.opt('from_target_files', 'The name of the "target files ZIP" of the incremental\'s "source".', { type: 'string', required: true });
 	troll.opt('to_target_files', 'The name of the "target files ZIP" of the incremental\'s "target".', { type: 'string', required: true });
 	troll.opt('active', 'Marks the incremental as active (available for download) or not.', { type: 'boolean', required: true });
+	troll.opt('filesize', 'The size (in bytes) of the incremental update file.', { type: 'integer' });
 });
 
 function createNewIncremental(sourceRom, targetRom) {
 	var buildTimestamp = utils.toDate(buildInfo.timestamp);
+
+	var filesize = null;
+	if (buildInfo.filesize && !isNan(buildInfo.filesize)) {
+		filesize = buildInfo.filesize;
+	}
 
 	models.Incremental.build({
 		sourceRomId: sourceRom.id,
@@ -25,6 +31,7 @@ function createNewIncremental(sourceRom, targetRom) {
 		filename: buildInfo.filename,
 		subdirectory: buildInfo.subdirectory,
 		isActive: buildInfo.active == true,
+		filesize: filesize,
 	}).save().success(function(newRom) {
 		console.log('Successfully created new incremental: ' + JSON.stringify(newRom));
 	});

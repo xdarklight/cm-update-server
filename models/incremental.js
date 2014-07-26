@@ -22,6 +22,10 @@ module.exports = function(sequelize, DataTypes) {
 				type: Sequelize.BOOLEAN,
 				notNull: true,
 			},
+			fileSize: {
+				type: Sequelize.BIGINT.UNSIGNED,
+				isNull: true,
+			},
 	}, {
 		validate: {
 			romIdsValid : function() {
