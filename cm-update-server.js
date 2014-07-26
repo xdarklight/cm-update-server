@@ -1,7 +1,6 @@
 var restify = require('restify');
 var config = require('config');
 var serverConfig = config.Server;
-var websiteConfig = config.Website;
 var models = require('./models/');
 var ResultConverter = require('./result-converter.js');
 
