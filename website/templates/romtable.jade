@@ -22,6 +22,9 @@ mixin romtable(allRoms)
             td
               b Download: 
               a(href="#{rom.downloadUrl}") #{rom.filename}
+              if rom.subdirectory
+                br
+                small directory: #{rom.subdirectory}
               br
               small md5sum: #{rom.md5sum}
             td(data-order=rom.fileSize)
