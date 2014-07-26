@@ -55,7 +55,10 @@ module.exports.convertIncremental = function(incremental) {
 	var downloadUrl;
 
 	if (config.isDownloadProxyEnabled) {
-		downloadUrl = config.proxyIncrementalDownloadBaseUrl + '/' + incremental.id + '?' + querystring.stringify({ filename : incremental.filename });
+		downloadUrl = config.proxyIncrementalDownloadBaseUrl + '/' + incremental.id + '?' + querystring.stringify({
+			directory: incremental.subdirectory,
+			filename: incremental.filename,
+		});
 	} else {
 		downloadUrl = module.exports.getRealIncrementalDownloadUrl(incremental);
 	}
@@ -77,7 +80,10 @@ module.exports.getRealIncrementalDownloadUrl = function(incremental) {
 
 module.exports.getRomDownloadUrl = function(rom) {
 	if (config.isDownloadProxyEnabled) {
-		return config.proxyRomDownloadBaseUrl + '/' + rom.id + '?' + querystring.stringify({ filename : rom.filename });
+		return config.proxyRomDownloadBaseUrl + '/' + rom.id + '?' + querystring.stringify({
+			directory: rom.subdirectory,
+			filename: rom.filename,
+		});
 	}
 
 	return module.exports.getRealRomDownloadUrl(rom);
