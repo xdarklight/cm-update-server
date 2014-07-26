@@ -59,7 +59,7 @@ function createNewRomFor(device, parentRomId) {
 	}
 
 	var filesize = null;
-	if (buildInfo.filesize && !isNan(buildInfo.filesize)) {
+	if (buildInfo.filesize && !isNaN(buildInfo.filesize)) {
 		filesize = buildInfo.filesize;
 	}
 

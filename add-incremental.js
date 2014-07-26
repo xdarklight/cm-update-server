@@ -19,7 +19,7 @@ function createNewIncremental(sourceRom, targetRom) {
 	var buildTimestamp = utils.toDate(buildInfo.timestamp);
 
 	var filesize = null;
-	if (buildInfo.filesize && !isNan(buildInfo.filesize)) {
+	if (buildInfo.filesize && !isNaN(buildInfo.filesize)) {
 		filesize = buildInfo.filesize;
 	}
 
@@ -31,7 +31,7 @@ function createNewIncremental(sourceRom, targetRom) {
 		filename: buildInfo.filename,
 		subdirectory: buildInfo.subdirectory,
 		isActive: buildInfo.active == true,
-		filesize: filesize,
+		fileSize: filesize,
 	}).save().success(function(newRom) {
 		console.log('Successfully created new incremental: ' + JSON.stringify(newRom));
 	});
