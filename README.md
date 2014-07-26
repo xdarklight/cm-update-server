@@ -96,11 +96,27 @@ The basic idea how the data is stored:
 * You can use this build-database to store sourcecode timestamps (useful for generating changelogs).<br />-> that's why `add-build.js` has a "--sourcecode_timestamp" parameter and why `get-sourcecode-timestamp.js` exists.
 
 
+Website
+-------
+
+A website module is now bundled with the server. The website is pre-generated static content (generated using [wintersmith]).
+
+**Configuration of the website module:**
+The configuration section is called "Website" (see `config/default.js` for the default values).
+
+**Generating the static content:**
+This should be called (manually) after running `add-build.js` or `add-incremental.js`:
+
+    cm-update-server$ node generate-website.js
+
+-> The static HTML can be found (by default) in `website/build`.
+
 See Also
 --------
 
 [config] - The library that is used to parse the configuration file(s)<br>
 [sequelize] - The library that is used as ORM - see also [how to configure it](http://sequelizejs.com/docs/latest/usage)<br>
+[wintersmith] - The static website generator<br>
 <br>
 [forever] - A simple tool to keep cm-update-server or any other NodeJS application running continuously (forever).<br>
 [pm2] - Also lets cm-update-server or any other application run forever but has far more features than forever.<br>
@@ -116,5 +132,6 @@ Copyright (c) 2013-2014 Martin Blumenstingl
 
   [config]: http://lorenwest.github.com/node-config/latest
   [sequelize]: http://www.sequelizejs.com
+  [wintersmith]: http://wintersmith.io
   [forever]: https://github.com/nodejitsu/forever
   [pm2]: https://github.com/Unitech/pm2

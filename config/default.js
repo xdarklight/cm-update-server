@@ -29,28 +29,54 @@ module.exports = {
 			 * Decides if the module will be enabled.
 			 */
 			isEnabled: false,
-		}
+		},
 	},
 
 	/**
 	 * Wintersmith settings - see: https://github.com/jnordberg/wintersmith#configuration
 	 */
 	Website: {
+
 		locals: {
-			url: '#',
+			/**
+			 * The title (index page) of the website.
+			 */
 			name: 'ROM overview',
+
+			/**
+			 * The owner/copyright text that will be shown in the footer.
+			 * If left blank then the footer will only show (c) <year>.
+			 */
 			owner: 'cm-update-server provider name',
+
+			/**
+			 * Shows the image at the given URL at the very top of the
+			 * page.
+			 */
 			topImageUrl: '',
+
+			/**
+			 * The alt/title text for the "top image". This is only
+			 * required when topImageUrl is configured.
+			 */
 			topImageAlt: '',
+
+			/**
+			 * Custom links for the "Additional Information" section.
+			 * Leave this empty to disable the "Additional Information"
+			 * area.
+			 */
 			customLinks: [
 				{ src: "http://google.com", text: "google" },
 				{ src: "http://github.com", text: "github" }
 			]
 		},
 
+		/** @see @href https://github.com/jnordberg/wintersmith#options */
 		plugins: [
 		],
 
+		/** @see @href https://github.com/jnordberg/wintersmith#options */
 		require: {
 			filesize: "filesize"
 		},
@@ -59,8 +85,12 @@ module.exports = {
 			pretty: true
 		},
 
+		/** @see @href https://github.com/jnordberg/wintersmith#options */
 		baseUrl: "/",
 
+		/**
+		 * Input/output directories.
+		 */
 		contents: "./website/contents/",
 		templates: "./website/templates/",
 		output: "./website/build/"
