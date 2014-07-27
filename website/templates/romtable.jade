@@ -20,13 +20,20 @@ mixin romtable(allRoms)
                 small #{deviceArticle.metadata.displayName}
             td #{rom.updateChannel}
             td
-              b Download: 
-              a(href="#{rom.downloadUrl}") #{rom.filename}
-              if rom.subdirectory
-                br
-                small directory: #{rom.subdirectory}
-              br
-              small md5sum: #{rom.md5sum}
+              dl.dl-horizontal
+                dt
+                  b Download:
+                dd
+                  a(href="#{rom.downloadUrl}") #{rom.filename}
+                if rom.subdirectory
+                  dt
+                    small directory:
+                  dd
+                    small #{rom.subdirectory}
+                dt
+                  small md5sum:
+                dd
+                  small #{rom.md5sum}
             td(data-order=rom.fileSize)
               if rom.fileSize
                 | #{filesize(rom.fileSize)}
