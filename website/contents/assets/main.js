@@ -1,4 +1,7 @@
 $(document).ready(function() {
+	var filterAreaAttrName = 'data-filter-area-for';
+	var filterLinkAttrName = 'data-filter-value';
+
 	var romTable = $('#rom-table');
 	var romDataTable = romTable.DataTable({
 		'bLengthChange': false,
@@ -15,20 +18,23 @@ $(document).ready(function() {
 		'sDom': 'lrtip', /* Disable the search box */
 	});
 
-	var updateTypeColumn = romDataTable.column('.col-updatechannel');
-	var updateTypeList = $('#updateTypeFilters').find('ul');
-	
-	updateTypeColumn.data().unique().sort().each(function(value, idx) {
-		updateTypeList.append('<li class="updatetype-filter"><a href="#" data-filter-value="' + value + '">' + value + '</a></li>');
-	});
+	$('[' + filterAreaAttrName + ']').each(function(featureAreaIdx, filterAreaElement) {
+		var filterArea = $(filterAreaElement);
+		var filterColumn = romDataTable.column(filterArea.attr(filterAreaAttrName));
+		var filterValueList = filterArea.find('ul');
 
-	$('#updateTypeFilters').removeClass('hidden').addClass('show');
+		filterColumn.data().unique().sort().each(function(filterValue, filterValueIdx) {
+			filterValueList.append('<li><a href="#" ' + filterLinkAttrName + '="' + filterValue + '">' + filterValue + '</a></li>');
+		});
 
-	$(updateTypeList).find('a[data-filter-value]').click(function() {
-		var clickedLink = $(this);
-		updateTypeColumn.search(clickedLink.attr('data-filter-value')).draw();
-		updateTypeList.find('.active').removeClass('active');
-		clickedLink.parent().addClass('active');
-		return false;
+		filterArea.removeClass('hidden').addClass('show');
+
+		filterValueList.find('a[' + filterLinkAttrName + ']').click(function() {
+			var clickedLink = $(this);
+			filterColumn.search(clickedLink.attr(filterLinkAttrName)).draw();
+			filterValueList.find('.active').removeClass('active');
+			clickedLink.parent().addClass('active');
+			return false;
+		});
 	});
 });
