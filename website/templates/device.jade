@@ -6,7 +6,11 @@ block append vars
 block content
   include romtable
 
-  h1 All files for #{page.metadata.name}
+  h1
+    | All files for
+    if page.metadata.displayName
+      i  #{page.metadata.displayName} -
+    |  #{page.metadata.name}
   mixin romtable(page.metadata.roms)
 
 block prepend footer
