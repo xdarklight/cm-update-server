@@ -39,7 +39,7 @@ module.exports = {
 		 */
 		serveStaticConfiguration: [
 			{
-				urlPattern: '^(\/?.*\.html|/)$',
+				urlPattern: '^(/|\/?.*\.html|/assets/.*)$',
 
 				/**
 				* Configuration for restify's serveStatic module. See http://mcavage.me/node-restify/
