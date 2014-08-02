@@ -5,6 +5,18 @@ var config = require('config').Website;
 var models = require('./models/');
 var ResultConverter = require('./result-converter.js');
 
+var generateWebsite = function() {
+	var env = wintersmith(config);
+
+	env.build(function(error) {
+		if (error) {
+			throw error;
+		}
+
+		console.log('Finished building website!');
+	});
+}
+
 models.sequelize.sync().success(function() {
 
 	var deviceJsonPath = path.join(config.contents, 'devices');
@@ -41,15 +53,7 @@ models.sequelize.sync().success(function() {
 				fsextra.writeFileSync(path.join(deviceJsonPath, device.id + '.json'), JSON.stringify(deviceValues));
 			});
 		});
-	});
 
-	var env = wintersmith(config);
-
-	env.build(function(error) {
-		if (error) {
-			throw error;
-		}
-
-		console.log('Finished building website!');
+		generateWebsite();
 	});
 });
