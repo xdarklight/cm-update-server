@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	var filterAreaAttrName = 'data-filter-area-for';
 	var filterLinkAttrName = 'data-filter-value';
+	var visibleWhenJsIsEnabledAttrName = 'data-visible-with-js-enabled';
 
 	var romTable = $('#rom-table');
 	var romDataTable = romTable.DataTable({
@@ -18,6 +19,9 @@ $(document).ready(function() {
 		'sDom': 'lrtip', /* Disable the search box */
 	});
 
+	/* Elements with this value set should have 'hidden' set by default! */
+	$('[' + visibleWhenJsIsEnabledAttrName + ']').removeClass('hidden').addClass('shown');
+
 	$('[' + filterAreaAttrName + ']').each(function(featureAreaIdx, filterAreaElement) {
 		var filterArea = $(filterAreaElement);
 		var filterColumn = romDataTable.column(filterArea.attr(filterAreaAttrName));
@@ -26,8 +30,6 @@ $(document).ready(function() {
 		filterColumn.data().unique().sort().each(function(filterValue, filterValueIdx) {
 			filterValueList.append('<li><a href="#" ' + filterLinkAttrName + '="' + filterValue + '">' + filterValue + '</a></li>');
 		});
-
-		filterArea.removeClass('hidden').addClass('show');
 
 		filterValueList.find('a[' + filterLinkAttrName + ']').click(function() {
 			var clickedLink = $(this);
