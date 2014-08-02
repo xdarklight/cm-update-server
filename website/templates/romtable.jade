@@ -41,6 +41,6 @@ mixin romtable(allRoms)
                 | #{filesize(rom.fileSize)}
               else
                 i (unknown)
-            - var romTimestamp = new Date(rom.createdAt)
+            - var romTimestamp = new Date(rom.timestamp)
             td(data-order=romTimestamp.toISOString())
               | #{romTimestamp.toUTCString()}
