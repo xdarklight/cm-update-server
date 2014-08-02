@@ -37,7 +37,12 @@ mixin romtable(allRoms)
                 dt
                   small md5sum:
                 dd
-                  small #{rom.md5sum}
+                  small
+                    - var md5DownloadContent = new Buffer(rom.md5sum + "  " + rom.filename).toString('base64')
+                    - var downloadMd5InBrowser = 'data:application/octet-stream;base64,' + md5DownloadContent
+                    - var md5sumDownloadFilename = rom.filename + '.md5sum'
+                    a(href=downloadMd5InBrowser, download=md5sumDownloadFilename, title="Click to download the md5sum file for #{rom.filename}")
+                      | #{rom.md5sum}
             td(data-order=rom.fileSize)
               if rom.fileSize
                 | #{filesize(rom.fileSize)}
