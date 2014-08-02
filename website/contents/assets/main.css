@@ -1,11 +1,13 @@
+/* Let the sidebar start at the same position as the headline text. */
 .sidebar-nav {
 	margin-top: 20px;
 }
 
+/* small is too large by default (IMHO). */
 small {
 	font-size: 75%;
 }
 
-.font-weight-normal {
+dt > small {
 	font-weight: normal;
 }

@@ -29,11 +29,11 @@ mixin romtable(allRoms)
                     |  #{rom.filename}
                 if rom.subdirectory
                   dt
-                    small.font-weight-normal directory:
+                    small directory:
                   dd
                     small #{rom.subdirectory}
                 dt
-                  small.font-weight-normal md5sum:
+                  small md5sum:
                 dd
                   small #{rom.md5sum}
             td(data-order=rom.fileSize)
