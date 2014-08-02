@@ -24,7 +24,7 @@ mixin romtable(allRoms)
                 dt
                   b Download:
                 dd
-                  a(href="#{rom.downloadUrl}")
+                  a(href="#{rom.downloadUrl}", rel="nofollow")
                     span.glyphicon.glyphicon-download
                     |  #{rom.filename}
                 if rom.subdirectory
