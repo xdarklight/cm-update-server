@@ -13,8 +13,10 @@ mixin romtable(allRoms)
         each rom in allRoms
           tr
             - var deviceArticle = contents.devices[rom.DeviceId + '.json']
+            - var deviceName = deviceArticle.metadata.name
             td
-              a(href="#{deviceArticle.url}") #{deviceArticle.metadata.name}
+              a(href="#{deviceArticle.url}", title="Click to show all roms for #{deviceName}")
+                |  #{deviceName}
               if deviceArticle.metadata.displayName
                 br
                 small #{deviceArticle.metadata.displayName}
@@ -24,7 +26,7 @@ mixin romtable(allRoms)
                 dt
                   b Download:
                 dd
-                  a(href="#{rom.downloadUrl}", rel="nofollow")
+                  a(href="#{rom.downloadUrl}", rel="nofollow", title="Click to download #{rom.filename}")
                     span.glyphicon.glyphicon-download
                     |  #{rom.filename}
                 if rom.subdirectory
