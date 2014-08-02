@@ -28,7 +28,8 @@ $(document).ready(function() {
 		var filterValueList = filterArea.find('ul');
 
 		filterColumn.data().unique().sort().each(function(filterValue, filterValueIdx) {
-			filterValueList.append('<li><a href="#" ' + filterLinkAttrName + '="' + filterValue + '">' + filterValue + '</a></li>');
+			var filterLink = '<li><a href="#" #FilterAttrName#="#FilterValue#" title="Show only the files for update-type #FilterValue#">#FilterValue#</a></li>';
+			filterValueList.append(filterLink.replace(/#FilterAttrName#/g, filterLinkAttrName).replace(/#FilterValue#/g, filterValue));
 		});
 
 		filterValueList.find('a[' + filterLinkAttrName + ']').click(function() {

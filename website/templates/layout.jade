@@ -32,11 +32,11 @@ html(lang='en')
                 h3 Devices
               - var linkCssClass = (selectedDevice == null) ? 'active' : null;
               li(class=linkCssClass)
-                a(href='#{contents.index.url}') all
+                a(href='#{contents.index.url}', title="Show the files of all devices") all
               each device in contents.devices
                 - var linkCssClass = (selectedDevice == device.metadata.name) ? 'active' : null;
                 li(class=linkCssClass)
-                  a(href='#{device.url}')
+                  a(href='#{device.url}', title="Show only the files for #{device.metadata.name}")
                     | #{device.metadata.name}
                     if device.metadata.displayName
                       small  | #{device.metadata.displayName}
@@ -45,7 +45,7 @@ html(lang='en')
               li.nav-header
                 h3 Type
               li.active
-                a(href='#', data-filter-value='') all
+                a(href='#', data-filter-value='', title="Show the files for all update-types") all
           if locals.customLinks && locals.customLinks.length > 0
             div.sidebar-nav.well
               ul.nav.nav-pills.nav-stacked
