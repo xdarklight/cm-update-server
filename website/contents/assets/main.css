@@ -11,3 +11,15 @@ small {
 dt > small {
 	font-weight: normal;
 }
+
+/* We don't want the content of a dl-horizontal to center. */
+.dl-horizontal dd {
+    margin-left: 0;
+}
+
+/* Ensure that there's not too much space between dt and dd. */
+.dl-horizontal dt {
+    text-align: left;
+    width: auto;
+    padding-right: 1em;
+}
