@@ -1,3 +1,4 @@
+include changelogbutton
 
 mixin romtable(allRoms)
   div.table-responsive
@@ -29,6 +30,7 @@ mixin romtable(allRoms)
                   a.btn.btn-default.btn-xs(href="#{rom.downloadUrl}", rel="nofollow", title="Click to download #{rom.filename}")
                     span.glyphicon.glyphicon-download
                     |  #{rom.filename}
+                  mixin changelogbutton(rom)
                 if rom.subdirectory
                   dt
                     small directory:

@@ -1,0 +1,33 @@
+
+mixin changelogbutton(rom)
+  - var rawChangelogLines = rom.changelog.split(/\n/)
+  - var changelogArray = new Array()
+  - for (i in rawChangelogLines)
+    - var trimmedLine = rawChangelogLines[i].trim()
+    - if (trimmedLine[0] == '*')
+      - changelogArray.push({ headline: trimmedLine.substring(2), values: [] })
+    - else if (trimmedLine.length > 0 && changelogArray.length > 0)
+      - changelogArray[changelogArray.length - 1].values.push(trimmedLine)
+  - if (changelogArray.length > 0)
+    - var changelogDivId = 'changelog-' + rom.id
+    button.btn.btn-default.btn-xs.hidden(data-toggle="modal", data-target="##{changelogDivId}",
+                                data-visible-with-js-enabled, title="Click to show the changelog for #{rom.filename}")
+      span.glyphicon.glyphicon-list-alt
+
+    div.modal(id=changelogDivId) role="dialog" aria-hidden="true">
+      div.modal-dialog
+        div.modal-content
+          div.modal-header
+            button.close(type="button", data-dismiss="modal")
+              span(aria-hidden="true") &times
+              span.sr-only Close
+            div.modal-title
+              h4 Changelog for #{rom.filename}
+          div.modal-body
+            each changelogItem in changelogArray
+              b #{changelogItem.headline}
+              ul
+                each valueItem in changelogItem.values
+                 li #{valueItem}
+          div.modal-footer
+            button.btn.btn-default(type="button", data-dismiss="modal") Close
