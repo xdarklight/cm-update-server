@@ -11,12 +11,16 @@ html(lang='en')
         block title
           = locals.name
 
-    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
-    link(rel='stylesheet', href='//cdn.datatables.net/1.10.1/css/jquery.dataTables.css')
+    - var bootstrapVersion = '3.2.0'
+    - var jqueryVersion = '1.11.1'
+    - var datatablesVersion = '1.10.1'
+
+    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/#{bootstrapVersion}/css/bootstrap.min.css')
+    link(rel='stylesheet', href='//cdn.datatables.net/#{datatablesVersion}/css/jquery.dataTables.css')
     link(rel='stylesheet', href='#{contents.assets["main.css"].url}')
 
-    script(type='text/javascript', src='//code.jquery.com/jquery-1.11.1.min.js')
-    script(type='text/javascript', src='//cdn.datatables.net/1.10.1/js/jquery.dataTables.min.js')
+    script(type='text/javascript', src='//code.jquery.com/jquery-#{jqueryVersion}.min.js')
+    script(type='text/javascript', src='//cdn.datatables.net/#{datatablesVersion}/js/jquery.dataTables.min.js')
     script(type='text/javascript', src='#{contents.assets["main.js"].url}')
 
   body
