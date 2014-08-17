@@ -46,6 +46,7 @@ models.sequelize.sync().success(function() {
 				roms.forEach(function(rom) {
 					var romValues = rom.toJSON();
 					romValues.downloadUrl = ResultConverter.getRomDownloadUrl(rom);
+					romValues.md5sumUrl = ResultConverter.getRomMd5sumUrl(rom);
 
 					deviceValues.roms.push(romValues);
 				});

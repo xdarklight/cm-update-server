@@ -122,6 +122,10 @@ module.exports.getRealRomDownloadUrl = function(rom) {
 	return url;
 }
 
+module.exports.getRomMd5sumUrl = function(rom) {
+	return module.exports.getRealRomDownloadUrl(rom) + '.md5sum';
+}
+
 module.exports.getChangelogUrl = function(rom) {
 	return config.changelogBaseUrl + '/' + rom.id;
 }
