@@ -29,7 +29,7 @@ models.sequelize.sync().success(function() {
 	fsextra.ensureDirSync(config.output);
 
 	models.Device.findAll({ order: 'name ASC' }).success(function(devices) {
-		devices.forEach(function(device) {
+		devices.forEach(function(device, deviceIndex) {
 			var deviceValues = device.toJSON();
 			deviceValues.template = 'device.jade';
 			deviceValues.filename = '/device-' + device.name + '.html';
@@ -52,9 +52,12 @@ models.sequelize.sync().success(function() {
 				});
 
 				fsextra.writeFileSync(path.join(deviceJsonPath, device.id + '.json'), JSON.stringify(deviceValues));
+			}).success(function() {
+				// Generate the website after the roms of the last device were processed.
+				if (deviceIndex == devices.length -1) {
+					generateWebsite();
+				}
 			});
 		});
-
-		generateWebsite();
 	});
 });
