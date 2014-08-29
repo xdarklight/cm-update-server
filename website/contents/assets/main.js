@@ -15,17 +15,12 @@ var getChartData = function() {
 }
 
 var drawChart = function() {
-	var chartData = getChartData();
-	if (!chartData) {
-		return;
-	}
-
 	var downloadsByDate = {};
 
 	var fullDownloadData = createChartDataTable();
 	var incrementalDownloadData = createChartDataTable();
 
-	chartData.forEach(function(deviceStatistics) {
+	getChartData().forEach(function(deviceStatistics) {
 		fullDownloadData.addColumn('number', deviceStatistics.device);
 		incrementalDownloadData.addColumn('number', deviceStatistics.device);
 
@@ -113,5 +108,7 @@ $(window).resize(function() {
 	drawChart();
 });
 
-google.load('visualization', '1', { packages: [ 'corechart' ] });
-google.setOnLoadCallback(drawChart);
+if (typeof google !== 'undefined') {
+	google.load('visualization', '1', { packages: [ 'corechart' ] });
+	google.setOnLoadCallback(drawChart);
+}
