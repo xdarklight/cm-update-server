@@ -152,7 +152,6 @@ models.sequelize.sync().success(function() {
 					eachCallback(err);
 				});
 			}, function(err) {
-				console.log(JSON.stringify(totalDownloadStats));
 				fsextra.writeFileSync(path.join(statsJsonPath, 'totaldownloads.json'), JSON.stringify(totalDownloadStats));
 				waterfallCallback(err);
 			});
