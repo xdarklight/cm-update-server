@@ -45,12 +45,9 @@ html(lang='en')
                     | #{device.metadata.name}
                     if device.metadata.displayName
                       small  | #{device.metadata.displayName}
-          div.sidebar-nav.well.hidden(data-filter-area-for='.col-updatechannel', data-visible-with-js-enabled)
-            ul.nav.nav-pills.nav-stacked
-              li.nav-header
-                h3 Type
-              li.active
-                a(href='#', data-filter-value='', title="Show the files for all update-types") all
+
+          block sidebarmiddle
+
           if locals.customLinks && locals.customLinks.length > 0
             div.sidebar-nav.well
               ul.nav.nav-pills.nav-stacked

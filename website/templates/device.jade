@@ -3,6 +3,10 @@ extends layout
 block append vars
   - selectedDevice = page.metadata.name
 
+block sidebarmiddle
+  include updatetypefiltersidebar
+  mixin updatetypefiltersidebar()
+
 block content
   include romtable
 

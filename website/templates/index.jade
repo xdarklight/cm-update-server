@@ -9,6 +9,10 @@ block append vars
   -   return new Date(b.createdAt) - new Date(a.createdAt);
   - });
 
+block sidebarmiddle
+  include updatetypefiltersidebar
+  mixin updatetypefiltersidebar()
+
 block content
   include romtable
 
