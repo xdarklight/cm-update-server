@@ -88,8 +88,9 @@ module.exports = {
 			 * area.
 			 */
 			customLinks: [
-				{ src: "http://google.com", text: "google" },
-				{ src: "http://github.com", text: "github" }
+				{ src: "/stats.html", text: "Download statistics" },
+				{ src: "http://google.com", text: "google", target: "_blank" },
+				{ src: "http://github.com", text: "github", target: "_blank" }
 			]
 		},
 

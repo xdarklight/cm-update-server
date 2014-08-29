@@ -37,7 +37,7 @@ html(lang='en')
             ul.nav.nav-pills.nav-stacked
               li.nav-header
                 h3 Devices
-              - var linkCssClass = (selectedDevice == null) ? 'active' : null;
+              - var linkCssClass = (contents.index.url == page.url) ? 'active' : null;
               li(class=linkCssClass)
                 a(href='#{contents.index.url}', title="Show the files of all devices") all
               each device in contents.devices
@@ -56,8 +56,12 @@ html(lang='en')
                 li.nav-header
                   h3 Additional information
                 each link in locals.customLinks
-                  li
-                    a(href='#{link.src}', target='_blank') #{link.text}
+                  - var linkCssClass = null;
+                  - if (link.src == page.url) {
+                  -   linkCssClass = 'active';
+                  - }
+                  li(class=linkCssClass)
+                    a(href=link.src, target=link.target) #{link.text}
 
         div.col-xs-12.col-md-9
           block content
