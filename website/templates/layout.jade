@@ -1,6 +1,6 @@
 doctype html
 block vars
-  - var selectedDevice = null;
+
 html(lang='en')
   head
     block head
@@ -41,7 +41,7 @@ html(lang='en')
               li(class=linkCssClass)
                 a(href='#{contents.index.url}', title="Show the files of all devices") all
               each device in contents.devices
-                - var linkCssClass = (selectedDevice == device.metadata.name) ? 'active' : null;
+                - var linkCssClass = (device.url == page.url) ? 'active' : null;
                 li(class=linkCssClass)
                   a(href='#{device.url}', title="Show only the files for #{device.metadata.name}")
                     | #{device.metadata.name}
