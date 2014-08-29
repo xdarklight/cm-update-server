@@ -57,7 +57,7 @@ models.sequelize.sync().success(function() {
 								deviceValues.roms.push(romValues);
 							});
 
-							fsextra.writeFileSync(path.join(deviceJsonPath, device.id + '.json'), JSON.stringify(deviceValues));
+							fsextra.writeJSONSync(path.join(deviceJsonPath, device.id + '.json'), deviceValues);
 
 							parallelCallback(err, device.name);
 						});
@@ -152,7 +152,7 @@ models.sequelize.sync().success(function() {
 					eachCallback(err);
 				});
 			}, function(err) {
-				fsextra.writeFileSync(path.join(statsJsonPath, 'totaldownloads.json'), JSON.stringify(totalDownloadStats));
+				fsextra.writeJSONSync(path.join(statsJsonPath, 'totaldownloads.json'), totalDownloadStats);
 				waterfallCallback(err);
 			});
 		},
