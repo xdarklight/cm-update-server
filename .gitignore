@@ -3,4 +3,6 @@ data/
 npm-debug.log
 config/*.json
 website/contents/devices
+website/contents/stats
 website/build
+

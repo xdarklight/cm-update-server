@@ -1,0 +1,16 @@
+extends layout
+
+block head
+  script(type='text/javascript', src='//www.google.com/jsapi')
+
+block content
+
+  h1 Download statistics
+  script#chart-data(type='application/json')
+    !{JSON.stringify(page.metadata.statistics)}
+
+  div#full-downloads-chart
+  br
+  div#incremental-downloads-chart
+
+block prepend footer

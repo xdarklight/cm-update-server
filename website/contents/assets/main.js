@@ -1,3 +1,70 @@
+var createChartDataTable = function() {
+	var dataTable = new google.visualization.DataTable();
+	dataTable.addColumn('date', 'Date');
+
+	return dataTable;
+}
+
+var getChartData = function() {
+	var chartDataBlock = $('#chart-data');
+	if (chartDataBlock.length < 1) {
+		return null;
+	}
+
+	return JSON.parse(chartDataBlock.html());
+}
+
+var drawChart = function() {
+	var chartData = getChartData();
+	if (!chartData) {
+		return;
+	}
+
+	var downloadsByDate = {};
+
+	var fullDownloadData = createChartDataTable();
+	var incrementalDownloadData = createChartDataTable();
+
+	chartData.forEach(function(deviceStatistics) {
+		fullDownloadData.addColumn('number', deviceStatistics.device);
+		incrementalDownloadData.addColumn('number', deviceStatistics.device);
+
+		if (deviceStatistics.downloads) {
+			for (date in deviceStatistics.downloads) {
+				if (!downloadsByDate[date]) {
+					downloadsByDate[date] = [];
+				}
+
+				downloadsByDate[date].push(deviceStatistics.downloads[date]);
+			};
+		}
+	});
+
+	for (date in downloadsByDate) {
+		var formattedDate = new Date(parseInt(date));
+
+		var fullDownloadRow = [ formattedDate ];
+		var incrementalDownloadRow = [ formattedDate ];
+
+		downloadsByDate[date].forEach(function(deviceStatRow) {
+			fullDownloadRow.push(deviceStatRow.full);
+			incrementalDownloadRow.push(deviceStatRow.incremental);
+		});
+
+		fullDownloadData.addRow(fullDownloadRow);
+		incrementalDownloadData.addRow(incrementalDownloadRow);
+	};
+
+	new google.visualization.AreaChart($('#full-downloads-chart')[0]).draw(fullDownloadData, {
+		title: 'Full ZIP downloads',
+		height: 350,
+	});
+	new google.visualization.AreaChart($('#incremental-downloads-chart')[0]).draw(incrementalDownloadData, {
+		title: 'Incremental update downloads',
+		height: 350,
+	});
+}
+
 $(document).ready(function() {
 	var filterAreaAttrName = 'data-filter-area-for';
 	var filterLinkAttrName = 'data-filter-value';
@@ -41,3 +108,10 @@ $(document).ready(function() {
 		});
 	});
 });
+
+$(window).resize(function() {
+	drawChart();
+});
+
+google.load('visualization', '1', { packages: [ 'corechart' ] });
+google.setOnLoadCallback(drawChart);
