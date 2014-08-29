@@ -81,15 +81,13 @@ $(document).ready(function() {
 		'sDom': 'lrtip', /* Disable the search box */
 	});
 
-	/* Elements with this value set should have 'hidden' set by default! */
-	$('[' + visibleWhenJsIsEnabledAttrName + ']').removeClass('hidden').addClass('shown');
-
 	$('[' + filterAreaAttrName + ']').each(function(featureAreaIdx, filterAreaElement) {
 		var filterArea = $(filterAreaElement);
 		var filterColumn = romDataTable.column(filterArea.attr(filterAreaAttrName));
 		var filterValueList = filterArea.find('ul');
 
-		filterColumn.data().unique().sort().each(function(filterValue, filterValueIdx) {
+		var filterData = filterColumn.data().unique().sort();
+		filterData.each(function(filterValue, filterValueIdx) {
 			var filterLink = '<li><a href="#" #FilterAttrName#="#FilterValue#" title="Show only the files for update-type #FilterValue#">#FilterValue#</a></li>';
 			filterValueList.append(filterLink.replace(/#FilterAttrName#/g, filterLinkAttrName).replace(/#FilterValue#/g, filterValue));
 		});
@@ -101,7 +99,15 @@ $(document).ready(function() {
 			clickedLink.parent().addClass('active');
 			return false;
 		});
+
+		if (filterData.length <= 1) {
+			/* Nothing to filter -> keep the extra sidebar hidden. */
+			filterArea.removeAttr(visibleWhenJsIsEnabledAttrName);
+		}
 	});
+
+	/* Elements with this value set should have 'hidden' set by default! */
+	$('[' + visibleWhenJsIsEnabledAttrName + ']').removeClass('hidden').addClass('shown');
 });
 
 $(window).resize(function() {
