@@ -5,7 +5,8 @@ block head
 
 block content
 
-  h1 Download statistics
+  h1
+    b Download statistics
   script#chart-data(type='application/json') !{JSON.stringify(page.metadata.statistics)}
 
   div#full-downloads-chart
