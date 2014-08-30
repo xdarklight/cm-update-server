@@ -20,7 +20,7 @@ var drawChart = function() {
 	var fullDownloadData = createChartDataTable();
 	var incrementalDownloadData = createChartDataTable();
 
-	getChartData().forEach(function(deviceStatistics) {
+	getChartData().sort(function(a, b) { return a.device.localeCompare(b.device); }).forEach(function(deviceStatistics) {
 		fullDownloadData.addColumn('number', deviceStatistics.device);
 		incrementalDownloadData.addColumn('number', deviceStatistics.device);
 

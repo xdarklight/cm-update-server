@@ -38,13 +38,14 @@ html(lang='en')
               - var linkCssClass = (contents.index.url == page.url) ? 'active' : null;
               li(class=linkCssClass)
                 a(href='#{contents.index.url}', title="Show the files of all devices") all
-              each device in contents.devices
-                - var linkCssClass = (device.url == page.url) ? 'active' : null;
+              each deviceKey in Object.keys(contents.devices).sort()
+                - var deviceArticle = contents.devices[deviceKey];
+                - var linkCssClass = (deviceArticle.url == page.url) ? 'active' : null;
                 li(class=linkCssClass)
-                  a(href='#{device.url}', title="Show only the files for #{device.metadata.name}")
-                    | #{device.metadata.name}
-                    if device.metadata.displayName
-                      small  | #{device.metadata.displayName}
+                  a(href='#{deviceArticle.url}', title="Show only the files for #{deviceArticle.metadata.name}")
+                    | #{deviceArticle.metadata.name}
+                    if deviceArticle.metadata.displayName
+                      small  | #{deviceArticle.metadata.displayName}
 
           block sidebarmiddle
 

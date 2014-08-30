@@ -57,7 +57,7 @@ models.sequelize.sync().success(function() {
 								deviceValues.roms.push(romValues);
 							});
 
-							fsextra.writeJSONSync(path.join(deviceJsonPath, device.id + '.json'), deviceValues);
+							fsextra.writeJSONSync(path.join(deviceJsonPath, device.name + '.json'), deviceValues);
 
 							parallelCallback(err, device.name);
 						});

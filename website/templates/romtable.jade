@@ -13,11 +13,16 @@ mixin romtable(allRoms)
       tbody
         each rom in allRoms
           tr
-            - var deviceArticle = contents.devices[rom.DeviceId + '.json']
-            - var deviceName = deviceArticle.metadata.name
+            - var deviceArticle = null;
+            - for (i in contents.devices) {
+            -   if (contents.devices[i].metadata.id == rom.DeviceId) {
+            -     deviceArticle = contents.devices[i];
+            -     break;
+            -   }
+            - }
             td
-              a(href="#{deviceArticle.url}", title="Click to show all roms for #{deviceName}")
-                |  #{deviceName}
+              a(href="#{deviceArticle.url}", title="Click to show all roms for #{deviceArticle.metadata.name}")
+                |  #{deviceArticle.metadata.name}
               if deviceArticle.metadata.displayName
                 br
                 small #{deviceArticle.metadata.displayName}
