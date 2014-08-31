@@ -1,5 +1,10 @@
 extends layout
 
+block title
+  if page.metadata.displayName
+    | #{page.metadata.displayName} - 
+  | #{page.metadata.name} | #{locals.name}
+
 block sidebarmiddle
   include updatetypefiltersidebar
   mixin updatetypefiltersidebar()
