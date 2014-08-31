@@ -1,9 +1,9 @@
 extends layout
 
-block title
+block prepend title
   if page.metadata.displayName
     | #{page.metadata.displayName} - 
-  | #{page.metadata.name} | #{locals.name}
+  | #{page.metadata.name}
 
 block sidebarmiddle
   include updatetypefiltersidebar
