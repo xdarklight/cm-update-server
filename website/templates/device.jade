@@ -3,7 +3,7 @@ extends layout
 block prepend title
   if page.metadata.displayName
     | #{page.metadata.displayName} - 
-  | #{page.metadata.name}
+  | #{page.metadata.name} | 
 
 block sidebarmiddle
   include updatetypefiltersidebar
