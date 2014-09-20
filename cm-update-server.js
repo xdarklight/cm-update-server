@@ -151,7 +151,7 @@ models.sequelize.sync().success(function() {
 			if (err) {
 				res.send(500, ResultConverter.convertIncrementalErrors('Database error.'));
 			} else if (!incremental || !incremental.isActive) {
-				res.send(404, ResultConverter.convertIncrementalErrors("No matching incremental update found!"));
+				res.send(200, ResultConverter.convertIncrementalErrors("No matching incremental update found!"));
 			} else {
 				res.send(200, ResultConverter.convertIncremental(incremental));
 			}
