@@ -180,7 +180,7 @@ models.sequelize.sync().success(function() {
 
 			if (!device) {
 				// No error but nothing found.
-				res.send(200, ResultConverter.convertRomListError(responseId, "Unknown device."));
+				res.send(404, ResultConverter.convertRomListError(responseId, "Unknown device."));
 				return next();
 			}
 
