@@ -57,7 +57,6 @@ module.exports = {
 	 * Wintersmith settings - see: https://github.com/jnordberg/wintersmith#configuration
 	 */
 	Website: {
-
 		locals: {
 			/**
 			 * The title (index page) of the website.
@@ -148,7 +147,6 @@ module.exports = {
 		 * NOTE: If isDownloadProxyEnabled is set to false then this value can be ignored!
 		 */
 		proxyIncrementalDownloadBaseUrl: "http://localhost:3000/download/incremental",
-
 
 		/**
 		 * Similar to proxyDownloadBaseUrl this is the base-URL used to build each Rom's changelog URL.

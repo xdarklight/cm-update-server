@@ -42,8 +42,6 @@ var validateUniqueActiveRomPerSubdirectory = function(device, parentRomId, succe
 }
 
 function createNewRomFor(device, parentRomId) {
-
-
 	var buildTimestamp = utils.toDate(buildInfo.timestamp);
 
 	var parsedUpdateChannel = new String(buildInfo.channel);
