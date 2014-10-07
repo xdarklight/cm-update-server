@@ -28,10 +28,6 @@ module.exports = function(sequelize, DataTypes) {
 				notNull: true,
 				min: 1,
 			},
-			subdirectory: {
-				type: Sequelize.STRING(255),
-				notEmpty: false,
-			},
 			isActive: {
 				type: Sequelize.BOOLEAN,
 				notNull: true,
