@@ -1,62 +1,43 @@
-var createChartDataTable = function() {
-	var dataTable = new google.visualization.DataTable();
-	dataTable.addColumn('date', 'Date');
-
-	return dataTable;
-}
-
 var getChartData = function() {
-	var chartDataBlock = $('#chart-data');
-	if (chartDataBlock.length < 1) {
+	var chartDataBlocks = $('.chart-data');
+	if (chartDataBlocks.length < 1) {
 		return null;
 	}
 
-	return JSON.parse(chartDataBlock.html());
+	return $.map(chartDataBlocks, function(block, i) {
+		return JSON.parse($(block).html());
+	});
 }
 
 var drawChart = function() {
-	var downloadsByDate = {};
+	var charts = getChartData();
+	if (!charts) {
+		return;
+	}
 
-	var fullDownloadData = createChartDataTable();
-	var incrementalDownloadData = createChartDataTable();
+	charts.forEach(function(chartData) {
+		var dataTable = new google.visualization.DataTable();
 
-	getChartData().sort(function(a, b) { return a.device.localeCompare(b.device); }).forEach(function(deviceStatistics) {
-		fullDownloadData.addColumn('number', deviceStatistics.device);
-		incrementalDownloadData.addColumn('number', deviceStatistics.device);
+		for (i in chartData.tableColumns) {
+			var column = chartData.tableColumns[i];
+			var dataType = column[0];
 
-		if (deviceStatistics.downloads) {
-			for (date in deviceStatistics.downloads) {
-				if (!downloadsByDate[date]) {
-					downloadsByDate[date] = [];
+			dataTable.addColumn(dataType, column[1], column[2]);
+
+			if (dataType == 'date') {
+				for (var rowIdx in chartData.tableData) {
+					var row = chartData.tableData[rowIdx];
+					row[i] = new Date(row[i]);
 				}
-
-				downloadsByDate[date].push(deviceStatistics.downloads[date]);
-			};
+			}
 		}
-	});
 
-	for (date in downloadsByDate) {
-		var formattedDate = new Date(parseInt(date));
+		dataTable.addRows(chartData.tableData);
 
-		var fullDownloadRow = [ formattedDate ];
-		var incrementalDownloadRow = [ formattedDate ];
-
-		downloadsByDate[date].forEach(function(deviceStatRow) {
-			fullDownloadRow.push(deviceStatRow.full);
-			incrementalDownloadRow.push(deviceStatRow.incremental);
+		new google.visualization.AreaChart($(chartData.chartContainerSelector)[0]).draw(dataTable, {
+			title: chartData.title,
+			height: chartData.height,
 		});
-
-		fullDownloadData.addRow(fullDownloadRow);
-		incrementalDownloadData.addRow(incrementalDownloadRow);
-	};
-
-	new google.visualization.AreaChart($('#full-downloads-chart')[0]).draw(fullDownloadData, {
-		title: 'Full ZIP downloads',
-		height: 350,
-	});
-	new google.visualization.AreaChart($('#incremental-downloads-chart')[0]).draw(incrementalDownloadData, {
-		title: 'Incremental update downloads',
-		height: 350,
 	});
 }
 

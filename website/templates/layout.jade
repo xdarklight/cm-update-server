@@ -39,8 +39,8 @@ html(lang='en')
               li(class=linkCssClass)
                 a(href='#{contents.index.url}', title="Show the files of all devices") all
               each deviceKey in Object.keys(contents.devices).sort()
-                - var deviceArticle = contents.devices[deviceKey];
-                - var linkCssClass = (deviceArticle.url == page.url) ? 'active' : null;
+                - var deviceArticle = contents.devices[deviceKey]
+                - var linkCssClass = (deviceArticle.url == page.url) ? 'active' : null
                 li(class=linkCssClass)
                   a(href='#{deviceArticle.url}', title="Show only the files for #{deviceArticle.metadata.name}")
                     | #{deviceArticle.metadata.name}

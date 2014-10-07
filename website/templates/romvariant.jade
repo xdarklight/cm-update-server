@@ -1,18 +1,17 @@
 extends layout
 
 block append vars
-  - var romsForCurrentDevice = []
+  - var romsForCurrentVariant = []
   - for (var i in contents.roms) {
   -   var romMetadata = contents.roms[i].metadata
-  -   if (romMetadata.rom.romVariant.device.id == page.metadata.id) {
-  -     romsForCurrentDevice.push(romMetadata)
+  -   if (romMetadata.rom.romVariant.id == page.metadata.id) {
+  -     romsForCurrentVariant.push(romMetadata)
   -   }
   - }
 
 block prepend title
   if page.metadata.displayName
-    | #{page.metadata.displayName} - 
-  | #{page.metadata.name} | 
+    | #{page.metadata.displayName}
 
 block sidebarmiddle
   include updatetypefiltersidebar
@@ -22,10 +21,9 @@ block content
   include romtable
 
   h1
-    b Browse files for
+    b Browse files for build
       if page.metadata.displayName
         i  #{page.metadata.displayName} -
-      |  #{page.metadata.name}
-  mixin romtable(romsForCurrentDevice)
+  mixin romtable(romsForCurrentVariant)
 
 block prepend footer

@@ -1,6 +1,6 @@
 include changelogbutton
 
-mixin romtable(allRoms)
+mixin romtable(romMetadataArray)
   div.table-responsive
     table.table.table-striped.table-hover#rom-table
       thead
@@ -11,8 +11,12 @@ mixin romtable(allRoms)
           th.col-size Size
           th.col-date Build date
       tbody
-        each rom in allRoms
+        - romMetadataArray.sort(function(a, b) {
+        -   return new Date(b.rom.createdAt) - new Date(a.rom.createdAt);
+        - });
+        each romMetadata in romMetadataArray
           tr
+            - var rom = romMetadata.rom
             - var deviceArticle = null;
             - for (i in contents.devices) {
             -   if (contents.devices[i].metadata.id == rom.romVariant.device.id) {
@@ -32,7 +36,7 @@ mixin romtable(allRoms)
                 dt
                   b Download:
                 dd
-                  a.btn.btn-default.btn-xs(href="#{rom.downloadUrl}", rel="nofollow", title="Click to download #{rom.filename}")
+                  a.btn.btn-default.btn-xs(href="#{romMetadata.downloadUrl}", rel="nofollow", title="Click to download #{rom.filename}")
                     span.glyphicon.glyphicon-download
                     |  #{rom.filename}
                   mixin changelogbutton(rom)
@@ -45,7 +49,7 @@ mixin romtable(allRoms)
                   small md5sum:
                 dd
                   small
-                    a(href="#{rom.md5sumUrl}", title="Click to download the md5sum file for #{rom.filename}")
+                    a(href="#{romMetadata.md5sumUrl}", title="Click to download the md5sum file for #{rom.filename}")
                       | #{rom.md5sum}
             td(data-order=rom.fileSize)
               if rom.fileSize

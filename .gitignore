@@ -3,6 +3,8 @@ data/
 npm-debug.log
 config/*.json
 website/contents/devices
+website/contents/roms
+website/contents/romvariants
 website/contents/stats
 website/build
 

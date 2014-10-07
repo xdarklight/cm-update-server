@@ -8,175 +8,173 @@ var ResultConverter = require('./result-converter.js');
 
 models.sequelize.sync().success(function() {
 
-	var deviceJsonPath = path.join(config.contents, 'devices');
-	var statsJsonPath = path.join(config.contents, 'stats');
-
-	if (fsextra.existsSync(deviceJsonPath)) {
-		fsextra.removeSync(deviceJsonPath);
+	var Directories = {
+		deviceJsonPath: path.join(config.contents, 'devices'),
+		statsJsonPath: path.join(config.contents, 'stats'),
+		romVariantsJsonPath: path.join(config.contents, 'romvariants'),
+		romJsonPath: path.join(config.contents, 'roms'),
 	}
 
-	if (fsextra.existsSync(statsJsonPath)) {
-		fsextra.removeSync(statsJsonPath);
-	}
+	async.series([
+		function(seriesCallback) {
+			for (var i in Directories) {
+				var directory = Directories[i];
 
-	fsextra.ensureDirSync(deviceJsonPath);
-	fsextra.ensureDirSync(statsJsonPath);
-	fsextra.ensureDirSync(config.output);
+				if (fsextra.existsSync(directory)) {
+					fsextra.removeSync(directory);
+				}
 
-	async.waterfall([
-		function(waterfallCallback) {
-			models.Device.findAll({ order: 'name ASC' }).complete(function(error, devices) {
-				waterfallCallback(error, devices);
-			});
+				fsextra.ensureDirSync(directory);
+			}
+
+			seriesCallback(null);
 		},
 
-		function(devices, waterfallCallback) {
-			var totalDownloadStats = { template: 'statistics.jade', filename: '/stats.html', statistics: [] };
+		function(seriesCallback) {
+			fsextra.ensureDir(config.output, seriesCallback);
+		},
 
-			async.each(devices, function(device, eachCallback) {
-				async.parallel([
-					function(parallelCallback) {
-						var deviceValues = device.toJSON();
-						deviceValues.template = 'device.jade';
-						deviceValues.filename = '/device-' + device.name + '.html';
+		function(seriesCallback) {
+			async.parallel([
+				function(parallelCallback) {
+					models.Device.findAll({
+						order: 'name ASC'
+					}).success(function(devices) {
+						async.each(devices, function(device, eachCallback) {
+							var deviceValues = device.toJSON();
+							deviceValues.template = 'device.jade';
+							deviceValues.filename = '/device-' + device.name + '.html';
 
-						models.Rom.findAll({
-							include: [
-								{
+							fsextra.writeJSON(path.join(Directories.deviceJsonPath, device.name + '.json'), deviceValues, eachCallback);
+						}, parallelCallback);
+					});
+				},
+
+				function(parallelCallback) {
+					models.RomVariant.findAll({
+						order: 'displayName ASC, id ASC'
+					}).success(function(romVariants) {
+						async.each(romVariants, function(romVariant, eachCallback) {
+							var romVariantValues = romVariant.toJSON();
+							var variantName = (romVariant.displayName ? romVariant.displayName : new String(romVariant.id)).toLowerCase().replace(' ', '');
+
+							romVariantValues.template = 'romvariant.jade';
+							romVariantValues.filename = '/rom-' + variantName + '.html';
+
+							fsextra.writeJSON(path.join(Directories.romVariantsJsonPath, variantName + '.json'), romVariantValues, eachCallback);
+						}, parallelCallback);
+					});
+				},
+
+				function(parallelCallback) {
+					models.Rom.findAll({
+						include: [
+							{
+								model: models.RomVariant,
+								include: [
+									{
+										model: models.Device,
+									}
+								]
+							}
+						],
+						where: {
+							isActive: true,
+						},
+						order: 'createdAt DESC',
+					}).success(function(roms) {
+						async.each(roms, function(rom, eachCallback) {
+							var romValues = { rom: rom.toJSON() };
+							romValues.downloadUrl = ResultConverter.getRomDownloadUrl(rom);
+							romValues.md5sumUrl = ResultConverter.getRomMd5sumUrl(rom);
+
+							fsextra.writeJSON(path.join(Directories.romJsonPath, rom.id + '.json'), romValues, eachCallback);
+						}, parallelCallback);
+					});
+				},
+
+				function(parallelCallback) {
+					// Start 7 days ago at 0:00:00
+					var dateStart = new Date();
+					dateStart.setDate(dateStart.getDate() - 7);
+					dateStart.setHours(0, dateStart.getTimezoneOffset() * -1, 0, 0);
+
+					// Until today 0:00:00
+					var dateEnd = new Date();
+					dateEnd.setDate(dateEnd.getDate());
+					dateEnd.setHours(0, dateEnd.getTimezoneOffset() * -1, 0, 0);
+
+					models.Download.findAll({
+						include: [
+							{
+								model: models.Rom,
+								include: {
 									model: models.RomVariant,
 									include: [
 										{
 											model: models.Device,
-											where: {
-												id: device.id,
-											}
 										}
 									]
 								}
-							],
-							where: {
-								isActive: true,
 							},
-							order: 'createdAt DESC',
-						}).complete(function(err, roms) {
-							deviceValues.roms = [];
+							{
+								model: models.Incremental,
+								include: {
+									model: models.RomVariant,
+									include: [
+										{
+											model: models.Device,
+										}
+									]
+								}
+							},
+						],
+						where: [
+							{
+								createdAt: {
+									between: [ dateStart, dateEnd ]
+								}
+							}
+						]
+					}).success(function(allDownloads) {
+						async.map(allDownloads, function(download, mapCallback) {
+							var incrementalId = null;
+							var romId = null;
+							var romVariantId = null;
 
-							roms.forEach(function(rom) {
-								var romValues = rom.toJSON();
-								romValues.downloadUrl = ResultConverter.getRomDownloadUrl(rom);
-								romValues.md5sumUrl = ResultConverter.getRomMd5sumUrl(rom);
+							if (!!download.rom) {
+								romId = download.rom.id;
+								romVariantId = download.rom.romVariant.id;
+							} else {
+								incrementalId = download.incremental.id;
+								romVariantId = download.incremental.romVariant.id;
+							}
 
-								deviceValues.roms.push(romValues);
-							});
+							var result = {
+								DownloadId: download.id,
+								createdAt: download.createdAt,
+								RomId: romId,
+								IncrementalId: incrementalId,
+								RomVariantId: romVariantId,
+							};
 
-							fsextra.writeJSONSync(path.join(deviceJsonPath, device.name + '.json'), deviceValues);
+							mapCallback(null, result);
+						}, function(err, processedDownloads) {
+							if (err) {
+								parallelCallback(err);
+							} else {
+								var downloadStats = { template: 'statistics.jade', filename: '/stats.html', downloads: processedDownloads };
 
-							parallelCallback(err, device.name);
+								fsextra.writeJSON(path.join(Directories.statsJsonPath, 'statistics.json'), downloadStats, parallelCallback);
+							}
 						});
-					},
-
-					function(parallelCallback) {
-						async.times(7, function(n, timesCallback) {
-							var date = new Date();
-							date.setHours(0, 0, 0, 0);
-							date.setDate(date.getDate() - n);
-
-							var dateEnd = new Date(date);
-							dateEnd.setHours(23, 59, 59);
-
-							async.parallel([
-								function(parallelInTimesCallback) {
-									parallelInTimesCallback(null, date);
-								},
-
-								function(parallelInTimesCallback) {
-									models.Download.count({
-										include: [
-											{
-												model: models.Rom,
-												include: {
-													model: models.RomVariant,
-													include: [
-														{
-															model: models.Device,
-														where: {
-																id: device.id,
-															}
-														}
-													]
-												}
-											},
-										],
-										where: [
-											{
-												createdAt: {
-													between: [ date, dateEnd ]
-												}
-											}
-										],
-										group: [
-											[ models.sequelize.fn('strftime', '"%Y-%m-%d", timestamp') ],
-										],
-									}).complete(function(err, fullDownloads) {
-										parallelInTimesCallback(err, fullDownloads);
-									});
-								},
-
-								function(parallelInTimesCallback) {
-									models.Download.count({
-										include: [
-											{
-												model: models.Incremental,
-												include: {
-													model: models.RomVariant,
-													include: [
-														{
-															model: models.Device,
-															where: {
-																id: device.id,
-															}
-														}
-													]
-												}
-											},
-										],
-										where: [
-											{
-												createdAt: {
-													between: [ date, dateEnd ]
-												}
-											}
-										],
-										group: [
-											[ models.sequelize.fn('strftime', '"%Y-%m-%d", timestamp') ],
-										],
-									}).complete(function(err, incrementalDownloads) {
-										parallelInTimesCallback(err, incrementalDownloads);
-									});
-								},
-							], timesCallback);
-						}, parallelCallback);
-					}
-				], function(err, results) {
-					var deviceStats = { device: results[0], downloads: {} }
-
-					results[1].forEach(function(downloadsPerDay) {
-						deviceStats.downloads[downloadsPerDay[0].getTime()] = {
-							full: downloadsPerDay[1],
-							incremental: downloadsPerDay[2] };
 					});
-
-					totalDownloadStats.statistics.push(deviceStats);
-					eachCallback(err);
-				});
-			}, function(err) {
-				fsextra.writeJSONSync(path.join(statsJsonPath, 'totaldownloads.json'), totalDownloadStats);
-				waterfallCallback(err);
-			});
+				},
+			], seriesCallback);
 		},
 
-		function(waterfallCallback) {
-			wintersmith(config).build(waterfallCallback);
+		function(seriesCallback) {
+			wintersmith(config).build(seriesCallback);
 		},
 	], function(err) {
 		if (err) {

@@ -1,5 +1,55 @@
 extends layout
 
+block append vars
+  - var romVariants = {}
+  - var fullDownloadsByDateAndRomVariant = {}
+  - var incrementalDownloadsByDateAndRomVariant = {}
+  - var allDownloads = page.metadata.downloads
+  - allDownloads.forEach(function(download) {
+  -   var romVariantId = download.RomVariantId
+  -   var downloadDate = new Date(download.createdAt)
+  -   var downloadTimestamp = new Date(downloadDate.getFullYear(), downloadDate.getMonth(), downloadDate.getDate()).toISOString()
+  -   var downloadsByDateAndRomVariant = null
+  -   if (!!download.RomId) {
+  -     downloadsByDateAndRomVariant = fullDownloadsByDateAndRomVariant
+  -   } else {
+  -     downloadsByDateAndRomVariant = incrementalDownloadsByDateAndRomVariant
+  -   }
+  -   if (!downloadsByDateAndRomVariant[downloadTimestamp]) {
+  -     downloadsByDateAndRomVariant[downloadTimestamp] = {}
+  -   }
+  -   if (!downloadsByDateAndRomVariant[downloadTimestamp][romVariantId]) {
+  -     downloadsByDateAndRomVariant[downloadTimestamp][romVariantId] = 0
+  -   }
+  -   ++downloadsByDateAndRomVariant[downloadTimestamp][romVariantId]
+  - })
+
+  - var toGoogleChartsArray = function(downloadsByDateAndRomVariant) {
+  -   var result = []
+  -   for (var date in downloadsByDateAndRomVariant) {
+  -     var row = [ date ]
+  -     var downloadsByVariant = downloadsByDateAndRomVariant[date];
+  -     for (var i in contents.romvariants) {
+  -       var romVariantId = contents.romvariants[i].metadata.id
+  -       if (!!downloadsByVariant[romVariantId]) {
+  -         row.push(downloadsByVariant[romVariantId])
+  -       } else {
+  -         row.push(0)
+  -       }
+  -     }
+  -     result.push(row);
+  -   }
+  -   return result
+  - }
+
+  - var chartColumns = []
+  - chartColumns.push([ 'date', 'Date', 'date' ])
+  - for (var i in contents.romvariants) {
+  -   var romVariant = contents.romvariants[i].metadata
+  -   var variantName = romVariant.displayName
+  -   chartColumns.push([ 'number', variantName, romVariant.id ])
+  - }
+
 block append title
   |  | Download statistics
 
@@ -7,10 +57,26 @@ block append head
   script(type='text/javascript', src='//www.google.com/jsapi')
 
 block content
-
   h1
-    b Download statistics
-  script#chart-data(type='application/json') !{JSON.stringify(page.metadata.statistics)}
+    b Download statistics for the past week
+
+  script.chart-data(type='application/json')
+    | {
+    |   "chartContainerSelector": "#full-downloads-chart",
+    |   "title": "Full update download statistics",
+    |   "height": 350,
+    |   "tableColumns": !{JSON.stringify(chartColumns)},
+    |   "tableData": !{JSON.stringify(toGoogleChartsArray(fullDownloadsByDateAndRomVariant))}
+    | }
+
+  script.chart-data(type='application/json')
+    | {
+    |   "chartContainerSelector": "#incremental-downloads-chart",
+    |   "title": "Incremental update download statistics",
+    |   "height": 350,
+    |   "tableColumns": !{JSON.stringify(chartColumns)},
+    |   "tableData": !{JSON.stringify(toGoogleChartsArray(incrementalDownloadsByDateAndRomVariant))}
+    | }
 
   div#full-downloads-chart
   br
