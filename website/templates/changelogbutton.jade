@@ -1,7 +1,10 @@
 
 mixin changelogbutton(rom)
-  - var rawChangelogLines = rom.changelog.split(/\n/)
   - var changelogArray = new Array()
+  - var rawChangelogLines = []
+  - if (rom.changelog) {
+  -   rawChangelogLines = rom.changelog.split(/\n/)
+  - }
   - for (i in rawChangelogLines)
     - var trimmedLine = rawChangelogLines[i].trim()
     - if (trimmedLine[0] == '*')

@@ -15,7 +15,7 @@ mixin romtable(allRoms)
           tr
             - var deviceArticle = null;
             - for (i in contents.devices) {
-            -   if (contents.devices[i].metadata.id == rom.DeviceId) {
+            -   if (contents.devices[i].metadata.id == rom.romVariant.device.id) {
             -     deviceArticle = contents.devices[i];
             -     break;
             -   }
@@ -36,11 +36,11 @@ mixin romtable(allRoms)
                     span.glyphicon.glyphicon-download
                     |  #{rom.filename}
                   mixin changelogbutton(rom)
-                if rom.subdirectory
+                if rom.romVariant.subdirectory
                   dt
                     small directory:
                   dd
-                    small #{rom.subdirectory}
+                    small #{rom.romVariant.subdirectory}
                 dt
                   small md5sum:
                 dd

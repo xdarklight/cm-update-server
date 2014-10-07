@@ -10,42 +10,51 @@ var buildInfo = (new Troll()).options(function(troll) {
 });
 
 models.sequelize.sync().success(function() {
-	models.Device.find({ where: { name: buildInfo.device } }).success(function(device) {
-		if (device) {
-			models.Rom.findAll({
+	models.Rom.findAll({
+		include: [
+			{
+				model: models.RomVariant,
+				include: [
+					{
+						model: models.Device,
+						where: {
+							name: buildInfo.device,
+						}
+					},
+				],
+
 				where: {
-					DeviceId: device.id,
-					filename: buildInfo.filename,
-					subdirectory: buildInfo.subdirectory,
-					isActive: true,
+					subdirectory: buildInfo.subdirectory
 				}
-			}).success(function(roms) {
-				roms.forEach(function (rom) {
-					rom.isActive = false;
-					rom.save();
+			}
+		],
 
-					console.log('Disabled ROM: ' + JSON.stringify(rom));
-
-					if (buildInfo.disable_incrementals) {
-						models.Incremental.update({
-							// attributes
-							isActive: false,
-						}, {
-							// WHERE
-							targetRomId: rom.id,
-						}, {
-							// options
-							// We cannot validate here because our
-							// validator enforces that a sourceRomId
-							// etc. is set. This is the case, but the
-							// update-information does not have it.
-							validate: false,
-						});
-					}
-				});
-			});
-		} else {
-			console.log('Nothing to remove since device does not exist.');
+		where: {
+			filename: buildInfo.filename,
+			isActive: true,
 		}
+	}).success(function(roms) {
+		roms.forEach(function (rom) {
+			rom.isActive = false;
+			rom.save().success(function() {
+				console.log('Disabled ROM: ' + JSON.stringify(rom));
+			});
+
+			if (buildInfo.disable_incrementals) {
+				models.Incremental.update({
+					isActive: false,
+				}, {
+					// WHERE
+					targetRomId: rom.id,
+				}, {
+					// options
+					// We cannot validate here because our
+					// validator enforces that a sourceRomId
+					// etc. is set. This is the case, but the
+					// update-information does not have it.
+					validate: false,
+				});
+			}
+		});
 	});
 });

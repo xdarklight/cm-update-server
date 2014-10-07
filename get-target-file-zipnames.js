@@ -22,10 +22,23 @@ models.sequelize.sync().success(function() {
 
 	models.Rom.findAll({
 		include: [
-			{ model: models.Device, where: { name: buildInfo.device } },
+			{
+				model: models.RomVariant,
+				include: [
+					{
+						model: models.Device,
+						where: {
+							name: buildInfo.device,
+						}
+					},
+				],
+
+				where: {
+					subdirectory: buildInfo.subdirectory
+				}
+			}
 		],
 		where: {
-			subdirectory: buildInfo.subdirectory,
 			timestamp: {
 				gt: startTimestamp,
 			},

@@ -24,12 +24,12 @@ function createNewIncremental(sourceRom, targetRom) {
 	}
 
 	models.Incremental.build({
+		RomVariantId: sourceRom.RomVariantId,
 		sourceRomId: sourceRom.id,
 		targetRomId: targetRom.id,
 		timestamp: buildTimestamp,
 		md5sum: buildInfo.md5sum,
 		filename: buildInfo.filename,
-		subdirectory: buildInfo.subdirectory,
 		isActive: buildInfo.active == true,
 		fileSize: filesize,
 	}).save().success(function(newRom) {
@@ -38,9 +38,19 @@ function createNewIncremental(sourceRom, targetRom) {
 }
 
 var findRomWithTargetFilesZipName = function(targetFilesZipName, subdirectory) {
-	return models.Rom.find({ where: {
-		targetFilesZipName: targetFilesZipName,
-		subdirectory: subdirectory }
+	return models.Rom.find({
+		where: {
+			targetFilesZipName: targetFilesZipName,
+		},
+		include: [
+			{
+				// Device is implicitly part of the targetFilesZipName.
+				model: models.RomVariant,
+				where: {
+					subdirectory: subdirectory,
+				}
+			}
+		]
 	});
 }
 

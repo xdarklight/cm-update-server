@@ -84,7 +84,16 @@ models.sequelize.sync().success(function() {
 	});
 
 	server.get('/download/rom/:romId', function (req, res, next) {
-		models.Rom.find(req.params.romId).complete(function(err, rom) {
+		models.Rom.find({
+			include: [
+				{
+					model: models.RomVariant
+				}
+			],
+			where: {
+				id: req.params.romId
+			}
+		}).complete(function(err, rom) {
 			if (err) {
 				res.send(500);
 			} else if (!rom) {
@@ -110,7 +119,16 @@ models.sequelize.sync().success(function() {
 	});
 
 	server.get('/download/incremental/:incrementalId', function (req, res, next) {
-		models.Incremental.find(req.params.incrementalId).complete(function(err, incremental) {
+		models.Incremental.find({
+			include: [
+				{
+					model: models.RomVariant
+				}
+			],
+			where: {
+				id: req.params.incrementalId
+			}
+		}).complete(function(err, incremental) {
 			if (err) {
 				res.send(500);
 			} else if (!incremental) {
@@ -172,33 +190,32 @@ models.sequelize.sync().success(function() {
 			return next();
 		}
 
-		models.Device.find({ where: { name: requestParameters.params.device } }).complete(function(err, device) {
+		models.Rom.findAll({
+			include: [
+				{
+					model: models.RomVariant,
+					include: [
+						{
+							model: models.Device,
+							where: {
+								name: requestParameters.params.device,
+							}
+						}
+					]
+				}
+			],
+			where: {
+				updateChannel: requestParameters.params.channels,
+				isActive: true,
+			},
+		}).complete(function(err, roms) {
 			if (err) {
 				res.send(500, ResultConverter.convertRomListError(responseId, 'Database error.'));
-				return next();
+			} else {
+				res.send(200, ResultConverter.convertRomList(responseId, roms));
 			}
 
-			if (!device) {
-				// No error but nothing found.
-				res.send(404, ResultConverter.convertRomListError(responseId, "Unknown device."));
-				return next();
-			}
-
-			models.Rom.findAll({
-				where: {
-					DeviceId: device.id,
-					updateChannel: requestParameters.params.channels,
-					isActive: true,
-				},
-			}).complete(function(err, roms) {
-				if (err) {
-					res.send(500, ResultConverter.convertRomListError(responseId, 'Database error.'));
-				} else {
-					res.send(200, ResultConverter.convertRomList(responseId, roms));
-				}
-
-				return next();
-			});
+			return next();
 		});
 	});
 });

@@ -21,27 +21,41 @@ var buildInfo = (new Troll()).options(function(troll) {
 });
 
 // TODO: Remove this once sequelize 2 is ready.
-var validateUniqueActiveRomPerSubdirectory = function(device, parentRomId, successCallback) {
-	var filterParameters = {
-		DeviceId: device.id,
-		filename: buildInfo.filename,
-		subdirectory: buildInfo.subdirectory,
-		isActive: true,
-	};
-
+var validateUniqueActiveRomPerSubdirectory = function(romVariant, parentRomId, successCallback) {
 	// Find all existing active roms for this filename in the given subdirectory.
 	models.Rom.count({
-		where: filterParameters,
+		where: {
+			isActive: true,
+			filename: buildInfo.filename,
+		},
+		include: [
+			{
+				model: models.RomVariant,
+				where: {
+					id: romVariant.id,
+				}
+			}
+		]
 	}).success(function(totalExisting) {
 		if (totalExisting > 0) {
-			throw new Error('There are already ' + totalExisting + ' existing ROM matching ' + JSON.stringify(filterParameters));
+			throw new Error('There are already ' + totalExisting + ' active ROMs for ' + JSON.stringify(romVariant) + ' with filename ' + buildInfo.filename);
 		} else {
-			successCallback(device, parentRomId);
+			successCallback(romVariant, parentRomId);
 		}
 	});
 }
 
-function createNewRomFor(device, parentRomId) {
+function createNewRomVariantFor(device) {
+	var romVariant = models.RomVariant.build({ DeviceId: device.id, subdirectory: buildInfo.subdirectory });
+
+	romVariant.save().success(function() {
+		console.log('Successfully created new rom variant ' + JSON.stringify(romVariant));
+
+		validateUniqueActiveRomPerSubdirectory(romVariant, null, createNewRomFor);
+	});
+}
+
+function createNewRomFor(romVariant, parentRomId) {
 	var buildTimestamp = utils.toDate(buildInfo.timestamp);
 
 	var parsedUpdateChannel = new String(buildInfo.channel);
@@ -66,14 +80,13 @@ function createNewRomFor(device, parentRomId) {
 	}
 
 	models.Rom.build({
-		DeviceId: device.id,
+		RomVariantId: romVariant.id,
 		timestamp: buildTimestamp,
 		md5sum: buildInfo.md5sum,
 		filename: buildInfo.filename,
 		updateChannel: parsedUpdateChannel,
 		changelog: changelog,
 		apiLevel: buildInfo.api_level,
-		subdirectory: buildInfo.subdirectory,
 		isActive: buildInfo.active,
 		sourceCodeTimestamp: sourceCodeTimestamp,
 		incrementalId: buildInfo.incrementalid,
@@ -92,23 +105,47 @@ if (buildInfo.changelogfile) {
 }
 
 models.sequelize.sync().success(function() {
-	models.Device.find({ where: { name: buildInfo.device } }).success(function(device) {
-		if (device) {
-			models.Rom.max('id', {
+	models.RomVariant.find({
+		include: [
+			{
+				model: models.Device,
 				where: {
-					DeviceId: device.id,
-					subdirectory: buildInfo.subdirectory,
+					name: buildInfo.device,
 				}
-			}).success(function(parentRomId) {
-				validateUniqueActiveRomPerSubdirectory(device, parentRomId, createNewRomFor);
+			},
+		],
+
+		where: {
+			subdirectory: buildInfo.subdirectory
+		}
+	}).success(function(romVariant) {
+		if (romVariant) {
+			models.Rom.find({
+				include: [
+					{
+						model: models.RomVariant,
+						where: {
+							id: romVariant.id,
+						}
+					}
+				],
+				order: 'timestamp DESC'
+			}).success(function(parentRom) {
+				validateUniqueActiveRomPerSubdirectory(romVariant, parentRom.id, createNewRomFor);
 			});
 		} else {
-			device = models.Device.build({ name: buildInfo.device });
+			models.Device.find({ name: buildInfo.device }).success(function(device) {
+				if (device) {
+					createNewRomVariantFor(device);
+				} else {
+					var device = models.Device.build({ name: buildInfo.device });
 
-			device.save().success(function() {
-				console.log('Successfully created new device ' + JSON.stringify(device));
+					device.save().success(function() {
+						console.log('Successfully created new device ' + JSON.stringify(device));
 
-				validateUniqueActiveRomPerSubdirectory(device, null, createNewRomFor);
+						createNewRomVariantFor(device);
+					});
+				}
 			});
 		}
 	});

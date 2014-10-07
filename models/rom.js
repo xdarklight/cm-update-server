@@ -50,11 +50,6 @@ module.exports = function(sequelize, DataTypes) {
 			},
 	}, {
 		validate: {
-			deviceIdValid : function() {
-				if (!this.DeviceId || this.DeviceId < 0) {
-					throw new Error('DeviceId is a mandatory field! ' + JSON.stringify(this));
-				}
-			},
 /*
  * TODO: Enable this once sequelize 2 is ready.
 			uniqueEnabledFilenamePerSubdirectory : function(done) {

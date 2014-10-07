@@ -41,8 +41,20 @@ models.sequelize.sync().success(function() {
 						deviceValues.filename = '/device-' + device.name + '.html';
 
 						models.Rom.findAll({
+							include: [
+								{
+									model: models.RomVariant,
+									include: [
+										{
+											model: models.Device,
+											where: {
+												id: device.id,
+											}
+										}
+									]
+								}
+							],
 							where: {
-								DeviceId: device.id,
 								isActive: true,
 							},
 							order: 'createdAt DESC',
@@ -83,10 +95,15 @@ models.sequelize.sync().success(function() {
 											{
 												model: models.Rom,
 												include: {
-													model: models.Device,
-													where: {
-														id: device.id,
-													}
+													model: models.RomVariant,
+													include: [
+														{
+															model: models.Device,
+														where: {
+																id: device.id,
+															}
+														}
+													]
 												}
 											},
 										],
@@ -111,14 +128,15 @@ models.sequelize.sync().success(function() {
 											{
 												model: models.Incremental,
 												include: {
-													model: models.Rom,
-													as: 'sourceRom',
-													include: {
-														model: models.Device,
-														where: {
-															id: device.id,
+													model: models.RomVariant,
+													include: [
+														{
+															model: models.Device,
+															where: {
+																id: device.id,
+															}
 														}
-													}
+													]
 												}
 											},
 										],

@@ -8,24 +8,28 @@ var buildInfo = (new Troll()).options(function(troll) {
 });
 
 models.sequelize.sync().success(function() {
-	models.Device.find({ where: { name: buildInfo.device } }).success(function(device) {
-		if (device) {
-			models.Rom.max('id', {
-				where: {
-					DeviceId: device.id,
-					subdirectory: buildInfo.subdirectory,
-				},
-				parseFloat: false,
-				parseInt: false,
-			}).success(function(romId) {
-				if (romId) {
-					models.Rom.find(romId).success(function(rom) {
-						if (rom.sourceCodeTimestamp) {
-							console.log(rom.sourceCodeTimestamp.toISOString());
+	models.Rom.find({
+		include: [
+			{
+				model: models.RomVariant,
+				include: [
+					{
+						model: models.Device,
+						where: {
+							name: buildInfo.device,
 						}
-					});
+					},
+				],
+
+				where: {
+					subdirectory: buildInfo.subdirectory
 				}
-			});
+			}
+		],
+		order: 'timestamp DESC'
+	}).success(function(rom) {
+		if (rom.sourceCodeTimestamp) {
+			console.log(rom.sourceCodeTimestamp.toISOString());
 		}
 	});
 });
