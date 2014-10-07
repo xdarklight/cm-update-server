@@ -57,6 +57,13 @@ module.exports = {
 	 * Wintersmith settings - see: https://github.com/jnordberg/wintersmith#configuration
 	 */
 	Website: {
+		/**
+		 * Input/output directories.
+		 */
+		contents: "./website/contents/",
+		templates: "./website/templates/",
+		output: "./website/build/",
+
 		locals: {
 			/**
 			 * The title (index page) of the website.
@@ -107,14 +114,7 @@ module.exports = {
 		},
 
 		/** @see @href https://github.com/jnordberg/wintersmith#options */
-		baseUrl: "/",
-
-		/**
-		 * Input/output directories.
-		 */
-		contents: "./website/contents/",
-		templates: "./website/templates/",
-		output: "./website/build/"
+		baseUrl: "/"
 	},
 
 	Application: {
