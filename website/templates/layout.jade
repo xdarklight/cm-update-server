@@ -1,6 +1,6 @@
 doctype html
 block vars
-  - var currentSelecteDeviceId = null
+  - var selectedDeviceId = null
 
 html(lang='en')
   head
@@ -33,7 +33,7 @@ html(lang='en')
       div.row-fluid.content
         div.col-xs-12.col-md-3
           include devicefiltersidebar
-          mixin devicefiltersidebar(currentSelecteDeviceId)
+          mixin devicefiltersidebar(selectedDeviceId)
 
           block sidebarmiddle
 

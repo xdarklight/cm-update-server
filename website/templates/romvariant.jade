@@ -1,7 +1,7 @@
 extends layout
 
 block append vars
-  - var currentSelecteDeviceId = page.metadata.DeviceId
+  - var selectedDeviceId = page.metadata.DeviceId
 
   - var romsForCurrentVariant = []
   - for (var i in contents.roms) {
@@ -18,7 +18,7 @@ block prepend title
 block sidebarmiddle
   include romvariantfiltersidebar
   include updatetypefiltersidebar
-  mixin romvariantfiltersidebar(currentSelecteDeviceId)
+  mixin romvariantfiltersidebar(selectedDeviceId)
   mixin updatetypefiltersidebar()
 
 block content
