@@ -1,6 +1,8 @@
 extends layout
 
 block append vars
+  - var currentSelecteDeviceId = 'all'
+
   - var allRoms = []
   - for (var i in contents.roms) {
   -   allRoms.push(contents.roms[i].metadata)

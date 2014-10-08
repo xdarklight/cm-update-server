@@ -1,5 +1,6 @@
 doctype html
 block vars
+  - var currentSelecteDeviceId = null
 
 html(lang='en')
   head
@@ -31,21 +32,8 @@ html(lang='en')
           img(src=locals.topImageUrl, alt=topImageAlt, title=topImageAlt)
       div.row-fluid.content
         div.col-xs-12.col-md-3
-          div.sidebar-nav.well
-            ul.nav.nav-pills.nav-stacked
-              li.nav-header
-                h3 Devices
-              - var linkCssClass = (contents.index.url == page.url) ? 'active' : null;
-              li(class=linkCssClass)
-                a(href='#{contents.index.url}', title="Show the files of all devices") all
-              each deviceKey in Object.keys(contents.devices).sort()
-                - var deviceArticle = contents.devices[deviceKey]
-                - var linkCssClass = (deviceArticle.url == page.url) ? 'active' : null
-                li(class=linkCssClass)
-                  a(href='#{deviceArticle.url}', title="Show only the files for #{deviceArticle.metadata.name}")
-                    | #{deviceArticle.metadata.name}
-                    if deviceArticle.metadata.displayName
-                      small  | #{deviceArticle.metadata.displayName}
+          include devicefiltersidebar
+          mixin devicefiltersidebar(currentSelecteDeviceId)
 
           block sidebarmiddle
 
