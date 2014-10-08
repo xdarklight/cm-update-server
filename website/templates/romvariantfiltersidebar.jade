@@ -1,0 +1,19 @@
+mixin romvariantfiltersidebar(deviceId)
+  - var romVariantArticlesForCurrentDevice = []
+  - for (var i in contents.romvariants) {
+  -   var variantArticle = contents.romvariants[i]
+  -   if (variantArticle.metadata.DeviceId == deviceId) {
+  -     romVariantArticlesForCurrentDevice.push(variantArticle)
+  -   }
+  - }
+
+  if romVariantArticlesForCurrentDevice && romVariantArticlesForCurrentDevice.length > 1
+    div.sidebar-nav.well
+      ul.nav.nav-pills.nav-stacked
+        li.nav-header
+          h3 Rom variant
+          each romVariantArticle in romVariantArticlesForCurrentDevice.sort()
+            - var linkCssClass = (romVariantArticle.url == page.url) ? 'active' : null
+            li(class=linkCssClass)
+             a(href='#{romVariantArticle.url}', title="Show only the files for #{romVariantArticle.metadata.displayName}")
+               | #{romVariantArticle.metadata.displayName}

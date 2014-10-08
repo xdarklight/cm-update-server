@@ -17,7 +17,9 @@ block prepend title
   | #{page.metadata.name} | 
 
 block sidebarmiddle
+  include romvariantfiltersidebar
   include updatetypefiltersidebar
+  mixin romvariantfiltersidebar(currentSelecteDeviceId)
   mixin updatetypefiltersidebar()
 
 block content

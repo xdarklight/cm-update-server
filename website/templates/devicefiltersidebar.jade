@@ -2,7 +2,7 @@ mixin devicefiltersidebar(selectedDeviceId)
           div.sidebar-nav.well
             ul.nav.nav-pills.nav-stacked
               li.nav-header
-                h3 Devices
+                h3 Device
               - var linkCssClass = (selectedDeviceId === 'all') ? 'active' : null;
               li(class=linkCssClass)
                 a(href='#{contents.index.url}', title="Show the files of all devices") all
