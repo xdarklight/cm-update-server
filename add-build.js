@@ -46,7 +46,12 @@ var validateUniqueActiveRomPerSubdirectory = function(romVariant, parentRomId, s
 }
 
 function createNewRomVariantFor(device) {
-	var romVariant = models.RomVariant.build({ DeviceId: device.id, subdirectory: buildInfo.subdirectory });
+	var variantName = device.name + '_' + new Date().getTime();
+	var romVariant = models.RomVariant.build({
+		DeviceId: device.id,
+		name: variantName,
+		subdirectory: buildInfo.subdirectory,
+	});
 
 	romVariant.save().success(function() {
 		console.log('Successfully created new rom variant ' + JSON.stringify(romVariant));
