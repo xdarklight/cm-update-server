@@ -3,6 +3,14 @@ extends layout
 block append vars
   - var selectedDeviceId = page.metadata.DeviceId
 
+  - var deviceArticle = null
+  - for (i in contents.devices) {
+  -   if (contents.devices[i].metadata.id == page.metadata.DeviceId) {
+  -     deviceArticle = contents.devices[i]
+  -     break;
+  -   }
+  - }
+
   - var romsForCurrentVariant = []
   - for (var i in contents.roms) {
   -   var romMetadata = contents.roms[i].metadata
@@ -14,6 +22,15 @@ block append vars
 block prepend title
   if page.metadata.displayName
     | #{page.metadata.displayName}
+  else
+    | #{page.metadata.name}
+  |  ROM variant for 
+  if deviceArticle.metadata.displayName
+    | #{deviceArticle.metadata.displayName}
+    |  (#{deviceArticle.metadata.name})
+  else
+    | #{deviceArticle.metadata.name}
+  | - 
 
 block sidebarmiddle
   include romvariantfiltersidebar
@@ -25,9 +42,19 @@ block content
   include romtable
 
   h1
-    b Browse files for build
-      if page.metadata.displayName
-        i  #{page.metadata.displayName} -
+    b
+      | Browse files for 
+      if deviceArticle.metadata.displayName
+        | #{deviceArticle.metadata.displayName}
+        |  (#{deviceArticle.metadata.name})
+      else
+        | #{deviceArticle.metadata.name}
+      |  
+      i
+        if page.metadata.displayName
+          | #{page.metadata.displayName}
+        else
+          | #{page.metadata.name}
   mixin romtable(romsForCurrentVariant)
 
 block prepend footer

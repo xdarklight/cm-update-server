@@ -52,16 +52,15 @@ models.sequelize.sync().success(function() {
 
 				function(parallelCallback) {
 					models.RomVariant.findAll({
-						order: 'displayName ASC, id ASC'
+						order: 'displayName ASC, name ASC'
 					}).success(function(romVariants) {
 						async.each(romVariants, function(romVariant, eachCallback) {
 							var romVariantValues = romVariant.toJSON();
-							var variantName = (romVariant.displayName ? romVariant.displayName : new String(romVariant.id)).toLowerCase().replace(' ', '');
 
 							romVariantValues.template = 'romvariant.jade';
-							romVariantValues.filename = '/rom-' + variantName + '.html';
+							romVariantValues.filename = '/rom-' + romVariant.name + '.html';
 
-							fsextra.writeJSON(path.join(Directories.romVariantsJsonPath, variantName + '.json'), romVariantValues, eachCallback);
+							fsextra.writeJSON(path.join(Directories.romVariantsJsonPath, romVariant.name + '.json'), romVariantValues, eachCallback);
 						}, parallelCallback);
 					});
 				},

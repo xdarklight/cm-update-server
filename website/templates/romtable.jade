@@ -17,10 +17,17 @@ mixin romtable(romMetadataArray)
         each romMetadata in romMetadataArray
           tr
             - var rom = romMetadata.rom
-            - var deviceArticle = null;
+            - var deviceArticle = null
             - for (i in contents.devices) {
             -   if (contents.devices[i].metadata.id == rom.romVariant.device.id) {
-            -     deviceArticle = contents.devices[i];
+            -     deviceArticle = contents.devices[i]
+            -     break;
+            -   }
+            - }
+            - var romVariantArticle = null
+            - for (i in contents.romvariants) {
+            -   if (contents.romvariants[i].metadata.id == rom.romVariant.id) {
+            -     romVariantArticle = contents.romvariants[i]
             -     break;
             -   }
             - }
@@ -40,11 +47,17 @@ mixin romtable(romMetadataArray)
                     span.glyphicon.glyphicon-download
                     |  #{rom.filename}
                   mixin changelogbutton(rom)
-                if rom.romVariant.subdirectory
+                if romVariantArticle
+                  - var variantName = romVariantArticle.metadata.displayName ? romVariantArticle.metadata.displayName : romVariantArticle.metadata.name
+                  - var variantLinkTitle = 'Click to show all files for "' + variantName + '"'
+                  - if (romVariantArticle.metadata.subdirectory) {
+                  -   variantLinkTitle += ' in subdirectory: ' + romVariantArticle.metadata.subdirectory
+                  - }
                   dt
-                    small directory:
+                    small ROM variant:
                   dd
-                    small #{rom.romVariant.subdirectory}
+                    small
+                      a(href="#{romVariantArticle.url}", title="#{variantLinkTitle}") #{variantName}
                 dt
                   small md5sum:
                 dd
