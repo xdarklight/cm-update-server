@@ -7,7 +7,7 @@ block append vars
   - var allDownloads = page.metadata.downloads
   - allDownloads.forEach(function(download) {
   -   var romVariantId = download.RomVariantId
-  -   var downloadDate = new Date(download.createdAt)
+  -   var downloadDate = new Date(download.DownloadDate)
   -   var downloadTimestamp = new Date(downloadDate.getFullYear(), downloadDate.getMonth(), downloadDate.getDate()).toISOString()
   -   var downloadsByDateAndRomVariant = null
   -   if (!!download.RomId) {
@@ -21,7 +21,7 @@ block append vars
   -   if (!downloadsByDateAndRomVariant[downloadTimestamp][romVariantId]) {
   -     downloadsByDateAndRomVariant[downloadTimestamp][romVariantId] = 0
   -   }
-  -   ++downloadsByDateAndRomVariant[downloadTimestamp][romVariantId]
+  -   downloadsByDateAndRomVariant[downloadTimestamp][romVariantId] += download.DownloadCount
   - })
 
   - var toGoogleChartsArray = function(downloadsByDateAndRomVariant) {
@@ -46,7 +46,13 @@ block append vars
   - chartColumns.push([ 'date', 'Date', 'date' ])
   - for (var i in contents.romvariants) {
   -   var romVariant = contents.romvariants[i].metadata
-  -   var variantName = romVariant.displayName
+  -   var variantName = null
+  -   var deviceName = null
+  -   if (romVariant.displayName) {
+  -     variantName = romVariant.displayName
+  -   } else {
+  -     variantName = romVariant.name
+  -   }
   -   chartColumns.push([ 'number', variantName, romVariant.id ])
   - }
 

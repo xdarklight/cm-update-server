@@ -104,6 +104,10 @@ models.sequelize.sync().success(function() {
 					dateEnd.setHours(0, dateEnd.getTimezoneOffset() * -1, 0, 0);
 
 					models.Download.findAll({
+						attributes: [
+							[ models.sequelize.fn('strftime', '%Y-%m-%d', models.sequelize.col('Downloads.createdAt')), 'downloadDate' ],
+							[ models.sequelize.fn('COUNT', 'Downloads.id'), 'downloadCount' ],
+						],
 						include: [
 							{
 								model: models.Rom,
@@ -134,6 +138,11 @@ models.sequelize.sync().success(function() {
 									between: [ dateStart, dateEnd ]
 								}
 							}
+						],
+						group: [
+							models.sequelize.fn('strftime', '"%Y-%m-%d"', models.sequelize.col('Downloads.createdAt')),
+							'Downloads.RomId',
+							'Downloads.IncrementalId',
 						]
 					}).success(function(allDownloads) {
 						async.map(allDownloads, function(download, mapCallback) {
@@ -150,8 +159,8 @@ models.sequelize.sync().success(function() {
 							}
 
 							var result = {
-								DownloadId: download.id,
-								createdAt: download.createdAt,
+								DownloadCount: download.toJSON().downloadCount,
+								DownloadDate: download.toJSON().downloadDate,
 								RomId: romId,
 								IncrementalId: incrementalId,
 								RomVariantId: romVariantId,
