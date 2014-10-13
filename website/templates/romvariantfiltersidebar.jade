@@ -14,6 +14,7 @@ mixin romvariantfiltersidebar(deviceId)
           h3 Rom variant
           each romVariantArticle in romVariantArticlesForCurrentDevice.sort()
             - var linkCssClass = (romVariantArticle.url == page.url) ? 'active' : null
+            - var variantName = romVariantArticle.metadata.displayName ? romVariantArticle.metadata.displayName : romVariantArticle.metadata.name
             li(class=linkCssClass)
-             a(href='#{romVariantArticle.url}', title="Show only the files for #{romVariantArticle.metadata.displayName}")
-               | #{romVariantArticle.metadata.displayName}
+             a(href='#{romVariantArticle.url}', title="Show only the files for ROM variant #{variantName}")
+               | #{variantName}
