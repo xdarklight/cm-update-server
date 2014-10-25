@@ -23,3 +23,7 @@ dt > small {
 	width: auto;
 	padding-right: 1em;
 }
+
+.textcontainer p {
+	padding: 15px;
+}

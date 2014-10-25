@@ -84,8 +84,14 @@ block content
     |   "tableData": !{JSON.stringify(toGoogleChartsArray(incrementalDownloadsByDateAndRomVariant))}
     | }
 
-  div#full-downloads-chart
-  br
-  div#incremental-downloads-chart
+  div.hidden(data-visible-with-js-enabled)
+    div#full-downloads-chart
+    br
+    div#incremental-downloads-chart
+  div.textcontainer.shown(data-hidden-with-js-enabled)
+    p.bg-info
+      | JavaScript is required for viewing the download statistics.
+      br
+      a(href='http://activatejavascript.org/') Tell me how to active it!
 
 block prepend footer

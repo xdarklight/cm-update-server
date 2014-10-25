@@ -45,6 +45,7 @@ $(document).ready(function() {
 	var filterAreaAttrName = 'data-filter-area-for';
 	var filterLinkAttrName = 'data-filter-value';
 	var visibleWhenJsIsEnabledAttrName = 'data-visible-with-js-enabled';
+	var hiddenWhenJsIsEnabledAttrName = 'data-hidden-with-js-enabled';
 
 	var romTable = $('#rom-table');
 	var romDataTable = romTable.DataTable({
@@ -89,6 +90,7 @@ $(document).ready(function() {
 
 	/* Elements with this value set should have 'hidden' set by default! */
 	$('[' + visibleWhenJsIsEnabledAttrName + ']').removeClass('hidden').addClass('shown');
+	$('[' + hiddenWhenJsIsEnabledAttrName + ']').removeClass('shown').addClass('hidden');
 });
 
 $(window).resize(function() {
