@@ -78,12 +78,30 @@ models.sequelize.sync().success(function() {
 						order: 'displayName ASC, name ASC'
 					}).success(function(romVariants) {
 						async.each(romVariants, function(romVariant, eachCallback) {
-							var romVariantValues = romVariant.toJSON();
+							models.Rom.count({
+								include: [
+									{
+										model: models.RomVariant,
+										where: {
+											id: romVariant.id,
+										}
+									}
+								],
+								where: {
+									isActive: true,
+								},
+							}).success(function(romCount) {
+								if (romCount > 0) {
+									var romVariantValues = romVariant.toJSON();
 
-							romVariantValues.template = 'romvariant.jade';
-							romVariantValues.filename = '/rom-' + romVariant.name + '.html';
+									romVariantValues.template = 'romvariant.jade';
+									romVariantValues.filename = '/rom-' + romVariant.name + '.html';
 
-							fsextra.writeJSON(path.join(Directories.romVariantsJsonPath, romVariant.name + '.json'), romVariantValues, eachCallback);
+									fsextra.writeJSON(path.join(Directories.romVariantsJsonPath, romVariant.name + '.json'), romVariantValues, eachCallback);
+								} else {
+									eachCallback(null);
+								}
+							});
 						}, parallelCallback);
 					});
 				},
