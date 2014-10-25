@@ -163,8 +163,23 @@ models.sequelize.sync().success(function() {
 		}
 
 		models.Incremental.find({ include: [
-			{ model: models.Rom, as: 'sourceRom', where: { incrementalId: requestParameters.source_incremental } },
-			{ model: models.Rom, as: 'targetRom', where: { incrementalId: requestParameters.target_incremental } }
+			{
+				model: models.Rom,
+				as: 'sourceRom',
+				where: {
+					incrementalId: requestParameters.source_incremental
+				}
+			},
+			{
+				model: models.Rom,
+				as: 'targetRom',
+				where: {
+					incrementalId: requestParameters.target_incremental
+				}
+			},
+			{
+				model: models.RomVariant,
+			},
 		]}).complete(function(err, incremental) {
 			if (err) {
 				res.send(500, ResultConverter.convertIncrementalErrors('Database error.'));
