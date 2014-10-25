@@ -41,11 +41,34 @@ models.sequelize.sync().success(function() {
 						order: 'name ASC'
 					}).success(function(devices) {
 						async.each(devices, function(device, eachCallback) {
-							var deviceValues = device.toJSON();
-							deviceValues.template = 'device.jade';
-							deviceValues.filename = '/device-' + device.name + '.html';
+							models.Rom.count({
+								include: [
+									{
+										model: models.RomVariant,
+										include: [
+											{
+												model: models.Device,
+												where: {
+													id: device.id,
+												}
+											}
+										]
+									}
+								],
+								where: {
+									isActive: true,
+								},
+							}).success(function(romCount) {
+								if (romCount > 0) {
+									var deviceValues = device.toJSON();
+									deviceValues.template = 'device.jade';
+									deviceValues.filename = '/device-' + device.name + '.html';
 
-							fsextra.writeJSON(path.join(Directories.deviceJsonPath, device.name + '.json'), deviceValues, eachCallback);
+									fsextra.writeJSON(path.join(Directories.deviceJsonPath, device.name + '.json'), deviceValues, eachCallback);
+								} else {
+									eachCallback(null);
+								}
+							});
 						}, parallelCallback);
 					});
 				},
