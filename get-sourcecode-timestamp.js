@@ -28,7 +28,7 @@ models.sequelize.sync().success(function() {
 		],
 		order: 'timestamp DESC'
 	}).success(function(rom) {
-		if (rom.sourceCodeTimestamp) {
+		if (rom && rom.sourceCodeTimestamp) {
 			console.log(rom.sourceCodeTimestamp.toISOString());
 		}
 	});
