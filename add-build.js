@@ -139,7 +139,11 @@ models.sequelize.sync().success(function() {
 				validateUniqueActiveRomPerSubdirectory(romVariant, parentRom.id, createNewRomFor);
 			});
 		} else {
-			models.Device.find({ name: buildInfo.device }).success(function(device) {
+			models.Device.find({
+				where: {
+					name: buildInfo.device
+				}
+			}).success(function(device) {
 				if (device) {
 					createNewRomVariantFor(device);
 				} else {
