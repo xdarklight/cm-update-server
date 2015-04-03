@@ -7,7 +7,7 @@ var buildInfo = (new Troll()).options(function(troll) {
 	troll.opt('subdirectory', 'The subdirectory from which the file can be downloaded.', { type: 'string' });
 });
 
-models.sequelize.sync().success(function() {
+models.sequelize.sync().then(function() {
 	models.Rom.find({
 		include: [
 			{
@@ -27,7 +27,7 @@ models.sequelize.sync().success(function() {
 			}
 		],
 		order: 'timestamp DESC'
-	}).success(function(rom) {
+	}).then(function(rom) {
 		if (rom && rom.sourceCodeTimestamp) {
 			console.log(rom.sourceCodeTimestamp.toISOString());
 		}

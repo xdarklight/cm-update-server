@@ -6,7 +6,7 @@ block append vars
   - var romsForCurrentVariant = []
   - for (var i in contents.roms) {
   -   var romMetadata = contents.roms[i].metadata
-  -   if (romMetadata.rom.romVariant.id == page.metadata.id) {
+  -   if (romMetadata.rom.RomVariant.id == page.metadata.id) {
   -     romsForCurrentVariant.push(romMetadata)
   -   }
   - }

@@ -19,14 +19,14 @@ mixin romtable(romMetadataArray)
             - var rom = romMetadata.rom
             - var deviceArticle = null
             - for (i in contents.devices) {
-            -   if (contents.devices[i].metadata.id == rom.romVariant.device.id) {
+            -   if (contents.devices[i].metadata.id == rom.RomVariant.Device.id) {
             -     deviceArticle = contents.devices[i]
             -     break;
             -   }
             - }
             - var romVariantArticle = null
             - for (i in contents.romvariants) {
-            -   if (contents.romvariants[i].metadata.id == rom.romVariant.id) {
+            -   if (contents.romvariants[i].metadata.id == rom.RomVariant.id) {
             -     romVariantArticle = contents.romvariants[i]
             -     break;
             -   }

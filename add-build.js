@@ -36,7 +36,7 @@ var validateUniqueActiveRomPerSubdirectory = function(romVariant, parentRomId, s
 				}
 			}
 		]
-	}).success(function(totalExisting) {
+	}).then(function(totalExisting) {
 		if (totalExisting > 0) {
 			throw new Error('There are already ' + totalExisting + ' active ROMs for ' + JSON.stringify(romVariant) + ' with filename ' + buildInfo.filename);
 		} else {
@@ -53,7 +53,7 @@ function createNewRomVariantFor(device) {
 		subdirectory: buildInfo.subdirectory,
 	});
 
-	romVariant.save().success(function() {
+	romVariant.save().then(function() {
 		console.log('Successfully created new rom variant ' + JSON.stringify(romVariant));
 
 		validateUniqueActiveRomPerSubdirectory(romVariant, null, createNewRomFor);
@@ -98,7 +98,7 @@ function createNewRomFor(romVariant, parentRomId) {
 		parentRomId: parentRomId,
 		targetFilesZipName: buildInfo.targetfileszip,
 		fileSize: filesize,
-	}).save().success(function(newRom) {
+	}).save().then(function(newRom) {
 		console.log('Successfully created new rom: ' + JSON.stringify(newRom));
 	});
 }
@@ -109,7 +109,7 @@ if (buildInfo.changelogfile) {
 	changelog = fs.readFileSync(buildInfo.changelogfile, 'utf-8');
 }
 
-models.sequelize.sync().success(function() {
+models.sequelize.sync().then(function() {
 	models.RomVariant.find({
 		include: [
 			{
@@ -123,7 +123,7 @@ models.sequelize.sync().success(function() {
 		where: {
 			subdirectory: buildInfo.subdirectory
 		}
-	}).success(function(romVariant) {
+	}).then(function(romVariant) {
 		if (romVariant) {
 			models.Rom.find({
 				include: [
@@ -135,7 +135,7 @@ models.sequelize.sync().success(function() {
 					}
 				],
 				order: 'timestamp DESC'
-			}).success(function(parentRom) {
+			}).then(function(parentRom) {
 				validateUniqueActiveRomPerSubdirectory(romVariant, parentRom.id, createNewRomFor);
 			});
 		} else {
@@ -143,13 +143,13 @@ models.sequelize.sync().success(function() {
 				where: {
 					name: buildInfo.device
 				}
-			}).success(function(device) {
+			}).then(function(device) {
 				if (device) {
 					createNewRomVariantFor(device);
 				} else {
 					var device = models.Device.build({ name: buildInfo.device });
 
-					device.save().success(function() {
+					device.save().then(function() {
 						console.log('Successfully created new device ' + JSON.stringify(device));
 
 						createNewRomVariantFor(device);

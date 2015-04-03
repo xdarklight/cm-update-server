@@ -6,7 +6,7 @@ var config = require('config').Website;
 var models = require('./models/');
 var ResultConverter = require('./result-converter.js');
 
-models.sequelize.sync().success(function() {
+models.sequelize.sync().then(function() {
 
 	var Directories = {
 		deviceJsonPath: path.join(config.contents, 'devices'),
@@ -39,7 +39,7 @@ models.sequelize.sync().success(function() {
 				function(parallelCallback) {
 					models.Device.findAll({
 						order: 'name ASC'
-					}).success(function(devices) {
+					}).then(function(devices) {
 						async.each(devices, function(device, eachCallback) {
 							models.Rom.count({
 								include: [
@@ -58,7 +58,7 @@ models.sequelize.sync().success(function() {
 								where: {
 									isActive: true,
 								},
-							}).success(function(romCount) {
+							}).then(function(romCount) {
 								if (romCount > 0) {
 									var deviceValues = device.toJSON();
 									deviceValues.template = 'device.jade';
@@ -76,7 +76,7 @@ models.sequelize.sync().success(function() {
 				function(parallelCallback) {
 					models.RomVariant.findAll({
 						order: 'displayName ASC, name ASC'
-					}).success(function(romVariants) {
+					}).then(function(romVariants) {
 						async.each(romVariants, function(romVariant, eachCallback) {
 							models.Rom.count({
 								include: [
@@ -90,7 +90,7 @@ models.sequelize.sync().success(function() {
 								where: {
 									isActive: true,
 								},
-							}).success(function(romCount) {
+							}).then(function(romCount) {
 								if (romCount > 0) {
 									var romVariantValues = romVariant.toJSON();
 
@@ -121,8 +121,8 @@ models.sequelize.sync().success(function() {
 						where: {
 							isActive: true,
 						},
-						order: 'createdAt DESC',
-					}).success(function(roms) {
+						order: [ [ 'createdAt', 'DESC' ] ],
+					}).then(function(roms) {
 						async.each(roms, function(rom, eachCallback) {
 							var romValues = { rom: rom.toJSON() };
 							romValues.downloadUrl = ResultConverter.getRomDownloadUrl(rom);
@@ -146,8 +146,8 @@ models.sequelize.sync().success(function() {
 
 					models.Download.findAll({
 						attributes: [
-							[ models.sequelize.fn('strftime', '%Y-%m-%d', models.sequelize.col('Downloads.createdAt')), 'downloadDate' ],
-							[ models.sequelize.fn('COUNT', 'Downloads.id'), 'downloadCount' ],
+							[ models.sequelize.fn('strftime', '%Y-%m-%d', models.sequelize.col('Download.createdAt')), 'downloadDate' ],
+							[ models.sequelize.fn('COUNT', 'Download.id'), 'downloadCount' ],
 						],
 						include: [
 							{
@@ -181,22 +181,22 @@ models.sequelize.sync().success(function() {
 							}
 						],
 						group: [
-							models.sequelize.fn('strftime', '"%Y-%m-%d"', models.sequelize.col('Downloads.createdAt')),
-							'Downloads.RomId',
-							'Downloads.IncrementalId',
+							models.sequelize.fn('strftime', '"%Y-%m-%d"', models.sequelize.col('Download.createdAt')),
+							'Download.RomId',
+							'Download.IncrementalId',
 						]
-					}).success(function(allDownloads) {
+					}).then(function(allDownloads) {
 						async.map(allDownloads, function(download, mapCallback) {
 							var incrementalId = null;
 							var romId = null;
 							var romVariantId = null;
 
-							if (!!download.rom) {
-								romId = download.rom.id;
-								romVariantId = download.rom.romVariant.id;
+							if (!!download.Rom) {
+								romId = download.Rom.id;
+								romVariantId = download.Rom.RomVariant.id;
 							} else {
-								incrementalId = download.incremental.id;
-								romVariantId = download.incremental.romVariant.id;
+								incrementalId = download.Incremental.id;
+								romVariantId = download.Incremental.RomVariant.id;
 							}
 
 							var result = {

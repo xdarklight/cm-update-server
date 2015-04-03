@@ -9,7 +9,7 @@ var buildInfo = (new Troll()).options(function(troll) {
 	troll.opt('disable_incrementals', 'Disables the incrementals for this rom also.', { type: 'boolean' });
 });
 
-models.sequelize.sync().success(function() {
+models.sequelize.sync().then(function() {
 	models.Rom.findAll({
 		include: [
 			{
@@ -33,10 +33,10 @@ models.sequelize.sync().success(function() {
 			filename: buildInfo.filename,
 			isActive: true,
 		}
-	}).success(function(roms) {
+	}).then(function(roms) {
 		roms.forEach(function (rom) {
 			rom.isActive = false;
-			rom.save().success(function() {
+			rom.save().then(function() {
 				console.log('Disabled ROM: ' + JSON.stringify(rom));
 			});
 

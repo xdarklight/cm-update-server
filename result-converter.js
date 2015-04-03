@@ -66,8 +66,8 @@ module.exports.convertIncremental = function(incremental) {
 module.exports.getRealDownloadUrl = function(baseUrl, updateItem) {
 	var url = baseUrl;
 
-	if (updateItem.romVariant.subdirectory && updateItem.romVariant.subdirectory.length > 0) {
-		url += '/' + updateItem.romVariant.subdirectory;
+	if (updateItem.RomVariant.subdirectory && updateItem.RomVariant.subdirectory.length > 0) {
+		url += '/' + updateItem.RomVariant.subdirectory;
 	}
 
 	url += '/' + updateItem.filename;
@@ -79,7 +79,7 @@ module.exports.getProxyDownloadUrl = function(baseUrl, updateItem) {
 	var url = baseUrl;
 
 	url += '/' + updateItem.id;
-	url += '?' + querystring.stringify({ directory: updateItem.romVariant.subdirectory, filename: updateItem.filename });
+	url += '?' + querystring.stringify({ directory: updateItem.RomVariant.subdirectory, filename: updateItem.filename });
 
 	return url;
 }

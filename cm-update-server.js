@@ -25,7 +25,7 @@ var extractRequestParameters = function(req) {
 	return requestParameters;
 }
 
-models.sequelize.sync().success(function() {
+models.sequelize.sync().then(function() {
 	server.listen(serverConfig.listeningPort, serverConfig.listeningAddress, function () {
 		console.log('%s listening at %s', server.name, server.url);
 	});

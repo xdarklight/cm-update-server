@@ -10,7 +10,7 @@ var buildInfo = (new Troll()).options(function(troll) {
 
 var minDate = new Date(-8640000000000000);
 
-models.sequelize.sync().success(function() {
+models.sequelize.sync().then(function() {
 	var startTimestamp;
 
 	if (!buildInfo.max_age_days || isNaN(buildInfo.max_age_days)) {
@@ -46,7 +46,7 @@ models.sequelize.sync().success(function() {
 				ne: null,
 			},
 		},
-	}).success(function(roms) {
+	}).then(function(roms) {
 		roms.forEach(function(rom) {
 			if (rom.targetFilesZipName.length > 0) {
 				console.log(rom.targetFilesZipName);

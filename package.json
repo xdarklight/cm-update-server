@@ -14,15 +14,14 @@
 	"dependencies": {
 		"troll-opt" : ">= 0.7.x",
 		"config": ">= 0.4.x",
-		"restify": ">= 2.8.x",
-		"sequelize": ">= 1.7.1"
+		"restify": ">= 3.0.x",
+		"sequelize": ">= 2.0.5"
 	},
 
 	"optionalDependencies": {
-		"sqlite3": ">= 2.2.x",
+		"sqlite3": ">= 3.0.5",
 		"mysql": ">= 2.x",
 		"mariasql": ">= 0.1.x",
-		"pg": ">= 3.4.x",
 		"wintersmith": ">= 2.1.x",
 		"fs-extra": ">= 0.10.0",
 		"filesize": ">= 2.0.0",

@@ -32,7 +32,7 @@ function createNewIncremental(sourceRom, targetRom) {
 		filename: buildInfo.filename,
 		isActive: buildInfo.active == true,
 		fileSize: filesize,
-	}).save().success(function(newRom) {
+	}).save().then(function(newRom) {
 		console.log('Successfully created new incremental: ' + JSON.stringify(newRom));
 	});
 }
@@ -54,10 +54,10 @@ var findRomWithTargetFilesZipName = function(targetFilesZipName, subdirectory) {
 	});
 }
 
-models.sequelize.sync().success(function() {
-	findRomWithTargetFilesZipName(buildInfo.from_target_files, buildInfo.subdirectory).success(function(sourceRom) {
+models.sequelize.sync().then(function() {
+	findRomWithTargetFilesZipName(buildInfo.from_target_files, buildInfo.subdirectory).then(function(sourceRom) {
 		if (sourceRom) {
-			findRomWithTargetFilesZipName(buildInfo.to_target_files, buildInfo.subdirectory).success(function(targetRom) {
+			findRomWithTargetFilesZipName(buildInfo.to_target_files, buildInfo.subdirectory).then(function(targetRom) {
 				if (targetRom) {
 					createNewIncremental(sourceRom, targetRom);
 				} else {
