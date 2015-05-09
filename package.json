@@ -15,6 +15,7 @@
 		"troll-opt" : ">= 0.7.x",
 		"config": ">= 0.4.x",
 		"restify": ">= 3.0.x",
+		"sequelize-cli": "^1.7.0"
 		"sequelize": ">= 2.0.5"
 	},
 
