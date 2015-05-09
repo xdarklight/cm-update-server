@@ -44,6 +44,11 @@ In this case a sqlite database is used by default. You need to create the direct
 
 Now edit config/config.json so it matches your database settings.
 
+(Optional) If using default sqlite database approach, this should
+be all that is needed to edit the config file:
+
+    sed -i'' 's/mysql/sqlite/g' config/config.json
+
 **Run the migrations:**
 
     cm-update-server$ node_modules/sequelize/bin/sequelize --migrate --env production
