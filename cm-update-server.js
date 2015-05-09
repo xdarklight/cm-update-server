@@ -44,12 +44,7 @@ models.sequelize.sync().then(function() {
 	}
 
 	server.get('/changelog/:romId', function (req, res, next) {
-		models.Rom.find(req.params.romId).complete(function(err, rom) {
-			if (err) {
-				res.send(500);
-				return next();
-			}
-
+		models.Rom.find(req.params.romId).then(function(rom) {
 			if (!rom) {
 				res.send(404);
 				return next();
@@ -61,12 +56,10 @@ models.sequelize.sync().then(function() {
 			}
 
 			var findParentRomHandler = function(childRom, resultHandler) {
-				childRom.getParentRom().complete(function(err, parentRom) {
-					if (err) {
-						resultHandler(null);
-					} else {
-						resultHandler(parentRom);
-					}
+				childRom.getParentRom().then(function(parentRom) {
+					resultHandler(parentRom);
+				}).catch(function(err) {
+					resultHandler(null);
 				});
 			}
 
@@ -80,6 +73,9 @@ models.sequelize.sync().then(function() {
 
 				return next();
 			});
+		}).catch(function(err) {
+			res.send(500);
+			return next();
 		});
 	});
 
@@ -93,10 +89,8 @@ models.sequelize.sync().then(function() {
 			where: {
 				id: req.params.romId
 			}
-		}).complete(function(err, rom) {
-			if (err) {
-				res.send(500);
-			} else if (!rom) {
+		}).then(function(rom) {
+			if (!rom) {
 				res.send(404);
 			} else if (!rom.isActive) {
 				res.send(410);
@@ -109,11 +103,14 @@ models.sequelize.sync().then(function() {
 				models.Download.build({
 					RomId: rom.id,
 					userAgent: req.headers['user-agent'],
-				}).save().error(function (err) {
+				}).save().catch(function (err) {
 					// Ignoring errors here since those have no impact for the user.
 				});
 			}
 
+			return next();
+		}).catch(function(err) {
+			res.send(500);
 			return next();
 		});
 	});
@@ -128,10 +125,8 @@ models.sequelize.sync().then(function() {
 			where: {
 				id: req.params.incrementalId
 			}
-		}).complete(function(err, incremental) {
-			if (err) {
-				res.send(500);
-			} else if (!incremental) {
+		}).then(function(incremental) {
+			if (!incremental) {
 				res.send(404);
 			} else if (!incremental.isActive) {
 				res.send(410);
@@ -144,11 +139,14 @@ models.sequelize.sync().then(function() {
 				models.Download.build({
 					IncrementalId: incremental.id,
 					userAgent: req.headers['user-agent'],
-				}).save().error(function (err) {
+				}).save().catch(function (err) {
 					// Ignoring errors here since those have no impact for the user.
 				});
 			}
 
+			return next();
+		}).catch(function(err) {
+			res.send(500);
 			return next();
 		});
 	});
@@ -180,15 +178,16 @@ models.sequelize.sync().then(function() {
 			{
 				model: models.RomVariant,
 			},
-		]}).complete(function(err, incremental) {
-			if (err) {
-				res.send(500, ResultConverter.convertIncrementalErrors('Database error.'));
-			} else if (!incremental || !incremental.isActive) {
+		]}).then(function(incremental) {
+			if (!incremental || !incremental.isActive) {
 				res.send(200, ResultConverter.convertIncrementalErrors("No matching incremental update found!"));
 			} else {
 				res.send(200, ResultConverter.convertIncremental(incremental));
 			}
 
+			return next();
+		}).catch(function(err) {
+			res.send(500, ResultConverter.convertIncrementalErrors('Database error.'));
 			return next();
 		});
 	});
@@ -223,13 +222,11 @@ models.sequelize.sync().then(function() {
 				updateChannel: requestParameters.params.channels,
 				isActive: true,
 			},
-		}).complete(function(err, roms) {
-			if (err) {
-				res.send(500, ResultConverter.convertRomListError(responseId, 'Database error.'));
-			} else {
-				res.send(200, ResultConverter.convertRomList(responseId, roms));
-			}
-
+		}).then(function(roms) {
+			res.send(200, ResultConverter.convertRomList(responseId, roms));
+			return next();
+		}).catch(function(err) {
+			res.send(500, ResultConverter.convertRomListError(responseId, 'Database error.'));
 			return next();
 		});
 	});
