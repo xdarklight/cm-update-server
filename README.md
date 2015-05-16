@@ -124,6 +124,11 @@ See Also
 [forever] - A simple tool to keep cm-update-server or any other NodeJS application running continuously (forever).<br>
 [pm2] - Also lets cm-update-server or any other application run forever but has far more features than forever.<br>
 
+Useful links
+-----------
+[chef_cookbook] - A Chef Cookbook for cm-update-server (thanks Patrick Connolly)<br>
+[vagrant_vm] - A Vagrant Demo VM for cm-update-server (thanks Patrick Connolly)<br>
+
 License
 -------
 
@@ -138,3 +143,5 @@ Copyright (c) 2013-2014 Martin Blumenstingl
   [wintersmith]: http://wintersmith.io
   [forever]: https://github.com/nodejitsu/forever
   [pm2]: https://github.com/Unitech/pm2
+  [chef_cookbook]: https://github.com/mission-impossible-android/chef-cm-update-server
+  [vagrant_vm]: https://github.com/mission-impossible-android/cm-update-server-vagrant
