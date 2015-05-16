@@ -51,7 +51,7 @@ be all that is needed to edit the config file:
 
 **Run the migrations:**
 
-    cm-update-server$ node_modules/sequelize/bin/sequelize --migrate --env production
+    cm-update-server$ NODE_ENV=production node_modules/sequelize-cli/bin/sequelize db:migrate
 
 **Adding builds to the database:**
 
@@ -83,7 +83,7 @@ Updating
 
 (edit `config/config.json` to match your settings)
 
-    cm-update-server$ node_modules/sequelize/bin/sequelize --migrate --env production
+    cm-update-server$ NODE_ENV=production node_modules/sequelize-cli/bin/sequelize db:migrate
 
 
 Website
