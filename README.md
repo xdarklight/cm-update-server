@@ -40,12 +40,14 @@ In this case a sqlite database is used by default. You need to create the direct
 
 **Set up a config/config.json file for the database migrations:**
 
-    cm-update-server$ node_modules/sequelize/bin/sequelize --init
-
-This unfortunately just deleted the migrations directory, which we have to restore:
-    cm-update-server$ git checkout -f <target revision>
+    cm-update-server$ node_modules/sequelize-cli/bin/sequelize init:config --force
 
 Now edit config/config.json so it matches your database settings.
+
+(Optional) If using default sqlite database approach, this should
+be all that is needed to edit the config file:
+
+    sed -i'' 's/mysql/sqlite/g' config/config.json
 
 **Run the migrations:**
 

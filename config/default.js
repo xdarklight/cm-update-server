@@ -3,7 +3,7 @@ module.exports = {
 		/**
 		 * The address where the HTTP server will listen.
 		 */
-		listeningAddress: '127.0.0.1',
+		listeningAddress: '0.0.0.0',
 
 		/**
 		 * The port on which the HTTP server will listen.

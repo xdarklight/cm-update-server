@@ -1,6 +1,6 @@
 module.exports = {
 	up: function(migration, DataTypes, done) {
-		migration.migrator.sequelize.query(
+		migration.sequelize.query(
 			'INSERT INTO RomVariants (DeviceId, subdirectory) SELECT DISTINCT DeviceId, subdirectory FROM Roms'
 		);
 
@@ -8,7 +8,7 @@ module.exports = {
 	},
 
 	down: function(migration, DataTypes, done) {
-		migration.migrator.sequelize.query(
+		migration.sequelize.query(
 			'DELETE FROM RomVariants'
 		);
 
