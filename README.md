@@ -85,6 +85,10 @@ Updating
 
     cm-update-server$ NODE_ENV=production node_modules/sequelize-cli/bin/sequelize db:migrate
 
+**_NOTE_**: If you are updating from an older sequelize version you may see a warning that the "Database schema was not migrated".
+In this case you first have to run the following command (only required once in a lifetime), then run db:migrate again:
+
+    cm-update-server$ NODE_ENV=production node_modules/sequelize-cli/bin/sequelize db:migrate:old_schema
 
 Website
 -------
