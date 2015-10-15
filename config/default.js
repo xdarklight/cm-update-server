@@ -49,7 +49,23 @@ module.exports = {
 					directory: './website/build/',
 					default: 'index.html',
 				}
+			},
+			/**
+			 * For testing purposes (= in case you are not using a separate download server/reverse proxy)
+			 * ONLY: you can use the following block to make cm-update-server serve the zip files from
+			 * ./data/files/downloads/*.zip.
+			 *
+			 * NOTE: Running cm-update-server with a separate download server/reverse proxy is highly
+			 * recommended for productive environments.
+			 */
+			/*
+			{
+				urlPattern: '^\/downloads\/.*\.zip$',
+				options : {
+					directory: './data/files/'
+				}
 			}
+			*/
 		],
 	},
 
