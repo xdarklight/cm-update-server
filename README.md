@@ -33,6 +33,12 @@ In this case a sqlite database is used by default. You need to create the direct
 
     mkdir data
 
+**Peer5 Support**
+
+Peer5 is a free CDN that allows website owners to reduce bandwidth by using P2P technology.
+
+    To enable Peer5, please input your ID in website/templates/layout.jade
+
 **Start your application server:**
 
     cm-update-server$ export NODE_ENV=production
