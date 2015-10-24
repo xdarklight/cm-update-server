@@ -98,6 +98,9 @@ A website module is now bundled with the server. The website is pre-generated st
 **Configuration of the website module:**
 The configuration section is called "Website" (see `config/default.js` for the default values).
 
+**Theme Support**
+In Chrome for Android 33+ running on Android 5.0+, support was added to colorize the status bar. This is set by default to the blue matching the tables.
+
 **Generating the static content:**
 This should be called (manually) after running `add-build.js` or `add-incremental.js`:
 

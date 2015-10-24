@@ -8,13 +8,15 @@ html(lang='en')
       meta(charset='utf-8')
       meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
       meta(name='viewport', content='width=device-width')
+      meta(name='theme-color',content='#005bff')
       title
         block title
           = locals.name
 
-    - var bootstrapVersion = '3.2.0'
-    - var jqueryVersion = '1.11.1'
-    - var datatablesVersion = '1.10.1'
+    - var bootstrapVersion = '3.3.5'
+    - var jqueryVersion = '1.11.3'
+    - var datatablesVersion = '1.10.9'
+    - var peer5Key = locals.peer5Key
 
     link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/#{bootstrapVersion}/css/bootstrap.min.css')
     link(rel='stylesheet', href='//cdn.datatables.net/#{datatablesVersion}/css/jquery.dataTables.css')
@@ -23,6 +25,7 @@ html(lang='en')
     script(type='text/javascript', src='//code.jquery.com/jquery-#{jqueryVersion}.min.js')
     script(type='text/javascript', src='//cdn.datatables.net/#{datatablesVersion}/js/jquery.dataTables.min.js')
     script(type='text/javascript', src='//maxcdn.bootstrapcdn.com/bootstrap/#{bootstrapVersion}/js/bootstrap.min.js')
+	script(type='text/javascript', src='//api.peer5.com/peer5.js?id=#{peer5Key}')
     script(type='text/javascript', src='#{contents.assets["main.js"].url}')
 
   body
