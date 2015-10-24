@@ -43,7 +43,7 @@ mixin romtable(romMetadataArray)
                 dt
                   b Download:
                 dd
-                  a.btn.btn-default.btn-xs(href="#{romMetadata.downloadUrl}", rel="nofollow", title="Click to download #{rom.filename}")
+                  a.btn.btn-default.btn-xs(href="#{romMetadata.downloadUrl}", peer5-download rel="nofollow", title="Click to download #{rom.filename}")
                     span.glyphicon.glyphicon-download
                     |  #{rom.filename}
                   mixin changelogbutton(rom)
