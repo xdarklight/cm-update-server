@@ -113,7 +113,13 @@ module.exports = {
 				{ src: "/stats.html", text: "Download statistics" },
 				{ src: "http://google.com", text: "google", target: "_blank" },
 				{ src: "http://github.com", text: "github", target: "_blank" }
-			]
+			],
+
+			/**
+			 * The peer5 API key/ID. Setting this enables the peer5 CDN
+			 * integration. See https://www.peer5.com/
+			 */
+			peer5Key: null
 		},
 
 		/** @see @href https://github.com/jnordberg/wintersmith#options */

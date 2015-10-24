@@ -25,8 +25,10 @@ html(lang='en')
     script(type='text/javascript', src='//code.jquery.com/jquery-#{jqueryVersion}.min.js')
     script(type='text/javascript', src='//cdn.datatables.net/#{datatablesVersion}/js/jquery.dataTables.min.js')
     script(type='text/javascript', src='//maxcdn.bootstrapcdn.com/bootstrap/#{bootstrapVersion}/js/bootstrap.min.js')
-	script(type='text/javascript', src='//api.peer5.com/peer5.js?id=#{peer5Key}')
     script(type='text/javascript', src='#{contents.assets["main.js"].url}')
+
+    if peer5Key
+      script(type='text/javascript', src='//api.peer5.com/peer5.js?id=#{peer5Key}')
 
   body
     div.container-fluid
