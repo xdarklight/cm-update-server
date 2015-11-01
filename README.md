@@ -1,7 +1,7 @@
 cm-update-server
 ================
 
-[![Dependency Status](https://david-dm.org/xdarklight/cm-update-server.svg)](https://david-dm.org/xdarklight/cm-update-server)
+[![Dependency Status](https://david-dm.org/xdarklight/cm-update-server.svg)](https://david-dm.org/xdarklight/cm-update-server) [![optionalDependency Status](https://david-dm.org/xdarklight/cm-update-server/optional-status.svg)](https://david-dm.org/xdarklight/cm-update-server#info=optionalDependencies)
 
 This provides the server-side API for letting a user download ROMs through the CMUpdater app.
 
