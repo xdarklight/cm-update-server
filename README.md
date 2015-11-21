@@ -98,9 +98,6 @@ A website module is now bundled with the server. The website is pre-generated st
 **Configuration of the website module:**
 The configuration section is called "Website" (see `config/default.js` for the default values).
 
-**Theme Support**
-In Chrome for Android 33+ running on Android 5.0+, support was added to colorize the status bar. This is set by default to the blue matching the tables.
-
 **Generating the static content:**
 This should be called (manually) after running `add-build.js` or `add-incremental.js`:
 
@@ -108,6 +105,11 @@ This should be called (manually) after running `add-build.js` or `add-incrementa
 
 -> The static HTML can be found (by default) in `website/build`.
 
+**Theme Support**
+In Chrome for Android 33+ running on Android 5.0+, support was added to colorize the status bar. This is set by default to the blue matching the tables.
+
+**Peer5 CDN Support**
+You can use the [Peer5 P2P CDN](https://www.peer5.com/) to distribute the downloads.
 
 Basic Idea
 ----------
