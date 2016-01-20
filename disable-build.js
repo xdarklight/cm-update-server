@@ -44,10 +44,9 @@ models.sequelize.sync().then(function() {
 				models.Incremental.update({
 					isActive: false,
 				}, {
-					// WHERE
-					targetRomId: rom.id,
-				}, {
-					// options
+					where: {
+						targetRomId: rom.id,
+					},
 					// We cannot validate here because our
 					// validator enforces that a sourceRomId
 					// etc. is set. This is the case, but the
