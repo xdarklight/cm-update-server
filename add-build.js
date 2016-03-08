@@ -21,7 +21,7 @@ var buildInfo = (new Troll()).options(function(troll) {
 });
 
 // TODO: Remove this once sequelize 2 is ready.
-var validateUniqueActiveRomPerSubdirectory = function(romVariant, parentRomId, successCallback) {
+var validateUniqueActiveRomPerSubdirectory = function(romVariant, parentRom, successCallback) {
 	// Find all existing active roms for this filename in the given subdirectory.
 	models.Rom.count({
 		where: {
@@ -40,7 +40,7 @@ var validateUniqueActiveRomPerSubdirectory = function(romVariant, parentRomId, s
 		if (totalExisting > 0) {
 			throw new Error('There are already ' + totalExisting + ' active ROMs for ' + JSON.stringify(romVariant) + ' with filename ' + buildInfo.filename);
 		} else {
-			successCallback(romVariant, parentRomId);
+			successCallback(romVariant, parentRom);
 		}
 	});
 }
@@ -60,7 +60,7 @@ function createNewRomVariantFor(device) {
 	});
 }
 
-function createNewRomFor(romVariant, parentRomId) {
+function createNewRomFor(romVariant, parentRom) {
 	var buildTimestamp = utils.toDate(buildInfo.timestamp);
 
 	var parsedUpdateChannel = new String(buildInfo.channel);
@@ -80,8 +80,9 @@ function createNewRomFor(romVariant, parentRomId) {
 		filesize = buildInfo.filesize;
 	}
 
-	if (isNaN(parentRomId)) {
-		parentRomId = null;
+	var parentRomId = null;
+	if (parentRom) {
+		parentRomId = parentRom.id;
 	}
 
 	models.Rom.build({
@@ -136,7 +137,7 @@ models.sequelize.sync().then(function() {
 				],
 				order: 'timestamp DESC'
 			}).then(function(parentRom) {
-				validateUniqueActiveRomPerSubdirectory(romVariant, parentRom.id, createNewRomFor);
+				validateUniqueActiveRomPerSubdirectory(romVariant, parentRom, createNewRomFor);
 			});
 		} else {
 			models.Device.find({
