@@ -73,7 +73,6 @@ module.exports = function(sequelize, DataTypes) {
 						}
 					]
 				}).then(function(totalExisting) {
-					console.log(totalExisting);
 					if (totalExisting > 0) {
 						throw new Error('There are already ' + totalExisting + ' existing ROM matching ' + JSON.stringify(self.get({ plain: true })));
 					}
