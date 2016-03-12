@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes) {
 	var Incremental = sequelize.define('Incremental', {
 			timestamp: {
 				type: Sequelize.DATE,
-				notNull: true,
+				allowNull: false,
 			},
 			filename: {
 				type: Sequelize.STRING(255),
@@ -16,11 +16,11 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			isActive: {
 				type: Sequelize.BOOLEAN,
-				notNull: true,
+				allowNull: false,
 			},
 			fileSize: {
 				type: Sequelize.BIGINT.UNSIGNED,
-				isNull: true,
+				allowNull: true,
 			},
 	}, {
 		validate: {

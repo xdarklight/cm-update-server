@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes) {
 	var Rom = sequelize.define('Rom', {
 			timestamp: {
 				type: Sequelize.DATE,
-				notNull: true,
+				allowNull: false,
 			},
 			md5sum: {
 				type: Sequelize.STRING(32),
@@ -17,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
 			updateChannel: {
 				type: Sequelize.ENUM,
 				values: [ 'stable', 'snapshot', 'RC', 'nightly', 'experimental' ],
-				notNull: true,
+				allowNull: false,
 			},
 			changelog: {
 				type: Sequelize.TEXT,
@@ -25,28 +25,28 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			apiLevel: {
 				type: Sequelize.INTEGER.UNSIGNED,
-				notNull: true,
+				allowNull: false,
 				min: 1,
 			},
 			isActive: {
 				type: Sequelize.BOOLEAN,
-				notNull: true,
+				allowNull: false,
 			},
 			incrementalId: {
 				type: Sequelize.STRING(32),
-				isNull: true,
+				allowNull: true,
 			},
 			targetFilesZipName: {
 				type: DataTypes.STRING(32),
-				isNull: true,
+				allowNull: true,
 			},
 			sourceCodeTimestamp: {
 				type: Sequelize.DATE,
-				isNull: true,
+				allowNull: true,
 			},
 			fileSize: {
 				type: Sequelize.BIGINT.UNSIGNED,
-				isNull: true,
+				allowNull: true,
 			},
 	}, {
 		validate: {

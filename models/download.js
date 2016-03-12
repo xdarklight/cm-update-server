@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes) {
 	var Download = sequelize.define('Download', {
 		userAgent: {
 			type: Sequelize.TEXT,
-			isNull: true,
+			allowNull: true,
 		},
 	}, {
 		validate: {
