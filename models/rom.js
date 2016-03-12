@@ -8,12 +8,14 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			md5sum: {
 				type: Sequelize.STRING(32),
+				allowNull: false,
 				validate: {
 					notEmpty: true,
 				}
 			},
 			filename: {
 				type: Sequelize.STRING(255),
+				allowNull: false,
 				validate: {
 					notEmpty: true,
 				},

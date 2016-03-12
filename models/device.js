@@ -5,6 +5,10 @@ module.exports = function(sequelize, DataTypes) {
 			name: {
 				type: Sequelize.STRING(32),
 				unique: true,
+				allowNull: false,
+				validate: {
+					notEmpty: true,
+				},
 			},
 			displayName: {
 				type: Sequelize.STRING(255),
