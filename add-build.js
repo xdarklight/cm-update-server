@@ -20,31 +20,6 @@ var buildInfo = (new Troll()).options(function(troll) {
 	troll.opt('targetfileszip', 'The name of the "target files" ZIP archive (useful for generating incremental updates).', { type: 'string' });
 });
 
-// TODO: Remove this once sequelize 2 is ready.
-var validateUniqueActiveRomPerSubdirectory = function(romVariant, parentRom, successCallback) {
-	// Find all existing active roms for this filename in the given subdirectory.
-	models.Rom.count({
-		where: {
-			isActive: true,
-			filename: buildInfo.filename,
-		},
-		include: [
-			{
-				model: models.RomVariant,
-				where: {
-					id: romVariant.id,
-				}
-			}
-		]
-	}).then(function(totalExisting) {
-		if (totalExisting > 0) {
-			throw new Error('There are already ' + totalExisting + ' active ROMs for ' + JSON.stringify(romVariant) + ' with filename ' + buildInfo.filename);
-		} else {
-			successCallback(romVariant, parentRom);
-		}
-	});
-}
-
 function createNewRomVariantFor(device) {
 	var variantName = device.name + '_' + new Date().getTime();
 	var romVariant = models.RomVariant.build({
@@ -56,7 +31,7 @@ function createNewRomVariantFor(device) {
 	romVariant.save().then(function() {
 		console.log('Successfully created new rom variant ' + JSON.stringify(romVariant));
 
-		validateUniqueActiveRomPerSubdirectory(romVariant, null, createNewRomFor);
+		createNewRomFor(romVariant, null);
 	});
 }
 
@@ -137,7 +112,7 @@ models.sequelize.sync().then(function() {
 				],
 				order: 'timestamp DESC'
 			}).then(function(parentRom) {
-				validateUniqueActiveRomPerSubdirectory(romVariant, parentRom, createNewRomFor);
+				createNewRomFor(romVariant, parentRom);
 			});
 		} else {
 			models.Device.find({
