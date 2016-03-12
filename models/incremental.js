@@ -12,7 +12,9 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			md5sum: {
 				type: Sequelize.STRING(32),
-				notEmpty: true,
+				validate: {
+					notEmpty: true,
+				},
 			},
 			isActive: {
 				type: Sequelize.BOOLEAN,

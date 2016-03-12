@@ -8,11 +8,15 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			md5sum: {
 				type: Sequelize.STRING(32),
-				notEmpty: true,
+				validate: {
+					notEmpty: true,
+				}
 			},
 			filename: {
 				type: Sequelize.STRING(255),
-				notEmpty: true,
+				validate: {
+					notEmpty: true,
+				},
 			},
 			updateChannel: {
 				type: Sequelize.ENUM,
@@ -21,12 +25,13 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			changelog: {
 				type: Sequelize.TEXT,
-				notEmpty: false,
 			},
 			apiLevel: {
 				type: Sequelize.INTEGER.UNSIGNED,
 				allowNull: false,
-				min: 1,
+				validate: {
+					min: 1,
+				},
 			},
 			isActive: {
 				type: Sequelize.BOOLEAN,

@@ -8,7 +8,6 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			subdirectory: {
 				type: Sequelize.STRING(255),
-				notEmpty: false,
 			},
 			displayName: {
 				type: Sequelize.STRING(255),
