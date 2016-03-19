@@ -85,6 +85,8 @@ if (buildInfo.changelogfile) {
 	changelog = fs.readFileSync(buildInfo.changelogfile, 'utf-8');
 }
 
+utils.rethrowUnhandledPromiseRejections();
+
 models.sequelize.sync().then(function() {
 	models.RomVariant.find({
 		include: [

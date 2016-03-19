@@ -54,6 +54,8 @@ var findRomWithTargetFilesZipName = function(targetFilesZipName, subdirectory) {
 	});
 }
 
+utils.rethrowUnhandledPromiseRejections();
+
 models.sequelize.sync().then(function() {
 	findRomWithTargetFilesZipName(buildInfo.from_target_files, buildInfo.subdirectory).then(function(sourceRom) {
 		if (sourceRom) {

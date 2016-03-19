@@ -1,5 +1,6 @@
 var Troll = require('troll-opt').Troll;
 var models = require('./models/');
+var utils = require('./utils.js');
 
 var buildInfo = (new Troll()).options(function(troll) {
 	troll.banner('Outputs all target-files zip names (one per line) for all builds that match the given device / subdirectory.');
@@ -9,6 +10,8 @@ var buildInfo = (new Troll()).options(function(troll) {
 });
 
 var minDate = new Date(-8640000000000000);
+
+utils.rethrowUnhandledPromiseRejections();
 
 models.sequelize.sync().then(function() {
 	var startTimestamp;

@@ -1,5 +1,6 @@
 var Troll = require('troll-opt').Troll;
 var models = require('./models/');
+var utils = require('./utils.js');
 
 var buildInfo = (new Troll()).options(function(troll) {
 	troll.banner('Marks a build as disabled so it cannot be downloaded anymore.');
@@ -8,6 +9,8 @@ var buildInfo = (new Troll()).options(function(troll) {
 	troll.opt('subdirectory', 'The subdirectory from which the file can be downloaded.', { type: 'string' });
 	troll.opt('disable_incrementals', 'Disables the incrementals for this rom also.', { type: 'boolean' });
 });
+
+utils.rethrowUnhandledPromiseRejections();
 
 models.sequelize.sync().then(function() {
 	models.Rom.findAll({

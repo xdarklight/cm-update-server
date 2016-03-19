@@ -5,6 +5,9 @@ var wintersmith = require('wintersmith');
 var config = require('config').Website;
 var models = require('./models/');
 var ResultConverter = require('./result-converter.js');
+var utils = require('./utils.js');
+
+utils.rethrowUnhandledPromiseRejections();
 
 models.sequelize.sync().then(function() {
 
