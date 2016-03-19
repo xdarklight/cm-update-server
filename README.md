@@ -145,7 +145,7 @@ May be freely distributed under the MIT license
 
 See `LICENSE` file.
 
-Copyright (c) 2013-2014 Martin Blumenstingl
+Copyright (c) 2013-2016 Martin Blumenstingl
 
   [config]: http://lorenwest.github.com/node-config/latest
   [sequelize]: http://www.sequelizejs.com
