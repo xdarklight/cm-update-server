@@ -63,6 +63,9 @@ module.exports = function(sequelize, DataTypes) {
 				// Find all existing active roms for this filename with the same RomVariant.
 				return Rom.count({
 					where: {
+						id: {
+							$ne: self.id,
+						},
 						isActive: true,
 						filename: self.filename,
 					},
