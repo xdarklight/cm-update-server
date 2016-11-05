@@ -44,7 +44,7 @@ models.sequelize.sync().then(function() {
 	}
 
 	server.get('/changelog/:romId', function (req, res, next) {
-		models.Rom.find(req.params.romId).then(function(rom) {
+		models.Rom.findById(req.params.romId).then(function(rom) {
 			if (!rom) {
 				res.send(404);
 				return next();
