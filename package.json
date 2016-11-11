@@ -16,7 +16,7 @@
 		"config": ">= 0.4.x",
 		"restify": ">= 3.0.x",
 		"sequelize-cli": ">= 2.0.0",
-		"sequelize": ">= 3.0.0"
+		"sequelize": ">= 3.23.6"
 	},
 
 	"optionalDependencies": {
