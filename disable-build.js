@@ -1,14 +1,15 @@
-var Troll = require('troll-opt').Troll;
 var models = require('./models/');
 var utils = require('./utils.js');
 
-var buildInfo = (new Troll()).options(function(troll) {
-	troll.banner('Marks a build as disabled so it cannot be downloaded anymore.');
-	troll.opt('device', 'The device ID.', { type: 'string', required: true });
-	troll.opt('filename', 'The resulting filename.', { type: 'string', required: true });
-	troll.opt('subdirectory', 'The subdirectory from which the file can be downloaded.', { type: 'string' });
-	troll.opt('disable_incrementals', 'Disables the incrementals for this rom also.', { type: 'boolean' });
-});
+var buildInfo = require('yargs')
+	.usage('Usage: $0 [options]\n  Marks a build as disabled so it cannot be downloaded anymore.')
+	.alias('device', 'd').nargs('device', 1).describe('device', 'The device ID.')
+	.alias('disable_incrementals', 'D').boolean('disable_incrementals').describe('disable_incrementals', 'Disables the incrementals for this rom also.')
+	.alias('filename', 'f').nargs('filename', 1).describe('filename', 'The resulting filename.')
+	.alias('subdirectory', 's').nargs('subdirectory', 1).describe('subdirectory', 'The subdirectory from which the file can be downloaded.')
+	.demandOption(['device', 'filename'])
+	.help('help').alias('help', 'h')
+	.argv;
 
 utils.rethrowUnhandledPromiseRejections();
 

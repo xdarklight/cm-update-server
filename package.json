@@ -12,7 +12,7 @@
 	},
 
 	"dependencies": {
-		"troll-opt" : "^0.7.0",
+		"yargs" : "^6.6.0",
 		"config": "^1.24.0",
 		"restify": "^4.2.0",
 		"sequelize-cli": "^2.4.0",
