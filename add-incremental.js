@@ -1,19 +1,20 @@
-var Troll = require('troll-opt').Troll;
 var models = require('./models/');
 var fs = require('fs');
 var utils = require('./utils.js');
 
-var buildInfo = (new Troll()).options(function(troll) {
-	troll.banner('Adds a new incremental build to the database.');
-	troll.opt('timestamp', 'The build\'s timestamp as "unixepoch" timestamp ("ro.build.date.utc").', { type: 'integer', required: true });
-	troll.opt('md5sum', 'The build\'s md5sum.', { type: 'string', required: true });
-	troll.opt('filename', 'The resulting filename.', { type: 'string', required: true });
-	troll.opt('subdirectory', 'The subdirectory from which the file can be downloaded.', { type: 'string' });
-	troll.opt('from_target_files', 'The name of the "target files ZIP" of the incremental\'s "source".', { type: 'string', required: true });
-	troll.opt('to_target_files', 'The name of the "target files ZIP" of the incremental\'s "target".', { type: 'string', required: true });
-	troll.opt('active', 'Marks the incremental as active (available for download) or not.', { type: 'boolean', required: true });
-	troll.opt('filesize', 'The size (in bytes) of the incremental update file.', { type: 'integer' });
-});
+var buildInfo = require('yargs')
+	.usage('Usage: $0 [options]\n  Adds a new incremental build to the database.')
+	.alias('active', 'a').boolean('active').describe('active', 'Marks the incremental as active (available for download) or not.')
+	.alias('filename', 'f').nargs('filename', 1).describe('filename', 'The resulting filename.')
+	.alias('filesize', 'i').nargs('filesize', 1).number('filesize').describe('filesize', 'The size (in bytes) of the incremental update file.')
+	.alias('from_target_files', 'F').nargs('from_target_files', 1).describe('from_target_files', 'The name of the "target files ZIP" of the incremental\'s "source".')
+	.alias('md5sum', 'm').nargs('md5sum', 1).describe('md5sum', 'The build\'s md5sum.')
+	.alias('subdirectory', 's').nargs('subdirectory', 1).describe('subdirectory', 'The subdirectory from which the file can be downloaded.')
+	.alias('timestamp', 't').nargs('timestamp', 1).number('timestamp').describe('timestamp', 'The build\'s timestamp as "unixepoch" timestamp ("ro.build.date.utc").')
+	.alias('to_target_files', 'T').nargs('to_target_files', 1).describe('to_target_files', 'The name of the "target files ZIP" of the incremental\'s "target".')
+	.demandOption(['active', 'device', 'filename', 'from_target_files', 'md5sum', 'timestamp', 'to_target_files'])
+	.help('help').alias('help', 'h')
+	.argv;
 
 function createNewIncremental(sourceRom, targetRom) {
 	var buildTimestamp = utils.toDate(buildInfo.timestamp);

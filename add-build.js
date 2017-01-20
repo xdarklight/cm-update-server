@@ -1,24 +1,26 @@
-var Troll = require('troll-opt').Troll;
 var models = require('./models/');
 var fs = require('fs');
 var utils = require('./utils.js');
 
-var buildInfo = (new Troll()).options(function(troll) {
-	troll.banner('Adds a new build to the database.');
-	troll.opt('device', 'The device ID.', { type: 'string', required: true });
-	troll.opt('timestamp', 'The build\'s timestamp as "unixepoch" timestamp ("ro.build.date.utc").', { type: 'integer', required: true });
-	troll.opt('md5sum', 'The build\'s md5sum.', { type: 'string', required: true });
-	troll.opt('filename', 'The resulting filename.', { type: 'string', required: true });
-	troll.opt('channel', 'The update-channel.', { type: 'string', required: true });
-	troll.opt('api_level', 'The SDK API-level of the ROM ("ro.build.version.sdk").', { type: 'integer', required: true });
-	troll.opt('subdirectory', 'The subdirectory from which the file can be downloaded.', { type: 'string' });
-	troll.opt('active', 'Marks the build as active (available for download) or not.', { type: 'boolean', required: true });
-	troll.opt('sourcecode_timestamp', 'The ("unixepoch") timestamp when the source code was updated.', { type: 'integer' });
-	troll.opt('filesize', 'The size (in bytes) of the ZIP file.', { type: 'integer' });
-	troll.opt('incrementalid', 'The build\s incremental ID ("ro.build.version.incremental").', { type: 'string' });
-	troll.opt('changelogfile', 'A path to a file which contains the changelog (utf-8 encoded) for the build.', { type: 'string' });
-	troll.opt('targetfileszip', 'The name of the "target files" ZIP archive (useful for generating incremental updates).', { type: 'string' });
-});
+var buildInfo = require('yargs')
+	.usage('Usage: $0 [options]\n  Adds a new build to the database.')
+	.alias('active', 'A').boolean('active').describe('active', 'Marks the build as active (available for download) or not.')
+	.alias('api_level', 'a').nargs('api_level', 1).number('api_level').describe('api_level', 'The SDK API-level of the ROM ("ro.build.version.sdk").')
+	.alias('changelogfile', 'C').nargs('changelogfile', 1).describe('changelogfile', 'A path to a file which contains the changelog (utf-8 encoded) for the build.')
+	.alias('channel', 'c').nargs('channel', 1).describe('channel', 'The update-channel.')
+	.alias('device', 'd').nargs('device', 1).describe('device', 'The device ID.')
+	.alias('filename', 'f').nargs('filename', 1).describe('filename', 'The resulting filename.')
+	.alias('filesize', 'F').nargs('filesize', 1).number('filesize').describe('filesize', 'The size (in bytes) of the ZIP file.')
+	.alias('incrementalid', 'i').nargs('incrementalid', 1).describe('incrementalid', 'The build\'s incremental ID ("ro.build.version.incremental").')
+	.alias('md5sum', 'm').nargs('md5sum', 1).describe('md5sum', 'The build\'s md5sum.')
+	.alias('subdirectory', 's').nargs('subdirectory', 1).describe('subdirectory', 'The subdirectory from which the file can be downloaded.')
+	.alias('sourcecode_timestamp', 'S').nargs('sourcecode_timestamp', 1).number('sourcecode_timestamp').describe('sourcecode_timestamp', 'The ("unixepoch") timestamp when the source code was updated.')
+	.alias('targetfileszip', 'T').nargs('targetfileszip', 1).describe('targetfileszip', 'The name of the "target files" ZIP archive (useful for generating incremental updates).')
+	.alias('timestamp', 't').nargs('timestamp', 1).number('timestamp').describe('timestamp', 'The build\'s timestamp as "unixepoch" timestamp ("ro.build.date.utc").')
+	.demandOption(['api_level', 'active', 'channel', 'device', 'filename', 'md5sum', 'timestamp'])
+	.help('help').alias('help', 'h')
+	.argv;
+
 
 function createNewRomVariantFor(device) {
 	var variantName = device.name + '_' + new Date().getTime();

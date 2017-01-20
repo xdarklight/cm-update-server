@@ -1,12 +1,13 @@
-var Troll = require('troll-opt').Troll;
 var models = require('./models/');
 var utils = require('./utils.js');
 
-var buildInfo = (new Troll()).options(function(troll) {
-	troll.banner('Outputs the newest source-code as ISO-8601 string for the given device / subdirectory.');
-	troll.opt('device', 'The device ID.', { type: 'string', required: true });
-	troll.opt('subdirectory', 'The subdirectory from which the file can be downloaded.', { type: 'string' });
-});
+var buildInfo = require('yargs')
+	.usage('Usage: $0 [options]\n  Outputs the newest source-code as ISO-8601 string for the given device / subdirectory.')
+	.alias('device', 'd').nargs('device', 1).describe('device', 'The device ID.')
+	.alias('subdirectory', 's').nargs('subdirectory', 1).describe('subdirectory', 'The subdirectory from which the file can be downloaded.')
+	.demandOption(['device'])
+	.help('help').alias('help', 'h')
+	.argv;
 
 utils.rethrowUnhandledPromiseRejections();
 
