@@ -24,7 +24,7 @@
 		"mysql": "^2.0.0",
 		"mariasql": "^0.2.0",
 		"wintersmith": "^2.3.0",
-		"fs-extra": "^1.0.0",
+		"fs-extra": "^2.0.0",
 		"filesize": "^3.3.0",
 		"async": "^2.0.0"
 	}
