@@ -54,7 +54,10 @@ html(lang='en')
                   -   linkCssClass = 'active';
                   - }
                   li(class=linkCssClass)
-                    a(href=link.src, target=link.target) #{link.text}
+                    if link.src
+                      a(href=link.src, target=link.target) #{link.text}
+                    else
+                      div(style="padding: 10px 15px;") !{link.text}
 
         div.col-xs-12.col-md-9
           block content
