@@ -23,7 +23,7 @@ var buildInfo = require('yargs')
 
 
 function createNewRomVariantFor(device) {
-	var variantName = device.name + '_' + new Date().getTime();
+	var variantName = device.name + '_' + buildInfo.api_level + '_' + buildInfo.channel.toLowerCase();
 	var romVariant = models.RomVariant.build({
 		DeviceId: device.id,
 		name: variantName,
