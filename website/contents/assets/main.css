@@ -27,3 +27,7 @@ dt > small {
 .textcontainer p {
 	padding: 15px;
 }
+
+.textonly {
+	padding: 10px 15px;
+}
