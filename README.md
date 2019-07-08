@@ -1,6 +1,19 @@
 cm-update-server
 ================
 
+DEPRECATION NOTICE
+------------
+
+**THIS PROJECT IS NOT MAINTAINED ANYMORE**
+
+:exclamation: it's been a fun ride while it lasted, but this project is not maintained anymore. :x:
+
+LineageOS has an open source update server for their own updater app:  
+https://github.com/lineageos-infra/updater
+
+Project Description
+------------
+
 [![Dependency Status](https://david-dm.org/xdarklight/cm-update-server.svg)](https://david-dm.org/xdarklight/cm-update-server) [![optionalDependency Status](https://david-dm.org/xdarklight/cm-update-server/optional-status.svg)](https://david-dm.org/xdarklight/cm-update-server#info=optionalDependencies)
 
 This provides the server-side API for letting a user download ROMs through the CMUpdater app.
